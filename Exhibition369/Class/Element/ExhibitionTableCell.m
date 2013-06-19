@@ -63,6 +63,10 @@
         theImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 7, 50, 50)];
         theImage.tag = 6;
         [self.contentView addSubview:theImage];
+        
+        bottomLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
+        bottomLine.frame = CGRectMake(10, 64, 300, 2);
+        [self.contentView addSubview:bottomLine];
     }
     return self;
 }

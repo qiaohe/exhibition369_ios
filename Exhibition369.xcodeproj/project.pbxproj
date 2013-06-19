@@ -38,6 +38,7 @@
 		0422B004176EE28700299473 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0422B003176EE28700299473 /* MobileCoreServices.framework */; };
 		0422B00C176EE88500299473 /* ExhibitionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422B00A176EE88500299473 /* ExhibitionDetailViewController.m */; };
 		0422B00D176EE88500299473 /* ExhibitionDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0422B00B176EE88500299473 /* ExhibitionDetailViewController.xib */; };
+		0456D1AF177155E2006B4693 /* tag-no sign up.png in Resources */ = {isa = PBXBuildFile; fileRef = 0456D1AE177155E2006B4693 /* tag-no sign up.png */; };
 		04C3777D1770A21300674F32 /* grid-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C3776E1770A21300674F32 /* grid-bg.png */; };
 		04C3777E1770A21300674F32 /* enter-focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C3776F1770A21300674F32 /* enter-focus.png */; };
 		04C3777F1770A21300674F32 /* enter-unfocus.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C377701770A21300674F32 /* enter-unfocus.png */; };
@@ -140,6 +141,7 @@
 		0422B009176EE88500299473 /* ExhibitionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionDetailViewController.h; sourceTree = "<group>"; };
 		0422B00A176EE88500299473 /* ExhibitionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionDetailViewController.m; sourceTree = "<group>"; };
 		0422B00B176EE88500299473 /* ExhibitionDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExhibitionDetailViewController.xib; sourceTree = "<group>"; };
+		0456D1AE177155E2006B4693 /* tag-no sign up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tag-no sign up.png"; sourceTree = "<group>"; };
 		04C3776E1770A21300674F32 /* grid-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grid-bg.png"; sourceTree = "<group>"; };
 		04C3776F1770A21300674F32 /* enter-focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "enter-focus.png"; sourceTree = "<group>"; };
 		04C377701770A21300674F32 /* enter-unfocus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "enter-unfocus.png"; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 		040C15F4176E9FBA00F859DB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				0456D1AE177155E2006B4693 /* tag-no sign up.png */,
 				04C377A41770AB0300674F32 /* plist */,
 				04C377981770A80C00674F32 /* alert_background@2x.png */,
 				04C3776E1770A21300674F32 /* grid-bg.png */,
@@ -571,6 +574,7 @@
 				04C377A61770AB0300674F32 /* appliedExhibitions.plist in Resources */,
 				04C377E11770D7D700674F32 /* LaunchViewController.xib in Resources */,
 				04C377ED1771009F00674F32 /* TipViewController.xib in Resources */,
+				0456D1AF177155E2006B4693 /* tag-no sign up.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

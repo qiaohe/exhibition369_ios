@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[BaseUIViewController sendRequestWith:params:method:]:BaseUIViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "params">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MainViewController requestFailed:]:MainViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[SystemConfig initWithJSONData:]:SystemConfig.m">
       </ContextState>
       <ContextState
@@ -15,6 +26,12 @@
                value = "sc">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MainViewController requestExhibitions]:MainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BaseUIViewController requestFinished:]:BaseUIViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

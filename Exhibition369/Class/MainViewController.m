@@ -50,7 +50,8 @@
     [super viewDidLoad];
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
     
-    activeTab = MainViewActiveTabExhibitions;
+    activeTab = MainViewActiveTabAppliedExhibitions;
+    [_tabImage setImage:[UIImage imageNamed:@"tag-signed.png"]];
     [self requestExhibitions];
     
     [typeGroup removeAllObjects];
@@ -77,7 +78,7 @@
                                        [Model sharedModel].systemConfig.token, @"token",
                                        @"-1", @"size",
                                        @"-1", @"last",
-                                       @"", @"name",
+                                       _searchInput.text, @"name",
                                        nil];
         
         [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find", ServerURL] params:params method:RequestMethodGET];
@@ -297,11 +298,17 @@
 - (void)dealloc {
     [_theTableView release];
     [_searchInput release];
+    [_tabImage release];
+    [_appliedBtn release];
+    [_unAppliedBtn release];
     [super dealloc];
 }
 - (void)viewDidUnload {
     [self setTheTableView:nil];
     [self setSearchInput:nil];
+    [self setTabImage:nil];
+    [self setAppliedBtn:nil];
+    [self setUnAppliedBtn:nil];
     [super viewDidUnload];
 }
 
@@ -380,5 +387,34 @@
     [self loadImagesForOnscreenRows];
 }
 - (IBAction)searchExhibition:(id)sender {
+    [_searchInput resignFirstResponder];
+    [self requestExhibitions];
+}
+- (IBAction)appliedTapped:(id)sender {
+    if(activeTab == MainViewActiveTabAppliedExhibitions)
+        return;
+    [_tabImage setImage:[UIImage imageNamed:@"tag-signed.png"]];
+    [_appliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateNormal];
+    [_appliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateHighlighted];
+    
+    [_unAppliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateNormal];
+    [_unAppliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateHighlighted];
+    
+    activeTab = MainViewActiveTabAppliedExhibitions;
+    [_theTableView reloadData];
+}
+
+- (IBAction)unAppliedTapped:(id)sender {
+    if(activeTab == MainViewActiveTabExhibitions)
+        return;
+    [_tabImage setImage:[UIImage imageNamed:@"tag-no sign up.png"]];
+    [_appliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateNormal];
+    [_appliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateHighlighted];
+    
+    [_unAppliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateNormal];
+    [_unAppliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateHighlighted];
+    
+    activeTab = MainViewActiveTabExhibitions;
+    [_theTableView reloadData];
 }
 @end

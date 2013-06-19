@@ -27,5 +27,10 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (nonatomic, strong) NSMutableDictionary *imageDownloadsInProgress;
 @property (retain, nonatomic) IBOutlet UITextField *searchInput;
 - (IBAction)searchExhibition:(id)sender;
+@property (retain, nonatomic) IBOutlet UIImageView *tabImage;
+@property (retain, nonatomic) IBOutlet UIButton *appliedBtn;
+@property (retain, nonatomic) IBOutlet UIButton *unAppliedBtn;
+- (IBAction)appliedTapped:(id)sender;
+- (IBAction)unAppliedTapped:(id)sender;
 
 @end

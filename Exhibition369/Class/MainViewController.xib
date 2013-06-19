@@ -56,7 +56,7 @@
 					<object class="IBUITextField" id="503465707">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{65, 3}, {245, 30}}</string>
+						<string key="NSFrame">{{65, 3}, {240, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="483963939"/>
@@ -158,7 +158,7 @@
 						<reference key="IBUIHighlightedTitleColor" ref="200956235"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4yNTg4MjM1Mjk0IDAuNjA3ODQzMTM3MyAwLjg2NjY2NjY2NjcAA</bytes>
+							<bytes key="NSRGB">MC4wNzg0MzEzNzI1NSAwLjA3ODQzMTM3MjU1IDAuMDcwNTg4MjM1MjkAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="843021062"/>
 						<reference key="IBUIFontDescription" ref="937850025"/>
@@ -170,7 +170,6 @@
 						<string key="NSFrame">{{161, 33}, {144, 34}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -180,7 +179,7 @@
 						<reference key="IBUIHighlightedTitleColor" ref="200956235"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4wNzg0MzEzNzI1NSAwLjA3ODQzMTM3MjU1IDAuMDcwNTg4MjM1MjkAA</bytes>
+							<bytes key="NSRGB">MC4yNTg4MjM1Mjk0IDAuNjA3ODQzMTM3MyAwLjg2NjY2NjY2NjcAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="843021062"/>
 						<reference key="IBUIFontDescription" ref="937850025"/>
@@ -279,6 +278,30 @@
 					<int key="connectionID">29</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tabImage</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="483963939"/>
+					</object>
+					<int key="connectionID">31</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">appliedBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="741092450"/>
+					</object>
+					<int key="connectionID">32</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">unAppliedBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="1019535572"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">searchExhibition:</string>
 						<reference key="source" ref="185275495"/>
@@ -286,6 +309,24 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">appliedTapped:</string>
+						<reference key="source" ref="741092450"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">34</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">unAppliedTapped:</string>
+						<reference key="source" ref="1019535572"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">35</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -400,7 +441,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">35</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -415,18 +456,52 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MainViewController</string>
 					<string key="superclassName">BaseUIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="appliedTapped:">id</string>
+						<string key="searchExhibition:">id</string>
+						<string key="unAppliedTapped:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="appliedTapped:">
+							<string key="name">appliedTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="searchExhibition:">
+							<string key="name">searchExhibition:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="unAppliedTapped:">
+							<string key="name">unAppliedTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="appliedBtn">UIButton</string>
 						<string key="searchInput">UITextField</string>
+						<string key="tabImage">UIImageView</string>
 						<string key="theTableView">UITableView</string>
+						<string key="unAppliedBtn">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="appliedBtn">
+							<string key="name">appliedBtn</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="searchInput">
 							<string key="name">searchInput</string>
 							<string key="candidateClassName">UITextField</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="tabImage">
+							<string key="name">tabImage</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="theTableView">
 							<string key="name">theTableView</string>
 							<string key="candidateClassName">UITableView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="unAppliedBtn">
+							<string key="name">unAppliedBtn</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

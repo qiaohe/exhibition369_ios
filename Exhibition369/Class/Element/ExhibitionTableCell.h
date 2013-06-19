@@ -18,6 +18,7 @@
     
     UIImageView *theImage;
     UIImageView *selectedBG;
+    UIImageView *bottomLine;
 }
 
 @end

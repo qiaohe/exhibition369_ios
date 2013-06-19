@@ -47,7 +47,7 @@
             url = [url stringByAppendingFormat:@"?%@",urlprams];
         }
         
-        NSURL *nsurl = [NSURL URLWithString:url];
+        NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         
         ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:nsurl];
