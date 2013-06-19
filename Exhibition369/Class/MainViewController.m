@@ -15,6 +15,7 @@
 #import "Constant.h"
 #import "ExhibitionTableCell.h"
 #import "IconDownloader.h"
+#import "PlistProxy.h"
 
 @interface MainViewController ()
 
@@ -97,7 +98,17 @@
         return @"审核未通过";
     else
         return @"";
-    
+}
+
+- (UIImage *)getStatusHeaderImage:(NSString *)status {
+    if([status isEqualToString:EXHIBITION_STATUS_P])
+        return [UIImage imageNamed:@"tag-check.png"];
+    else if([status isEqualToString:EXHIBITION_STATUS_A])
+        return [UIImage imageNamed:@"tag-pass.png"];
+    else if([status isEqualToString:EXHIBITION_STATUS_D])
+        return [UIImage imageNamed:@"tag-failure"];
+    else
+        return nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,16 +154,24 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     if(activeTab == MainViewActiveTabAppliedExhibitions){
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 25)];
-        UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"date_bar.png"]];
-        bg.frame = headerView.frame;
-        //UILabel *userName = [[UILabel alloc] initWithFrame:CGRectMake (0,0,320,25)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 0, 310, 27)];
+        UIImageView *bg = [[UIImageView alloc] initWithImage:[self getStatusHeaderImage:[typeGroup objectAtIndex:section]]];
+        bg.frame = CGRectMake(5, 0, 310, 25);
         [headerView addSubview:bg];
-        UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake (10,0,320,25)];
-        header.textColor = [UIColor whiteColor];
-        header.text = [NSString stringWithFormat:@"%@ 区", [typeGroup objectAtIndex:section]];
+        
+        UIImageView *bottomLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
+        bottomLine.frame = CGRectMake(10, 25, 300, 2);
+        [headerView addSubview:bottomLine];
+        
+        UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake (35,0,280,27)];
+        header.textColor = [UIColor colorWithRed:66 green:155 blue:221 alpha:1];
+        header.text = [self getStatusTxt:[typeGroup objectAtIndex:section]];
+        header.minimumFontSize = 11;
+        header.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+        header.backgroundColor = [UIColor clearColor];
         [headerView addSubview:header];
-        [header setBackgroundColor:[UIColor clearColor]];
+        
+        
         return headerView;
     }
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 0)];
@@ -161,7 +180,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(activeTab == MainViewActiveTabAppliedExhibitions)
-        return 25;
+        return 27;
     else
         return 0;
     
@@ -281,6 +300,18 @@
 	{
         Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
         [unAppliedExhibitions addObject:e];
+        
+        /*test data
+        if([e.exKey isEqualToString:@"1107"])
+            e.status = EXHIBITION_STATUS_A;
+        else if([e.exKey isEqualToString:@"1108"])
+            e.status = EXHIBITION_STATUS_D;
+        else
+            e.status = EXHIBITION_STATUS_P;
+        
+        [[Model sharedModel].appliedExhibitionList addObject:e];
+        [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+        */
         [e release];
     }
     

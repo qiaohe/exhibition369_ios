@@ -19,6 +19,7 @@
     UIImageView *theImage;
     UIImageView *selectedBG;
     UIImageView *bottomLine;
+    UIImageView *theTabLine;
 }
 
 @end

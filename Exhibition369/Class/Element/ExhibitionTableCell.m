@@ -67,6 +67,10 @@
         bottomLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
         bottomLine.frame = CGRectMake(10, 64, 300, 2);
         [self.contentView addSubview:bottomLine];
+        
+        theTabLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab.png"]];
+        theTabLine.frame = CGRectMake(5, 11, 3, 43);
+        [self.contentView addSubview:theTabLine];
     }
     return self;
 }
