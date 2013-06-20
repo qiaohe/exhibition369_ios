@@ -13,6 +13,13 @@
 #import "SystemConfig.h"
 #import "MainViewController.h"
 #import "TransitionController.h"
+#import "Exhibition.h"
+#import "IData.h"
+#import "PlistProxy.h"
+#import "SystemConfig.h"
+#import "Exhibition369-Prefix.pch"
+#import "SBJson.h"
+#import "ExhibitionsNews.h"
 
 @class HomePageViewController;
 
@@ -26,6 +33,7 @@
 @property (nonatomic, retain) SystemConfig *systemConfig;
 @property (nonatomic, retain) NSString *documentDirectory;
 @property (nonatomic, retain) MainViewController *mainView;
+@property (nonatomic, retain) Exhibition *selectExhibition;
 
 - (void)createFolder:(NSArray *)pathComponents;
 - (NSString *)createPath:(NSArray *)pathComponents;

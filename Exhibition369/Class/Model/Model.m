@@ -18,6 +18,7 @@ static Model *sharedModel;
 @synthesize systemConfig = _systemConfig;
 @synthesize documentDirectory = _documentDirectory;
 @synthesize mainView = _mainView;
+@synthesize selectExhibition = _selectExhibition;
 
 
 + (Model *)sharedModel

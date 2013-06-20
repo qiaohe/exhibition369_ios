@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
+#import "Model.h"
 @class TransitionController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, ASIHTTPRequestDelegate>

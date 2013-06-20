@@ -85,6 +85,29 @@
 		04C377ED1771009F00674F32 /* TipViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04C377EA1771009F00674F32 /* TipViewController.xib */; };
 		04C377F0177100C400674F32 /* ExhibitionTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C377EF177100C400674F32 /* ExhibitionTableCell.m */; };
 		04C377F9177106D400674F32 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C377F5177106D400674F32 /* IconDownloader.m */; };
+		CE0BA7BD17728BDC0043F4DD /* ApplyResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */; };
+		CE0BA7BE17728BDC0043F4DD /* ApplyStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */; };
+		CE0BA7BF17728BDC0043F4DD /* ApplyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7BC17728BDC0043F4DD /* ApplyView.m */; };
+		CE0BA7C217728C120043F4DD /* AccessDeviceIden.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */; };
+		CE0BA7C6177297C10043F4DD /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */; };
+		CE0BA7C7177297C10043F4DD /* QRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE0BA7C5177297C00043F4DD /* QRCodeViewController.xib */; };
+		CE22401E17719566009F0218 /* ExhibitionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22401317719566009F0218 /* ExhibitionInfoViewController.m */; };
+		CE22401F17719566009F0218 /* ExhibitionInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22401417719566009F0218 /* ExhibitionInfoViewController.xib */; };
+		CE22402017719566009F0218 /* ExhibitionMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22401617719566009F0218 /* ExhibitionMessageViewController.m */; };
+		CE22402117719566009F0218 /* ExhibitionMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22401717719566009F0218 /* ExhibitionMessageViewController.xib */; };
+		CE22402217719566009F0218 /* ExhibitionNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22401917719566009F0218 /* ExhibitionNewsViewController.m */; };
+		CE22402317719566009F0218 /* ExhibitionNewsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22401A17719566009F0218 /* ExhibitionNewsViewController.xib */; };
+		CE22402417719566009F0218 /* ExhibitionScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22401C17719566009F0218 /* ExhibitionScheduleViewController.m */; };
+		CE22402517719566009F0218 /* ExhibitionScheduleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22401D17719566009F0218 /* ExhibitionScheduleViewController.xib */; };
+		CE22402A1771959F009F0218 /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240281771959F009F0218 /* CustomNavigationBar.m */; };
+		CE22402B1771959F009F0218 /* NavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE2240291771959F009F0218 /* NavigationController.xib */; };
+		CE2240311771B438009F0218 /* NewsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240301771B438009F0218 /* NewsTableCell.m */; };
+		CE2240451771C8B6009F0218 /* ExhibitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22403E1771C8B6009F0218 /* ExhibitionManager.m */; };
+		CE2240461771C8B6009F0218 /* Exhibitions.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240401771C8B6009F0218 /* Exhibitions.m */; };
+		CE2240471771C8B6009F0218 /* ExhibitionsNews.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240421771C8B6009F0218 /* ExhibitionsNews.m */; };
+		CE2240481771C8B6009F0218 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240441771C8B6009F0218 /* Message.m */; };
+		CE22404C1771CEAA009F0218 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22404A1771CEA5009F0218 /* ApplyViewController.m */; };
+		CE22404D1771CEAA009F0218 /* ApplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22404B1771CEA7009F0218 /* ApplyViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -171,10 +194,10 @@
 		04C377A51770AB0300674F32 /* appliedExhibitions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = appliedExhibitions.plist; sourceTree = "<group>"; };
 		04C377A71770AB9800674F32 /* Exhibition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exhibition.h; sourceTree = "<group>"; };
 		04C377A81770AB9800674F32 /* Exhibition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exhibition.m; sourceTree = "<group>"; };
-		04C377AA1770AE4600674F32 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		04C377AB1770AE4600674F32 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
-		04C377AD1770AED700674F32 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
-		04C377AE1770AED700674F32 /* Constant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
+		04C377AA1770AE4600674F32 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Utils.h; sourceTree = "<group>"; };
+		04C377AB1770AE4600674F32 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../Utils.m; sourceTree = "<group>"; };
+		04C377AD1770AED700674F32 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constant.h; path = ../Constant.h; sourceTree = "<group>"; };
+		04C377AE1770AED700674F32 /* Constant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constant.m; path = ../Constant.m; sourceTree = "<group>"; };
 		04C377B01770B18F00674F32 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		04C377B21770B5EF00674F32 /* SystemConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemConfig.h; sourceTree = "<group>"; };
 		04C377B31770B5EF00674F32 /* SystemConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemConfig.m; sourceTree = "<group>"; };
@@ -215,6 +238,45 @@
 		04C377EF177100C400674F32 /* ExhibitionTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionTableCell.m; sourceTree = "<group>"; };
 		04C377F4177106D400674F32 /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
 		04C377F5177106D400674F32 /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
+		CE0BA7B717728BDC0043F4DD /* ApplyResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyResultView.h; sourceTree = "<group>"; };
+		CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyResultView.m; sourceTree = "<group>"; };
+		CE0BA7B917728BDC0043F4DD /* ApplyStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyStateView.h; sourceTree = "<group>"; };
+		CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyStateView.m; sourceTree = "<group>"; };
+		CE0BA7BB17728BDC0043F4DD /* ApplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyView.h; sourceTree = "<group>"; };
+		CE0BA7BC17728BDC0043F4DD /* ApplyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyView.m; sourceTree = "<group>"; };
+		CE0BA7C017728C110043F4DD /* AccessDeviceIden.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessDeviceIden.h; sourceTree = "<group>"; };
+		CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessDeviceIden.m; sourceTree = "<group>"; };
+		CE0BA7C3177297BF0043F4DD /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
+		CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
+		CE0BA7C5177297C00043F4DD /* QRCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRCodeViewController.xib; sourceTree = "<group>"; };
+		CE22401217719566009F0218 /* ExhibitionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionInfoViewController.h; sourceTree = "<group>"; };
+		CE22401317719566009F0218 /* ExhibitionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionInfoViewController.m; sourceTree = "<group>"; };
+		CE22401417719566009F0218 /* ExhibitionInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExhibitionInfoViewController.xib; sourceTree = "<group>"; };
+		CE22401517719566009F0218 /* ExhibitionMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionMessageViewController.h; sourceTree = "<group>"; };
+		CE22401617719566009F0218 /* ExhibitionMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionMessageViewController.m; sourceTree = "<group>"; };
+		CE22401717719566009F0218 /* ExhibitionMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExhibitionMessageViewController.xib; sourceTree = "<group>"; };
+		CE22401817719566009F0218 /* ExhibitionNewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionNewsViewController.h; sourceTree = "<group>"; };
+		CE22401917719566009F0218 /* ExhibitionNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionNewsViewController.m; sourceTree = "<group>"; };
+		CE22401A17719566009F0218 /* ExhibitionNewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExhibitionNewsViewController.xib; sourceTree = "<group>"; };
+		CE22401B17719566009F0218 /* ExhibitionScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionScheduleViewController.h; sourceTree = "<group>"; };
+		CE22401C17719566009F0218 /* ExhibitionScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionScheduleViewController.m; sourceTree = "<group>"; };
+		CE22401D17719566009F0218 /* ExhibitionScheduleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExhibitionScheduleViewController.xib; sourceTree = "<group>"; };
+		CE2240271771959F009F0218 /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavigationBar.h; sourceTree = "<group>"; };
+		CE2240281771959F009F0218 /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavigationBar.m; sourceTree = "<group>"; };
+		CE2240291771959F009F0218 /* NavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationController.xib; sourceTree = "<group>"; };
+		CE22402F1771B437009F0218 /* NewsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsTableCell.h; sourceTree = "<group>"; };
+		CE2240301771B438009F0218 /* NewsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsTableCell.m; sourceTree = "<group>"; };
+		CE22403D1771C8B6009F0218 /* ExhibitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionManager.h; sourceTree = "<group>"; };
+		CE22403E1771C8B6009F0218 /* ExhibitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionManager.m; sourceTree = "<group>"; };
+		CE22403F1771C8B6009F0218 /* Exhibitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exhibitions.h; sourceTree = "<group>"; };
+		CE2240401771C8B6009F0218 /* Exhibitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exhibitions.m; sourceTree = "<group>"; };
+		CE2240411771C8B6009F0218 /* ExhibitionsNews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionsNews.h; sourceTree = "<group>"; };
+		CE2240421771C8B6009F0218 /* ExhibitionsNews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionsNews.m; sourceTree = "<group>"; };
+		CE2240431771C8B6009F0218 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		CE2240441771C8B6009F0218 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		CE2240491771CEA4009F0218 /* ApplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyViewController.h; sourceTree = "<group>"; };
+		CE22404A1771CEA5009F0218 /* ApplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyViewController.m; sourceTree = "<group>"; };
+		CE22404B1771CEA7009F0218 /* ApplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApplyViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,10 +364,6 @@
 			isa = PBXGroup;
 			children = (
 				04C377E51771009D00674F32 /* Element */,
-				04C377AD1770AED700674F32 /* Constant.h */,
-				04C377AE1770AED700674F32 /* Constant.m */,
-				04C377AA1770AE4600674F32 /* Utils.h */,
-				04C377AB1770AE4600674F32 /* Utils.m */,
 				04C3779A1770A8AA00674F32 /* Model */,
 				04C3778D1770A76600674F32 /* TransitionController.h */,
 				04C3778E1770A76600674F32 /* TransitionController.m */,
@@ -320,6 +378,24 @@
 				04C377DD1770D7D300674F32 /* LaunchViewController.h */,
 				04C377DE1770D7D400674F32 /* LaunchViewController.m */,
 				04C377DF1770D7D500674F32 /* LaunchViewController.xib */,
+				CE22401217719566009F0218 /* ExhibitionInfoViewController.h */,
+				CE22401317719566009F0218 /* ExhibitionInfoViewController.m */,
+				CE22401417719566009F0218 /* ExhibitionInfoViewController.xib */,
+				CE22401517719566009F0218 /* ExhibitionMessageViewController.h */,
+				CE22401617719566009F0218 /* ExhibitionMessageViewController.m */,
+				CE22401717719566009F0218 /* ExhibitionMessageViewController.xib */,
+				CE22401817719566009F0218 /* ExhibitionNewsViewController.h */,
+				CE22401917719566009F0218 /* ExhibitionNewsViewController.m */,
+				CE22401A17719566009F0218 /* ExhibitionNewsViewController.xib */,
+				CE22401B17719566009F0218 /* ExhibitionScheduleViewController.h */,
+				CE22401C17719566009F0218 /* ExhibitionScheduleViewController.m */,
+				CE22401D17719566009F0218 /* ExhibitionScheduleViewController.xib */,
+				CE2240491771CEA4009F0218 /* ApplyViewController.h */,
+				CE22404A1771CEA5009F0218 /* ApplyViewController.m */,
+				CE22404B1771CEA7009F0218 /* ApplyViewController.xib */,
+				CE0BA7C3177297BF0043F4DD /* QRCodeViewController.h */,
+				CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */,
+				CE0BA7C5177297C00043F4DD /* QRCodeViewController.xib */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -421,6 +497,8 @@
 		04C3779A1770A8AA00674F32 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE22403C1771C8B5009F0218 /* MyModel */,
+				CE2240261771959F009F0218 /* CustomNavigationBar */,
 				04C377A71770AB9800674F32 /* Exhibition.h */,
 				04C377A81770AB9800674F32 /* Exhibition.m */,
 				04C3779B1770A8AB00674F32 /* IData.h */,
@@ -478,6 +556,10 @@
 		04C377E51771009D00674F32 /* Element */ = {
 			isa = PBXGroup;
 			children = (
+				04C377AD1770AED700674F32 /* Constant.h */,
+				04C377AE1770AED700674F32 /* Constant.m */,
+				04C377AA1770AE4600674F32 /* Utils.h */,
+				04C377AB1770AE4600674F32 /* Utils.m */,
 				04C377E61771009F00674F32 /* DataButton.h */,
 				04C377E71771009F00674F32 /* DataButton.m */,
 				04C377E81771009F00674F32 /* TipViewController.h */,
@@ -485,6 +567,16 @@
 				04C377EA1771009F00674F32 /* TipViewController.xib */,
 				04C377EE177100C400674F32 /* ExhibitionTableCell.h */,
 				04C377EF177100C400674F32 /* ExhibitionTableCell.m */,
+				CE22402F1771B437009F0218 /* NewsTableCell.h */,
+				CE2240301771B438009F0218 /* NewsTableCell.m */,
+				CE0BA7BB17728BDC0043F4DD /* ApplyView.h */,
+				CE0BA7BC17728BDC0043F4DD /* ApplyView.m */,
+				CE0BA7B917728BDC0043F4DD /* ApplyStateView.h */,
+				CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */,
+				CE0BA7B717728BDC0043F4DD /* ApplyResultView.h */,
+				CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */,
+				CE0BA7C017728C110043F4DD /* AccessDeviceIden.h */,
+				CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -497,6 +589,32 @@
 			);
 			path = LazyImageLoad;
 			sourceTree = "<group>";
+		};
+		CE2240261771959F009F0218 /* CustomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				CE2240271771959F009F0218 /* CustomNavigationBar.h */,
+				CE2240281771959F009F0218 /* CustomNavigationBar.m */,
+				CE2240291771959F009F0218 /* NavigationController.xib */,
+			);
+			path = CustomNavigationBar;
+			sourceTree = "<group>";
+		};
+		CE22403C1771C8B5009F0218 /* MyModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE22403D1771C8B6009F0218 /* ExhibitionManager.h */,
+				CE22403E1771C8B6009F0218 /* ExhibitionManager.m */,
+				CE22403F1771C8B6009F0218 /* Exhibitions.h */,
+				CE2240401771C8B6009F0218 /* Exhibitions.m */,
+				CE2240411771C8B6009F0218 /* ExhibitionsNews.h */,
+				CE2240421771C8B6009F0218 /* ExhibitionsNews.m */,
+				CE2240431771C8B6009F0218 /* Message.h */,
+				CE2240441771C8B6009F0218 /* Message.m */,
+			);
+			name = MyModel;
+			path = Exhibition369/Class/MyModel;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -575,6 +693,13 @@
 				04C377E11770D7D700674F32 /* LaunchViewController.xib in Resources */,
 				04C377ED1771009F00674F32 /* TipViewController.xib in Resources */,
 				0456D1AF177155E2006B4693 /* tag-no sign up.png in Resources */,
+				CE22401F17719566009F0218 /* ExhibitionInfoViewController.xib in Resources */,
+				CE22402117719566009F0218 /* ExhibitionMessageViewController.xib in Resources */,
+				CE22402317719566009F0218 /* ExhibitionNewsViewController.xib in Resources */,
+				CE22402517719566009F0218 /* ExhibitionScheduleViewController.xib in Resources */,
+				CE22402B1771959F009F0218 /* NavigationController.xib in Resources */,
+				CE22404D1771CEAA009F0218 /* ApplyViewController.xib in Resources */,
+				CE0BA7C7177297C10043F4DD /* QRCodeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +753,22 @@
 				04C377EC1771009F00674F32 /* TipViewController.m in Sources */,
 				04C377F0177100C400674F32 /* ExhibitionTableCell.m in Sources */,
 				04C377F9177106D400674F32 /* IconDownloader.m in Sources */,
+				CE22401E17719566009F0218 /* ExhibitionInfoViewController.m in Sources */,
+				CE22402017719566009F0218 /* ExhibitionMessageViewController.m in Sources */,
+				CE22402217719566009F0218 /* ExhibitionNewsViewController.m in Sources */,
+				CE22402417719566009F0218 /* ExhibitionScheduleViewController.m in Sources */,
+				CE22402A1771959F009F0218 /* CustomNavigationBar.m in Sources */,
+				CE2240311771B438009F0218 /* NewsTableCell.m in Sources */,
+				CE2240451771C8B6009F0218 /* ExhibitionManager.m in Sources */,
+				CE2240461771C8B6009F0218 /* Exhibitions.m in Sources */,
+				CE2240471771C8B6009F0218 /* ExhibitionsNews.m in Sources */,
+				CE2240481771C8B6009F0218 /* Message.m in Sources */,
+				CE22404C1771CEAA009F0218 /* ApplyViewController.m in Sources */,
+				CE0BA7BD17728BDC0043F4DD /* ApplyResultView.m in Sources */,
+				CE0BA7BE17728BDC0043F4DD /* ApplyStateView.m in Sources */,
+				CE0BA7BF17728BDC0043F4DD /* ApplyView.m in Sources */,
+				CE0BA7C217728C120043F4DD /* AccessDeviceIden.m in Sources */,
+				CE0BA7C6177297C10043F4DD /* QRCodeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

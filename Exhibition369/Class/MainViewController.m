@@ -275,6 +275,8 @@
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
     }
     
+    [Model sharedModel].selectExhibition = e;
+    
     ExhibitionDetailViewController *edvc = [[[ExhibitionDetailViewController alloc] init] autorelease];
     [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
 }

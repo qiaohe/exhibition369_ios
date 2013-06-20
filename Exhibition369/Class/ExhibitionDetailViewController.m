@@ -14,7 +14,13 @@
 @end
 
 @implementation ExhibitionDetailViewController
+
+@synthesize navigationBar;
+@synthesize navigationItem;
+@synthesize leftBarButtonItem;
+@synthesize rightBarButtonItem;
 @synthesize exhibition = _exhibition;
+@synthesize viewControllers;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,13 +34,44 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self updateData];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)updateData
+{
+    ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];
+    ExhibitionMessageViewController *ExhibitionMessageView = [[[ExhibitionMessageViewController alloc]initWithNibName:@"ExhibitionMessageViewController" bundle:nil]autorelease];
+    ExhibitionNewsViewController *ExhibitionNewsView = [[[ExhibitionNewsViewController alloc]initWithNibName:@"ExhibitionNewsViewController" bundle:nil]autorelease];
+    ExhibitionScheduleViewController *ExhibitionScheduleView = [[[ExhibitionScheduleViewController alloc]initWithNibName:@"ExhibitionScheduleViewController" bundle:nil]autorelease];
+    QRCodeViewController *QRCodeView = [[QRCodeViewController alloc]initWithNibName:@"QRCodeViewController" bundle:nil];
+    
+    self.viewControllers = [NSArray arrayWithObjects:exhibitionInfoView,ExhibitionMessageView,ExhibitionNewsView,ExhibitionScheduleView,QRCodeView, nil];
+    
+    for (int i = 0; i<[self.viewControllers count]; i++) {
+        UIBarButtonItem *buttonItem = [self.tabBar.items objectAtIndex:i];
+        UIViewController *controller = [self.viewControllers objectAtIndex:i];
+        buttonItem.title = controller.title;
+    }
+        
+    //self.view = exhibitionInfoView.view;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)JumpToApplyView:(id)sender{
+    ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(10, 44 + 10 + 60, 320 - 20, 365 - 60) andDelegate:self];
+    [self.view addSubview:viewController];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)dealloc {
@@ -49,7 +86,10 @@
 #pragma mark- UITabBarDelegate
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item // called when a new view is selected by the user (but not programatically)
 {
-    
+    NSInteger index = [tabBar.items indexOfObject:item];
+    NSLog(@"item = %d",[tabBar.items indexOfObject:item]);
+    UIViewController *viewController = [self.viewControllers objectAtIndex:index];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 /* called when user shows or dismisses customize sheet. you can use the 'willEnd' to set up what appears underneath.
