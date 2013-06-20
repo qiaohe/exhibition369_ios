@@ -10,6 +10,7 @@
 
 @implementation ApplyView
 
+@synthesize delegate;
 @synthesize userNameLabel;
 @synthesize userNameTextField;
 @synthesize phoneNumLabel;
@@ -43,6 +44,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self updateDataWithDelegate:_delegate];
+        self.delegate = _delegate;
     }
     return self;
 }
@@ -106,6 +108,14 @@
 - (void)PressOK:(UIButton*)_btn
 {
     NSLog(@"OK");
+    NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/rest/applies/put"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
+                                                                                    [Model sharedModel].systemConfig.token,     @"token",
+                                                                                    self.userNameTextField.text,               @"name",
+                                                                                    self.phoneNumTextField.text,               @"mobile",
+                                                                                    self.emailAddressLTextField.text,          @"email",
+                                                                                    nil];
+    [self.delegate RequestWithURL:urlString Params:params Method:RequestMethodGET];
 }
 
 - (void)PressCancle:(UIButton*)_btn

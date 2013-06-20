@@ -26,7 +26,6 @@
 
 - (void)dealloc
 {
-    self.NewsKey = nil;
     self.Icon    = nil;
     self.Title   = nil;
     self.Content = nil;

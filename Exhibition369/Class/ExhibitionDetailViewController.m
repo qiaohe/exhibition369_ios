@@ -63,6 +63,25 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) RequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
+{
+    [Model sharedModel].selectExhibition.status = @"P";
+    [self sendRequestWith:URL params:dic method:method];
+    [[[Model sharedModel] appliedExhibitionList] addObject:[Model sharedModel].selectExhibition];
+    [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+}
+
+-(void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSLog(@"failed");
+}
+
+-(void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"finished");
+    
+}
+
 - (IBAction)JumpToApplyView:(id)sender{
     ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(10, 44 + 10 + 60, 320 - 20, 365 - 60) andDelegate:self];
     [self.view addSubview:viewController];

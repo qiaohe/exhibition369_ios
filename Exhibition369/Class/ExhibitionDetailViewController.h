@@ -16,7 +16,7 @@
 #import "QRCodeViewController.h"
 #import "ApplyViewController.h"
 
-@interface ExhibitionDetailViewController : BaseUIViewController<UITabBarDelegate,UITextFieldDelegate>
+@interface ExhibitionDetailViewController : BaseUIViewController<UITabBarDelegate,UITextFieldDelegate,RequestDelegate>
 
 @property (nonatomic, retain) IBOutlet UINavigationBar  *navigationBar;
 @property (nonatomic, retain) IBOutlet UINavigationItem *navigationItem;

@@ -12,6 +12,12 @@
 #import "ApplyResultView.h"
 #import "Model.h"
 
+@protocol RequestDelegate <NSObject>
+
+-(void) RequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method;
+
+@end
+
 @interface ApplyView : UIView{
     UILabel     *userNameLabel;
     UITextField *userNameTextField;
@@ -21,6 +27,7 @@
     UITextField *emailAddressLTextField;
 }
 
+@property (nonatomic, assign) id <RequestDelegate> delegate;
 @property (nonatomic, retain) UILabel     *userNameLabel;
 @property (nonatomic, retain) UITextField *userNameTextField;
 @property (nonatomic, retain) UILabel     *phoneNumLabel;
