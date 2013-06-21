@@ -62,7 +62,7 @@
  @warning Deprecated in Version 3.2; will be removed in 4.0
 
  */
-- (id)JSONValue __attribute__ ((deprecated));
+- (id)JSONValue ;//__attribute__ ((deprecated));
 
 @end
 

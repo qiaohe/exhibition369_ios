@@ -49,15 +49,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.webView.layer.masksToBounds = YES;
+    self.webView.layer.cornerRadius = 6.0;
+    self.webView.layer.borderWidth = 1.0;
+    self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor clearColor];
     [self requestData];
     // Do any additional setup after loading the view from its nib.
 }
 
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+}
 
 - (void)requestData
 {
-    [self sendRequestWith:[[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/schedule.html",self.myExhibition.exKey] params:nil method:RequestMethodGET];
+    [self sendRequestWith:[[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/schedule.html",[Model sharedModel].selectExhibition.exKey] params:nil method:RequestMethodGET];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -70,9 +79,9 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"finished");
-    NSString *responseStr = [request responseString];
-    [self.webView loadHTMLString:responseStr baseURL:nil];
+    NSLog(@"str = %@",[request responseString]);
+    NSData *responseData = [request responseData];
+    [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
 }
 
 

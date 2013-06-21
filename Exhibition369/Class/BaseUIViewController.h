@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 typedef enum{
@@ -43,6 +45,7 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
 
 
 - (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method;
+-(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestUserInfo:(NSDictionary*)UserInfo;
 - (void)requestFinished:(ASIHTTPRequest *)request;
 - (void)requestFailed:(ASIHTTPRequest *)request;
 - (void)showLoadingIndicator;

@@ -9,6 +9,26 @@
 #import <UIKit/UIKit.h>
 #import "ApplyView.h"
 
-@interface ApplyViewController : UIViewController
+
+@protocol ApplyRequestDelegate <NSObject>
+
+- (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method;
+- (void) ApplyViewPressCancleButton;
+
+@end
+
+
+@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate>
+
+@property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UIImageView *exhibitionImage;
+@property (nonatomic, retain) IBOutlet UILabel     *exhibitionTitle;
+@property (nonatomic, retain) IBOutlet NSArray     *statusArray;
+@property (nonatomic, retain) IBOutlet UITextField *nameTextField;
+@property (nonatomic, retain) IBOutlet UITextField *phoneNumTexField;
+@property (nonatomic, retain) IBOutlet UITextField *emailTextField;
+
+- (IBAction)PressCancleButton:(id)sender;
+- (IBAction)PressOkButton:(id)sender;
 
 @end

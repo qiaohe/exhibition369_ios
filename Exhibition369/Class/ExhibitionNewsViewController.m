@@ -14,6 +14,7 @@
 
 @implementation ExhibitionNewsViewController
 
+@synthesize delegate;
 @synthesize tableView;
 @synthesize NewsArray;
 @synthesize index;
@@ -38,9 +39,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.layer.masksToBounds = YES;
+    self.view.layer.cornerRadius = 6.0;
+    self.view.layer.borderWidth = 1.0;
+    self.view.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.view.backgroundColor = [UIColor clearColor];
     NewsArray = [[NSMutableArray alloc]init];
     [self updateData];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)NewsDetailViewDisMiss:(UIView*)view
+{
+    
 }
 
 - (void)updateData
@@ -93,6 +104,15 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NewsDetailViewController *newsView = [[NewsDetailViewController alloc]initWithNibName:@"NewsDetailViewController" bundle:nil];
+    newsView.delegate = self;
+    newsView.aNew = [self.NewsArray objectAtIndex:indexPath.row];
+    [self.delegate SuperViewPresentViewController:newsView];
+    [newsView release];
+}
+
 -(void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"failed");
@@ -105,26 +125,22 @@
         ExhibitionsNews *new = [self.NewsArray objectAtIndex:index];
         new.Icon = [UIImage imageWithData:[request responseData]];
         index ++;
+        [self reloadData];
     }else{
         NSString *responseStr = [request responseString];
         NSDictionary *dic = [responseStr JSONValue];
         NSArray *array = [dic objectForKey:@"list"];
-        NSLog(@"array = %@",array);
-        NSLog(@"count = %u",[array count]);
         
         for (NSDictionary *resultDic in array) {
             ExhibitionsNews *new = [[ExhibitionsNews alloc]initWithEXKey:[Model sharedModel].selectExhibition.exKey];
             new.Title = [resultDic objectForKey:@"title"];
-            new.NewsKey = [[resultDic objectForKey:@"newsKey"]integerValue] ;
+            new.NewsKey = [resultDic objectForKey:@"newsKey"];
+            NSLog(@"newsTitle = %@",new.Title);
             
             [self.NewsArray addObject:new];
-            NSLog(@"self.newsArray count = %u",[self.NewsArray count]);
-
-            NSLog(@"dic = %@",resultDic);
+            [new release];
             
-            NSLog(@"title = %@",new.Title);
-            
-            NSString *urlStr = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%d.png",[Model sharedModel].selectExhibition.exKey,new.NewsKey];
+            NSString *urlStr = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%@.png",[Model sharedModel].selectExhibition.exKey,new.NewsKey];
             NSLog(@"%@",urlStr);
             ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:RequestNewsIcon] forKey:@"RequestType"];

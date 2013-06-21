@@ -29,30 +29,42 @@
     self.titleLabel = nil;
     self.detailLabel = nil;
     self.theImage = nil;
-    self.selectImage = nil;
     [super dealloc];
 }
 
 - (void)initData
 {
+    self.backgroundColor = [UIColor clearColor];
+    
     theImage = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, self.frame.size.height - 10, self.frame.size.height -10)];
+    self.theImage.backgroundColor = [UIColor clearColor];
     [self addSubview:self.theImage];
     
-    selectImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    selectImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+    [self.selectImage setHighlightedImage:[UIImage imageNamed:@"foucs.png"]];
     [self addSubview:self.selectImage];
     
     titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.theImage.frame.origin.x + self.theImage.frame.size.width + 5, 5, self.frame.size.width - 10 - self.theImage.frame.size.width, (self.frame.size.height - 10)/2)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.titleLabel];
     
     detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height, titleLabel.frame.size.width, titleLabel.frame.size.height)];
+    detailLabel.backgroundColor = [UIColor clearColor];
+    self.detailLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:detailLabel];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
 }
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+}
+
 
 @end

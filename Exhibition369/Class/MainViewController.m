@@ -23,6 +23,8 @@
 
 @implementation MainViewController
 
+@synthesize AppliedExhibitions;
+
 
 -(id)init
 {
@@ -32,9 +34,15 @@
         typeVSExhibitions = [[NSMutableDictionary alloc] init];
         
         unAppliedExhibitions = [[NSMutableArray alloc] init];
+        AppliedExhibitions = [[NSMutableArray alloc]init];
     }
     
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,6 +63,26 @@
     [_tabImage setImage:[UIImage imageNamed:@"tag-signed.png"]];
     [self requestExhibitions];
     
+    [self updateData];
+    
+    NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/exhibitions/find"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].systemConfig.token,@"token",
+                                                                                     @"-1",@"size",
+                                                                                     @"-1",@"last",
+                                                                                     nil];
+    [self sendRequestWith:urlString params:params method:RequestMethodGET];
+}
+
+- (void)updateData
+{
+    /*
+    NSLog(@"array count %u",[self.AppliedExhibitions count]);
+    for (Exhibition *e in self.AppliedExhibitions) {
+        if (![self AppliedExhibitions:[Model sharedModel].appliedExhibitionList ContentsObject:e]) {
+            [[Model sharedModel].appliedExhibitionList addObject:e];
+            [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+        }
+    }*/
     [typeGroup removeAllObjects];
 	[typeVSExhibitions removeAllObjects];
     NSString *group;
@@ -70,7 +98,6 @@
         }
         [array addObject:e];
     }
-    
 }
 
 - (void)requestExhibitions{
@@ -128,8 +155,14 @@
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    //NSLog(@"applyExhibition count = %u",[self.AppliedExhibitions count]);
+    for (Exhibition *e in self.AppliedExhibitions) {
+        //NSLog(@"exKey = %@,status = %@",e.exKey,e.status);
+    }
+    
     if(activeTab == MainViewActiveTabAppliedExhibitions){
         NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:section]];
+        
         return [array count];
     } else {
         return [unAppliedExhibitions count];
@@ -215,6 +248,7 @@
     Exhibition *e;
     if(activeTab == MainViewActiveTabAppliedExhibitions){
         NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:indexPath.section]];
+        //NSMutableArray *array = self.AppliedExhibitions;
         e = (Exhibition *)[array objectAtIndex:indexPath.row];
         
     } else {
@@ -254,7 +288,6 @@
     
     
     
-    
 	return cell;
 }
 
@@ -281,44 +314,93 @@
     [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
 }
 
-
+- (BOOL)AppliedExhibitions:(NSArray*)exhibitions ContentsObject:(NSObject*)object
+{
+    Exhibition *e = (Exhibition*)object;
+    for (Exhibition * elem in exhibitions) {
+        if ([e.exKey isEqualToString:elem.exKey]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 
 #pragma mark - ASIHTTPRequestDelegate  default handler
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    NSInteger requestType = [[request.userInfo objectForKey:@"MainViewRequestType"]integerValue];
     [super requestFinished:request];
     
-    [unAppliedExhibitions removeAllObjects];
-    
-    NSString *responseString = [request responseString];
-    
-    NSDictionary *result = [Utils parseJson:responseString];
-	
-    NSArray *exhibitorArray = [result objectForKey:@"list"];
-    
-    
-    for (NSDictionary *exhibitionData in exhibitorArray)
-	{
-        Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
-        [unAppliedExhibitions addObject:e];
+    if (requestType == RequestApplyStatus) {
+        NSDictionary *responseDic = [[request responseString]JSONValue];
+        NSString *theStatus = [responseDic objectForKey:@"status"];
+        Exhibition *e = [request.userInfo objectForKey:@"Exhibition"];
+        e.status = theStatus;
+        NSArray *logsArray = [responseDic objectForKey:@"logs"];
+        for (NSString *str in logsArray) {
+            //NSLog(@"str = %@",str);
+            e.logs = [e.logs stringByAppendingString:str];
+        }
+        if (![theStatus isEqualToString:@"N"]) {
+            if (![self AppliedExhibitions:self.AppliedExhibitions ContentsObject:e]) {
+                [AppliedExhibitions addObject:e];
+                //[unAppliedExhibitions removeObject:e];
+            }
+            
+        }
+    }else{
+        [unAppliedExhibitions removeAllObjects];
         
-        /*test data
-        if([e.exKey isEqualToString:@"1107"])
-            e.status = EXHIBITION_STATUS_A;
-        else if([e.exKey isEqualToString:@"1108"])
-            e.status = EXHIBITION_STATUS_D;
-        else
-            e.status = EXHIBITION_STATUS_P;
+        NSString *responseString = [request responseString];
         
-        [[Model sharedModel].appliedExhibitionList addObject:e];
-        [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
-        */
-        [e release];
+        NSDictionary *result = [Utils parseJson:responseString];
+        
+        NSArray *exhibitorArray = [result objectForKey:@"list"];
+        
+        for (NSDictionary *exhibitionData in exhibitorArray)
+        {
+            Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
+            
+            [unAppliedExhibitions addObject:e];
+            /*test data
+             if([e.exKey isEqualToString:@"1107"])
+             e.status = EXHIBITION_STATUS_A;
+             else if([e.exKey isEqualToString:@"1108"])
+             e.status = EXHIBITION_STATUS_D;
+             else
+             e.status = EXHIBITION_STATUS_P;
+             
+             [[Model sharedModel].appliedExhibitionList addObject:e];
+             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+             */
+            [e release];
+            
+            NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/applies/get"];
+            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:e.exKey,                                @"exKey",
+                                                                              [Model sharedModel].systemConfig.token, @"token",
+                                                                               nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestApplyStatus],@"MainViewRequestType",
+                                                                                 e,                                             @"Exhibition",
+                                                                                 nil];
+            [self sendRequestWith:urlString params:params method:RequestMethodGET requestUserInfo:userInfo];
+        }
+        
     }
-    
     [_theTableView reloadData];
-    
+}
+
+- (void) reloadData
+{
+    //NSLog(@"array count %u",[self.AppliedExhibitions count]);
+    for (Exhibition *e in self.AppliedExhibitions) {
+        if (![self AppliedExhibitions:[Model sharedModel].appliedExhibitionList ContentsObject:e]) {
+            [[Model sharedModel].appliedExhibitionList addObject:e];
+            [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+        }
+    }
+    [self updateData];
+    [self.theTableView reloadData];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -344,6 +426,13 @@
     [self setUnAppliedBtn:nil];
     [super viewDidUnload];
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 
 
 #pragma mark - Table cell image support

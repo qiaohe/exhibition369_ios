@@ -16,15 +16,17 @@
 #import "QRCodeViewController.h"
 #import "ApplyViewController.h"
 
-@interface ExhibitionDetailViewController : BaseUIViewController<UITabBarDelegate,UITextFieldDelegate,RequestDelegate>
+@interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,ApplyRequestDelegate,NewsViewListDelegate>
 
-@property (nonatomic, retain) IBOutlet UINavigationBar  *navigationBar;
-@property (nonatomic, retain) IBOutlet UINavigationItem *navigationItem;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem  *leftBarButtonItem;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem  *rightBarButtonItem;
+@property (retain, nonatomic) IBOutlet UILabel     *titleLabel;
+@property (retain, nonatomic) IBOutlet UIImageView *titleImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *backImageView;
 @property (retain, nonatomic) IBOutlet UITabBar *tabBar;
 @property (assign, nonatomic) Exhibition *exhibition;
 @property (retain, nonatomic) NSArray *viewControllers;
+@property (assign, nonatomic) NSInteger prevIndex;
 - (IBAction)backToMainView:(id)sender;
+
+- (IBAction)ButtonIsPress:(UIButton*)sender;
 
 @end

@@ -48,6 +48,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.layer.masksToBounds = YES;
+    self.view.layer.cornerRadius = 6.0;
+    self.view.layer.borderWidth = 1.0;
+    self.view.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.view.backgroundColor = [UIColor clearColor];
     // Do any additional setup after loading the view from its nib.
 }
 

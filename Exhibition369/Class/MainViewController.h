@@ -9,12 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "BaseUIViewController.h"
 
+
+typedef enum{
+    RequestExhibitionsList = 1,
+    RequestApplyStatus,
+}MainViewRequestType;
 typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     MainViewActiveTabExhibitions           = 1 << 0,
     MainViewActiveTabAppliedExhibitions    = 1 << 1
 };
 
-@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate> {
+@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate> {
     MainViewActiveTab activeTab;
     
     NSMutableArray *typeGroup;
@@ -22,6 +27,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     
     
     NSMutableArray *unAppliedExhibitions;
+    NSMutableArray *AppliedExhibitions;
 }
 @property (retain, nonatomic) IBOutlet UITableView *theTableView;
 @property (nonatomic, strong) NSMutableDictionary *imageDownloadsInProgress;
@@ -30,6 +36,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) IBOutlet UIImageView *tabImage;
 @property (retain, nonatomic) IBOutlet UIButton *appliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton *unAppliedBtn;
+@property (retain, nonatomic) NSMutableArray    *AppliedExhibitions;
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
 

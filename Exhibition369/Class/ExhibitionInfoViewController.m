@@ -38,14 +38,25 @@
 {
     [super viewDidLoad];
     [self requestData];
-    
+    self.webView.layer.masksToBounds = YES;
+    self.webView.layer.cornerRadius = 6.0;
+    self.webView.layer.borderWidth = 1.0;
+    self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.view.backgroundColor = [UIColor clearColor];
     // Do any additional setup after loading the view from its nib.
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
 }
 
 - (void)requestData
 {
-    
-    [self sendRequestWith:[[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/brief.html",self.myExhibition.exKey] params:nil method:RequestMethodGET];
+    NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/brief.html",[Model sharedModel].selectExhibition.exKey];
+    NSLog(@"url = %@",urlString);
+    [self sendRequestWith:urlString params:nil method:RequestMethodGET];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -58,9 +69,11 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
+    
     NSLog(@"finished");
-    NSString *responseStr = [request responseString];
-    [self.webView loadHTMLString:responseStr baseURL:nil];
+    NSData *responseData = [request responseData];
+    [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning

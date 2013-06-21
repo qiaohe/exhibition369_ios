@@ -8,10 +8,18 @@
 
 #import "BaseUIViewController.h"
 #import "NewsTableCell.h"
+#import "NewsDetailViewController.h"
 #import "Model.h"
 
-@interface ExhibitionNewsViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate>
+@protocol NewsViewListDelegate <NSObject>
 
+- (void)SuperViewPresentViewController:(UIViewController*)viewController;
+
+@end
+
+@interface ExhibitionNewsViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate,newsDetailViewControllerDelegate>
+
+@property (nonatomic, assign) id<NewsViewListDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView     *tableView;
 @property (nonatomic, retain) NSMutableArray           *NewsArray;
 @property (nonatomic, assign) NSInteger                index;

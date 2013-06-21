@@ -19,6 +19,7 @@
 @synthesize status = _status;
 @synthesize createdAt = _createdAt;
 @synthesize icon = _icon;
+@synthesize logs;
 
 - (id)initWithPData:(NSObject *)data
 {
@@ -31,9 +32,24 @@
         _organizer = [[(NSDictionary *)data objectForKey:@"organizer"] retain];
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
+        self.logs = @"";
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    self.exKey = nil;
+    self.name = nil;
+    self.date = nil;
+    self.address = nil;
+    self.organizer = nil;
+    self.status = nil;
+    self.createdAt = nil;
+    self.icon = nil;
+    self.logs = nil;
+    [super dealloc];
 }
 
 - (id)initWithJSONData:(NSDictionary *)data
@@ -45,8 +61,8 @@
         _date = [[(NSDictionary *)data objectForKey:@"date"] retain];
         _address = [[(NSDictionary *)data objectForKey:@"address"] retain];
         _organizer = [[(NSDictionary *)data objectForKey:@"organizer"] retain];
-        //_status = [[(NSDictionary *)data objectForKey:@"status"] retain];
-        _status = @"N";
+        _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
+        //_status = @"N";
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
     }
     

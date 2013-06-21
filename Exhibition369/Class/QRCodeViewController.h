@@ -11,7 +11,12 @@
 
 @interface QRCodeViewController : BaseUIViewController
 
-@property (nonatomic, retain) IBOutlet UIImageView *QRCodeImage;
-@property (nonatomic, retain) IBOutlet UILabel     *RemindLabel;
+@property (nonatomic, retain) IBOutlet UIImageView    *QRCodeImage;
+@property (nonatomic, retain) IBOutlet UILabel        *RemindLabel;
+@property (nonatomic, retain) IBOutlet UIImageView    *exhibitionImage;
+@property (nonatomic, retain) IBOutlet UILabel        *exhibitionTitle;
+@property (nonatomic, retain) IBOutlet NSMutableArray *statusArray;
+@property (nonatomic, retain) IBOutlet UILabel        *ApplyStatusLabel;
+@property (nonatomic, retain) IBOutlet UITextView     *ApplyStatusTextView;
 
 @end

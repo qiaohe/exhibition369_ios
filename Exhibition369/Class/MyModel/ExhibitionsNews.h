@@ -10,7 +10,7 @@
 
 @interface ExhibitionsNews : NSObject
 
-@property (nonatomic, assign) NSInteger NewsKey;
+@property (nonatomic, retain) NSString  *NewsKey;
 @property (nonatomic, retain) UIImage   *Icon;
 @property (nonatomic, retain) NSString  *Title;
 @property (nonatomic, retain) NSString  *Content;

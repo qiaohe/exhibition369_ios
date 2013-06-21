@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view.
 }
 
@@ -56,14 +57,62 @@
         [request startAsynchronous];
         loadingData = YES;
         [self showLoadingIndicator];
+    }else if (method == RequestMethodPOST){
+        
+        NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsurl];
+        [request setTimeOutSeconds:60];
+        request.delegate = self;
+        NSArray *keyArray = [params allKeys];
+        for (int i = 0; i<[keyArray count]; i++) {
+            [request setPostValue:[params objectForKey:[keyArray objectAtIndex:i]] forKey:[keyArray objectAtIndex:i]];
+        }
+        
+        [request startAsynchronous];
+        loadingData = YES;
+        [self showLoadingIndicator];
     }
-    
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"a",@"2",@"b", nil];
-    
-    NSMutableString *prams = [[NSMutableString alloc] init];
-    
-    for (id keys in dict) {
-        [prams appendFormat:@"%@=%@&",keys,[dict objectForKey:keys]];
+}
+
+-(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestUserInfo:(NSDictionary*)UserInfo
+{
+    if(method == RequestMethodGET){
+        NSString *urlprams = @"";
+        for (id keys in params) {
+            urlprams = [urlprams stringByAppendingFormat:@"%@=%@&",keys,[params objectForKey:keys]];
+        }
+        
+        if(![urlprams isEqualToString:@""]){
+            url = [url stringByAppendingFormat:@"?%@",urlprams];
+        }
+        
+        NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:nsurl];
+        request.userInfo = UserInfo;
+        [request setTimeOutSeconds:60];
+        request.delegate = self;
+        [request startAsynchronous];
+        loadingData = YES;
+        [self showLoadingIndicator];
+    }else if (method == RequestMethodPOST){
+        
+        NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsurl];
+        request.userInfo = UserInfo;
+        [request setTimeOutSeconds:60];
+        request.delegate = self;
+        NSArray *keyArray = [params allKeys];
+        for (int i = 0; i<[keyArray count]; i++) {
+            [request setPostValue:[params objectForKey:[keyArray objectAtIndex:i]] forKey:[keyArray objectAtIndex:i]];
+        }
+        
+        [request startAsynchronous];
+        loadingData = YES;
+        [self showLoadingIndicator];
     }
 }
 

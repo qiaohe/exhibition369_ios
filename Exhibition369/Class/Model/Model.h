@@ -20,6 +20,7 @@
 #import "Exhibition369-Prefix.pch"
 #import "SBJson.h"
 #import "ExhibitionsNews.h"
+#import <QuartzCore/QuartzCore.h>
 
 @class HomePageViewController;
 

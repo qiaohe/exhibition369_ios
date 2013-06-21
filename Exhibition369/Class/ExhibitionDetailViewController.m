@@ -15,12 +15,12 @@
 
 @implementation ExhibitionDetailViewController
 
-@synthesize navigationBar;
-@synthesize navigationItem;
-@synthesize leftBarButtonItem;
-@synthesize rightBarButtonItem;
+@synthesize titleLabel;
+@synthesize titleImageView;
+@synthesize backImageView;
 @synthesize exhibition = _exhibition;
 @synthesize viewControllers;
+@synthesize prevIndex;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,17 +34,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tabBar.hidden = YES;
     [self updateData];
     // Do any additional setup after loading the view from its nib.
 }
 
 - (void)updateData
-{
+{    
+    CGRect subViewFrame = CGRectMake(5, 40, 320 - 10, 355);
     ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];
+    exhibitionInfoView.view.tag = 101;
+    exhibitionInfoView.view.frame = subViewFrame;
     ExhibitionMessageViewController *ExhibitionMessageView = [[[ExhibitionMessageViewController alloc]initWithNibName:@"ExhibitionMessageViewController" bundle:nil]autorelease];
+    ExhibitionMessageView.view.tag = 102;
+    ExhibitionMessageView.view.frame = subViewFrame;
     ExhibitionNewsViewController *ExhibitionNewsView = [[[ExhibitionNewsViewController alloc]initWithNibName:@"ExhibitionNewsViewController" bundle:nil]autorelease];
+    ExhibitionNewsView.view.tag = 103;
+    ExhibitionNewsView.view.frame = subViewFrame;
+    ExhibitionNewsView.delegate = self;
     ExhibitionScheduleViewController *ExhibitionScheduleView = [[[ExhibitionScheduleViewController alloc]initWithNibName:@"ExhibitionScheduleViewController" bundle:nil]autorelease];
+    ExhibitionScheduleView.view.tag = 104;
+    ExhibitionScheduleView.view.frame = subViewFrame;
     QRCodeViewController *QRCodeView = [[QRCodeViewController alloc]initWithNibName:@"QRCodeViewController" bundle:nil];
+    QRCodeView.view.tag = 104;
+    QRCodeView.view.frame = subViewFrame;
     
     self.viewControllers = [NSArray arrayWithObjects:exhibitionInfoView,ExhibitionMessageView,ExhibitionNewsView,ExhibitionScheduleView,QRCodeView, nil];
     
@@ -53,8 +66,21 @@
         UIViewController *controller = [self.viewControllers objectAtIndex:i];
         buttonItem.title = controller.title;
     }
-        
-    //self.view = exhibitionInfoView.view;
+    
+    self.prevIndex = 101;
+    [self.view addSubview:exhibitionInfoView.view];
+    self.titleLabel.text = exhibitionInfoView.title;
+}
+
+- (void)SuperViewPresentViewController:(UIViewController*)viewController
+{
+    [self presentModalViewController:viewController animated:YES];
+}
+
+- (IBAction)ButtonIsPress:(UIButton*)sender
+{
+    NSInteger selectIndex = sender.tag - 200;
+    [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,10 +91,24 @@
 
 -(void) RequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
 {
-    [Model sharedModel].selectExhibition.status = @"P";
-    [self sendRequestWith:URL params:dic method:method];
-    [[[Model sharedModel] appliedExhibitionList] addObject:[Model sharedModel].selectExhibition];
-    [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+    if ([[Model sharedModel].selectExhibition.status isEqualToString:@"N"]) {
+        [self sendRequestWith:URL params:dic method:method];
+        [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
+        [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+    }else{
+        
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"您已报名，请等候通知" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+        //[self sendRequestWith:URL params:dic method:method];
+        //[[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
+        //[[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+    }
+    
+}
+
+- (void)AppliedExhibition{
+    [self tabBar:self.tabBar didSelectItem:[self.viewControllers objectAtIndex:4]];
 }
 
 -(void)requestFailed:(ASIHTTPRequest *)request
@@ -78,13 +118,73 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"finished");
-    
+    NSLog(@"finished\nrequestResponseStr = %@",[request responseString]);
+    UIAlertView *alertView = (UIAlertView*)[self.view viewWithTag:301];
+    [alertView setMessage:@"申请成功！请关注审批结果"];
 }
 
 - (IBAction)JumpToApplyView:(id)sender{
-    ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(10, 44 + 10 + 60, 320 - 20, 365 - 60) andDelegate:self];
-    [self.view addSubview:viewController];
+    NSString *status = [Model sharedModel].selectExhibition.status;
+    if ([status isEqualToString:@"N"]) {
+        [self ApplyViewShowOrDismiss];
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"您已报名，请在二维码页面查询审核状态" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        alertView.delegate = self;
+        alertView.tag = 401;
+        [alertView show];
+        [alertView release];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 401) {
+        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:4]];
+    }
+}
+
+- (void)ApplyViewShowOrDismiss
+{
+    static BOOL showOrDismiss = NO;
+    showOrDismiss = showOrDismiss?NO:YES;
+    if (showOrDismiss) {
+        
+        ApplyViewController *view = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
+        view.view.frame = CGRectMake(0, 40, view.view.frame.size.width, view.view.frame.size.height);
+        view.delegate = self;
+        view.view.tag = 106;
+        for (UIView * view in self.view.subviews) {
+            if (view.tag == self.prevIndex) {
+                [view removeFromSuperview];
+            }
+        }
+        self.titleLabel.text = view.title;
+        [self.view addSubview:view.view];
+        self.prevIndex = view.view.tag;
+        /*
+         ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(5, 40, 320 - 10, 355) andDelegate:self];
+         viewController.tag = 106;
+         for (UIView * view in self.view.subviews) {
+         if (view.tag == self.prevIndex) {
+         [view removeFromSuperview];
+         }
+         }
+         self.titleLabel.text = viewController.title;
+         [self.view addSubview:viewController];
+         self.prevIndex = viewController.tag;*/
+    }else{
+        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:0]];
+    }
+}
+
+- (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
+{
+    [self RequestWithURL:URL Params:dic Method:method];
+}
+
+- (void)ApplyViewPressCancleButton
+{
+    [self ApplyViewShowOrDismiss];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -106,9 +206,15 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item // called when a new view is selected by the user (but not programatically)
 {
     NSInteger index = [tabBar.items indexOfObject:item];
-    NSLog(@"item = %d",[tabBar.items indexOfObject:item]);
+    for (UIView * view in self.view.subviews) {
+        if (view.tag == self.prevIndex) {
+            [view removeFromSuperview];
+        }
+    }
     UIViewController *viewController = [self.viewControllers objectAtIndex:index];
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self.view addSubview:viewController.view];
+    self.titleLabel.text = viewController.title;
+    self.prevIndex = viewController.view.tag;
 }
 
 /* called when user shows or dismisses customize sheet. you can use the 'willEnd' to set up what appears underneath.
