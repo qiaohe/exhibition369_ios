@@ -16,6 +16,7 @@
 @implementation ExhibitionDetailViewController
 
 @synthesize titleLabel;
+@synthesize titleView;
 @synthesize titleImageView;
 @synthesize backImageView;
 @synthesize exhibition = _exhibition;
@@ -70,6 +71,14 @@
     self.prevIndex = 101;
     [self.view addSubview:exhibitionInfoView.view];
     self.titleLabel.text = exhibitionInfoView.title;
+    [self setTitleViewToTop];
+}
+
+- (void)setTitleViewToTop
+{
+    NSInteger titleViewIndex = [self.view.subviews indexOfObject:self.titleView];
+    NSInteger lastViewIndex = [self.view.subviews count];
+    [self.view exchangeSubviewAtIndex:titleViewIndex withSubviewAtIndex:lastViewIndex];
 }
 
 - (void)SuperViewPresentViewController:(UIViewController*)viewController

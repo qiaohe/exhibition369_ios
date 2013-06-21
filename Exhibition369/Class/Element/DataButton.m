@@ -10,6 +10,7 @@
 
 @implementation DataButton
 @synthesize data;
+@synthesize selectIndex;
 
 - (id)initWithFrame:(CGRect)frame data:(NSObject *)inObject
 {

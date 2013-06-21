@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ApplyView.h"
-
+#import <Foundation/Foundation.h>
 
 @protocol ApplyRequestDelegate <NSObject>
 
@@ -27,6 +27,10 @@
 @property (nonatomic, retain) IBOutlet UITextField *nameTextField;
 @property (nonatomic, retain) IBOutlet UITextField *phoneNumTexField;
 @property (nonatomic, retain) IBOutlet UITextField *emailTextField;
+@property (nonatomic, assign) CGRect               OldFrame;
+@property (nonatomic, assign) CGRect               KeyboardFrame;
+@property (nonatomic, retain) UITextField          *currentTextField;
+
 
 - (IBAction)PressCancleButton:(id)sender;
 - (IBAction)PressOkButton:(id)sender;

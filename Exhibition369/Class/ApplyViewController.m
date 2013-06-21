@@ -20,6 +20,9 @@
 @synthesize nameTextField;
 @synthesize phoneNumTexField;
 @synthesize emailTextField;
+@synthesize OldFrame;
+@synthesize KeyboardFrame;
+@synthesize currentTextField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,21 +48,79 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    #ifdef __IPHONE_5_0
+        float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+        if (version >= 5.0) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidChangeFrameNotification object:nil];
+        }
+    #endif
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+
     [self initData];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)keyboardDidShow:(NSNotification*)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    NSLog(@"keyboard Height = %f",keyboardRect.size.height);
+    
+    if ([self.nameTextField isFirstResponder]) {
+        NSLog(@"name");
+        self.currentTextField = self.nameTextField;
+    }if ([self.phoneNumTexField isFirstResponder]) {
+        NSLog(@"phone");
+        self.currentTextField = self.phoneNumTexField;
+    }if ([self.emailTextField isFirstResponder]) {
+        NSLog(@"email");
+        self.currentTextField = self.emailTextField;
+    }
+    float YPath = [self YPathForTextFeild:self.currentTextField KeyBoardRect:keyboardRect];
+    NSLog(@"YPath = %f",YPath);
+    if (YPath < 0) {
+        //self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y + YPath, self.view.frame.size.width, self.view.frame.size.height);
+    }
+    //NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    //NSTimeInterval animationDuration = [animationDurationValue floatValue];
+    //NSLog(@"duration = %f",animationDuration);
+}
+
+- (float)YPathForTextFeild:(UITextField*)_textField KeyBoardRect:(CGRect)keyboardRect
+{
+    float textFieldHeight = _textField.frame.origin.y + _textField.frame.size.height + 40;
+    float keyboardHeight  = 460 - keyboardRect.size.height;
+    return keyboardHeight - textFieldHeight;
+}
+
+- (void)keyboardDidHide:(NSNotification*)notification
+{
+    //self.view.frame = OldFrame;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     [self SetApplyStatus:@"start"];
+    self.OldFrame = self.view.frame;
 }
-
-- (IBAction)PressCancleButton:(id)sender
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self.delegate ApplyViewPressCancleButton];
+    NSLog(@"touchBegan");
+    [self ClearKeyBoard];
 }
-
+- (void)ClearKeyBoard{
+    if ([self.nameTextField canResignFirstResponder]) {
+        [self.nameTextField resignFirstResponder];
+    }if ([self.phoneNumTexField canResignFirstResponder]) {
+        [self.phoneNumTexField resignFirstResponder];
+    }if ([self.emailTextField canResignFirstResponder]) {
+        [self.emailTextField resignFirstResponder];
+    }
+}
 
 - (void)SetApplyStatus:(NSString*)Status
 {
@@ -92,6 +153,10 @@
     }
 }
 
+- (IBAction)PressCancleButton:(id)sender
+{
+    [self.delegate ApplyViewPressCancleButton];
+}
 
 - (IBAction)PressOkButton:(id)sender
 {

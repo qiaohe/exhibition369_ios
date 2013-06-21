@@ -149,7 +149,23 @@
 }
 
 -(void)buttonTapped:(DataButton *)sender{
+    DataButton *button = (DataButton*)sender;
+    Exhibition *e;
+    if(activeTab == MainViewActiveTabAppliedExhibitions){
+        NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:button.selectIndex.section]];
+        e = (Exhibition *)[array objectAtIndex:button.selectIndex.row];
+        
+    } else {
+        e = (Exhibition *)[unAppliedExhibitions objectAtIndex:button.selectIndex.row];
+    }
     
+    [Model sharedModel].selectExhibition = e;
+    
+    ExhibitionDetailViewController *edvc = [[[ExhibitionDetailViewController alloc] init] autorelease];
+    [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
+    if ([e.status isEqualToString:@"N"]) {
+        [edvc ApplyViewShowOrDismiss];
+    }
 }
 
 
@@ -237,7 +253,8 @@
         theButton = (DataButton *)[cell.contentView viewWithTag:5];
         [theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	}
-    
+    theButton = (DataButton *)[cell.contentView viewWithTag:5];
+    theButton.selectIndex = indexPath;
     theTitle = (UILabel *)[cell.contentView viewWithTag:1];
     theDate = (UILabel *)[cell.contentView viewWithTag:2];
     theAddress = (UILabel *)[cell.contentView viewWithTag:3];

@@ -19,6 +19,7 @@
 @interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,ApplyRequestDelegate,NewsViewListDelegate>
 
 @property (retain, nonatomic) IBOutlet UILabel     *titleLabel;
+@property (retain, nonatomic) IBOutlet UIView      *titleView;
 @property (retain, nonatomic) IBOutlet UIImageView *titleImageView;
 @property (retain, nonatomic) IBOutlet UIImageView *backImageView;
 @property (retain, nonatomic) IBOutlet UITabBar *tabBar;
@@ -28,5 +29,7 @@
 - (IBAction)backToMainView:(id)sender;
 
 - (IBAction)ButtonIsPress:(UIButton*)sender;
+
+- (void)ApplyViewShowOrDismiss;
 
 @end
