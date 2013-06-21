@@ -50,7 +50,6 @@
 {
     NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%@.html",[Model sharedModel].selectExhibition.exKey,aNew.NewsKey];
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlString]];
-    NSLog(@"url = %@",urlString);
     request.delegate = self;
     [request startAsynchronous];
     [request release];

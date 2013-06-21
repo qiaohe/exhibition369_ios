@@ -80,7 +80,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"self.newsArray count = %u",[self.NewsArray count]);
     return [self.NewsArray count];
 }
 
@@ -141,7 +140,6 @@
             [new release];
             
             NSString *urlStr = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%@.png",[Model sharedModel].selectExhibition.exKey,new.NewsKey];
-            NSLog(@"%@",urlStr);
             ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:RequestNewsIcon] forKey:@"RequestType"];
             [request setUserInfo:userInfo];

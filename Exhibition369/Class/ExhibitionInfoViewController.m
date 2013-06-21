@@ -55,13 +55,11 @@
 - (void)requestData
 {
     NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/brief.html",[Model sharedModel].selectExhibition.exKey];
-    NSLog(@"url = %@",urlString);
     [self sendRequestWith:urlString params:nil method:RequestMethodGET];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"failed");
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
     [alertView show];
     [alertView release];
@@ -70,7 +68,6 @@
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
     
-    NSLog(@"finished");
     NSData *responseData = [request responseData];
     [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
     

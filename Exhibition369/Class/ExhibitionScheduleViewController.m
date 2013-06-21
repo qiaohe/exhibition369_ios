@@ -79,7 +79,6 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"str = %@",[request responseString]);
     NSData *responseData = [request responseData];
     [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
 }

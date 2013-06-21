@@ -79,12 +79,10 @@
         self.QRCodeImage.hidden = YES;
         self.ApplyStatusLabel.hidden = YES;
         self.ApplyStatusTextView.text = @"资料正在审核中，如有疑问请拨打咨询电话";
-        NSLog(@"text = %@",[Model sharedModel].selectExhibition.logs);
     }else if ([applyStatus isEqualToString:@"A"]){
         self.RemindLabel.text = @"入会尝试，凭此二维码进入，请妥善保存";
         self.ApplyStatusLabel.text = @"恭喜您，审核通过";
         NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/qrcode/%@.png",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
-        NSLog(@"urlStr = %@",urlString);
         [self sendRequestWith:urlString params:nil method:RequestMethodGET];
         self.ApplyStatusTextView.hidden = YES;
     }else if ([applyStatus isEqualToString:@"D"]){
