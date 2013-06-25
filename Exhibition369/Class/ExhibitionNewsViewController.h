@@ -22,7 +22,6 @@
 @property (nonatomic, assign) id<NewsViewListDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView     *tableView;
 @property (nonatomic, retain) NSMutableArray           *NewsArray;
-@property (nonatomic, assign) NSInteger                index;
 
 - (IBAction)BackView:(id)sender;
 - (IBAction)JumpToApplyView:(id)sender;

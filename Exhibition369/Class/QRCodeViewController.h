@@ -15,8 +15,13 @@
 @property (nonatomic, retain) IBOutlet UILabel        *RemindLabel;
 @property (nonatomic, retain) IBOutlet UIImageView    *exhibitionImage;
 @property (nonatomic, retain) IBOutlet UILabel        *exhibitionTitle;
-@property (nonatomic, retain) IBOutlet NSMutableArray *statusArray;
-@property (nonatomic, retain) IBOutlet UILabel        *ApplyStatusLabel;
-@property (nonatomic, retain) IBOutlet UITextView     *ApplyStatusTextView;
+@property (nonatomic, retain) IBOutlet UILabel        *exhibitionDate;
+@property (nonatomic, retain) IBOutlet UILabel        *exhibitionAddress;
+@property (nonatomic, retain) IBOutlet UILabel        *exhibitionOrganizer;
+@property (nonatomic, retain) IBOutlet UILabel        *addressLabel;
+@property (nonatomic, retain) IBOutlet UILabel        *dateLabel;
+
+- (IBAction)ReturnBtnPress:(id)sender;
+- (IBAction)CallPhoneBtnPress:(id)sender;
 
 @end

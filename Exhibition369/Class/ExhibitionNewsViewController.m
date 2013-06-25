@@ -17,7 +17,6 @@
 @synthesize delegate;
 @synthesize tableView;
 @synthesize NewsArray;
-@synthesize index;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -75,7 +74,6 @@
 - (void)reloadData
 {
     [self.tableView reloadData];
-    self.index = 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -85,7 +83,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60.0;
+    return 50.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableViews cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -98,7 +96,7 @@
     ExhibitionsNews *new = [self.NewsArray objectAtIndex:indexPath.row];
     
     cell.titleLabel.text = new.Title;
-    
+    [cell.theImage setImage:new.Icon];
     
     return cell;
 }
@@ -121,9 +119,9 @@
 {
     NSInteger RequestType = [[request.userInfo objectForKey:@"RequestType"]integerValue];
     if (RequestType == RequestNewsIcon) {
-        ExhibitionsNews *new = [self.NewsArray objectAtIndex:index];
+        ExhibitionsNews *new = [request.userInfo objectForKey:@"aNews"];
         new.Icon = [UIImage imageWithData:[request responseData]];
-        index ++;
+        
         [self reloadData];
     }else{
         NSString *responseStr = [request responseString];
@@ -140,8 +138,11 @@
             [new release];
             
             NSString *urlStr = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%@.png",[Model sharedModel].selectExhibition.exKey,new.NewsKey];
+            NSLog(@"url = %@",urlStr);
             ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:RequestNewsIcon] forKey:@"RequestType"];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestNewsIcon] ,@"RequestType",
+                                                                                 new ,@"aNews",
+                                                                                 nil];
             [request setUserInfo:userInfo];
             request.delegate = self;
             [request startAsynchronous];

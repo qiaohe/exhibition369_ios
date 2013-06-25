@@ -14,9 +14,6 @@
 
 @implementation ApplyViewController
 
-@synthesize exhibitionImage;
-@synthesize exhibitionTitle;
-@synthesize statusArray;
 @synthesize nameTextField;
 @synthesize phoneNumTexField;
 @synthesize emailTextField;
@@ -36,9 +33,6 @@
 
 - (void)dealloc
 {
-    self.exhibitionImage  = nil;
-    self.exhibitionTitle  = nil;
-    self.statusArray      = nil;
     self.nameTextField    = nil;
     self.phoneNumTexField = nil;
     self.emailTextField   = nil;
@@ -104,7 +98,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [self SetApplyStatus:@"start"];
     self.OldFrame = self.view.frame;
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -122,44 +115,32 @@
     }
 }
 
-- (void)SetApplyStatus:(NSString*)Status
+
+- (IBAction)PressPhoneButton:(id)sender
 {
-    if ([Status isEqualToString:@"N"]) {
-        for (UIImageView *e in self.statusArray) {
-            e.highlighted = NO;
-        }
-    }else if ([Status isEqualToString:@"P"]) {
-        for (int i = 0; i<5; i++) {
-            UIImageView *e = [self.statusArray objectAtIndex:i];
-            if (i < 3) {
-                e.highlighted = YES;
-            }
-        }
-    }else if ([Status isEqualToString:@"A"]) {
-        for (UIImageView *e in self.statusArray) {
-            e.highlighted = YES;
-        }
-    }else if ([Status isEqualToString:@"D"]) {
-        for (UIImageView *e in self.statusArray) {
-            e.highlighted = YES;
-        }
-    }else {
-        for (int i = 0; i<5; i++) {
-            UIImageView *e = [self.statusArray objectAtIndex:i];
-            if (i == 0) {
-                e.highlighted = YES;
-            }
-        }
+    NSString *phoneNum = @"10086";// 电话号码
+    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
+    
+    UIWebView *phoneCallWebView = nil;
+    
+    if (!phoneCallWebView ) {
+        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
     }
+    
+    [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [phoneCallWebView release];
 }
+
 
 - (IBAction)PressCancleButton:(id)sender
 {
-    [self.delegate ApplyViewPressCancleButton];
+    //[self.delegate ApplyViewPressCancleButton];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)PressOkButton:(id)sender
 {
+    /*
     NSLog(@"OK");
     if ([self TheUserInfoIsEmpty:self.nameTextField] || [self TheUserInfoIsEmpty:self.phoneNumTexField] || [self TheUserInfoIsEmpty:self.emailTextField]) {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"信息不能为空，请检查你的信息" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -176,7 +157,65 @@
         
         NSLog(@"url = %@",urlString);
         [self.delegate ApplyRequestWithURL:urlString Params:params Method:RequestMethodPOST];
+    }*/
+    NSString *urlString = [ServerURL stringByAppendingString:@"/rest/applies/put"];
+    NSLog(@"url = %@",urlString);
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
+                                                                                    [Model sharedModel].systemConfig.token,     @"token",
+                                                                                    self.nameTextField.text,                    @"name",
+                                                                                    self.phoneNumTexField.text,                 @"mobile",
+                                                                                    self.emailTextField.text,                   @"email",
+                                                                                    nil];
+    NSArray *paramArray = [params allKeys];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.postFormat = ASIURLEncodedPostFormat;
+    for (NSString *key in paramArray) {
+        [request setPostValue:[params objectForKey:key] forKey:key];
     }
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"finished");
+    
+    NSLog(@"responseString = %@",[request responseStatusMessage]);
+    NSString *requestResult = [request responseStatusMessage];
+    NSRange range = [requestResult rangeOfString:@"404 Not Found"];
+    if (range.location == NSNotFound) {
+        
+        NSInteger responseResult = request.responseStatusCode;
+        switch (responseResult) {
+            case 200:{
+                 [Model sharedModel].selectExhibition.status = @"P";
+                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
+                 [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                break;
+            }case 400:{
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"参数错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+                [alertView release];
+            }case 500:{
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"服务器内部错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+                [alertView release];
+                break;
+            }
+            default:
+                break;
+        }
+    }else {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"报名失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+    }
+    
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    NSLog(@"Failed");
 }
 
 - (BOOL)TheUserInfoIsEmpty:(UITextField*)_textField
@@ -188,9 +227,7 @@
 
 - (void)initData
 {
-    [self.exhibitionImage setImage:[Model sharedModel].selectExhibition.icon];
-    [self.exhibitionTitle setText:[Model sharedModel].selectExhibition.name];
-    self.statusArray = [NSArray arrayWithObjects:[self.view viewWithTag:101],[self.view viewWithTag:102],[self.view viewWithTag:103],[self.view viewWithTag:104],[self.view viewWithTag:105], nil];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -21,8 +21,6 @@
 @interface ApplyViewController : BaseUIViewController<UITextFieldDelegate>
 
 @property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
-@property (nonatomic, retain) IBOutlet UIImageView *exhibitionImage;
-@property (nonatomic, retain) IBOutlet UILabel     *exhibitionTitle;
 @property (nonatomic, retain) IBOutlet NSArray     *statusArray;
 @property (nonatomic, retain) IBOutlet UITextField *nameTextField;
 @property (nonatomic, retain) IBOutlet UITextField *phoneNumTexField;
@@ -34,5 +32,6 @@
 
 - (IBAction)PressCancleButton:(id)sender;
 - (IBAction)PressOkButton:(id)sender;
+- (IBAction)PressPhoneButton:(id)sender;
 
 @end

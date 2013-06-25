@@ -24,6 +24,10 @@
 @implementation MainViewController
 
 @synthesize AppliedExhibitions;
+@synthesize refreshHeaderView;
+@synthesize reloading;
+@synthesize requestQueue;
+@synthesize appliedStateBtn;
 
 
 -(id)init
@@ -60,35 +64,85 @@
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
     
     activeTab = MainViewActiveTabAppliedExhibitions;
-    [_tabImage setImage:[UIImage imageNamed:@"tag-signed.png"]];
-    [self requestExhibitions];
+    [_tabImage setImage:[UIImage imageNamed:@"2.png"]];
     
     [self updateData];
+
+    [self requestExhibitions];
+    self.requestQueue = [[ASINetworkQueue alloc]init];
+    self.requestQueue.delegate = self;
+    [self.requestQueue setQueueDidFinishSelector:@selector(QueueDidFinish:)];
+    [self.requestQueue setRequestDidFinishSelector:@selector(requestFinished:)];
+    [self.requestQueue go];
     
-    NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/exhibitions/find"];
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].systemConfig.token,@"token",
-                                                                                     @"-1",@"size",
-                                                                                     @"-1",@"last",
-                                                                                     nil];
-    [self sendRequestWith:urlString params:params method:RequestMethodGET];
+
+    if(self.refreshHeaderView == nil)
+    {
+        self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
+        
+        self.refreshHeaderView.delegate = self;
+        self.refreshHeaderView.backgroundColor = [UIColor clearColor];
+        [self.theTableView addSubview:self.refreshHeaderView];
+        self.reloading = NO;
+    }
+    [self.refreshHeaderView refreshLastUpdatedDate];
 }
 
-- (void)updateData
+- (void)QueueDidFinish:(ASIHTTPRequest*)request
 {
     /*
-    NSLog(@"array count %u",[self.AppliedExhibitions count]);
+    NSMutableArray *appliedList = [[NSMutableArray alloc]init];
+    for (int i = 0;i<[self.AppliedExhibitions count];i++) {
+        Exhibition *e = [self.AppliedExhibitions objectAtIndex:i];
+        for (Exhibition *elem in unAppliedExhibitions) {
+            if ([e.exKey isEqualToString:elem.exKey]) {
+                elem.status = e.status;
+                NSLog(@"e.status = %@",e.status);
+                [appliedList addObject:elem];
+            }else {
+                if (![appliedList containsObject:elem]) {
+                    elem.status = @"N";
+                }
+            }
+        }
+    }
+    for (Exhibition *el in appliedList) {
+        NSLog(@"el.status = %@",el.status);
+    }
+    self.AppliedExhibitions = appliedList;
+    */
+    for (Exhibition *e in unAppliedExhibitions) {
+        if (![e.status isEqualToString:@"N"]) {
+            [self.AppliedExhibitions addObject:e];
+        }
+    }
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
+    [self reloadData];
+}
+
+- (void) reloadData
+{
     for (Exhibition *e in self.AppliedExhibitions) {
+        NSLog(@"e.status = %@",e.status);
         if (![self AppliedExhibitions:[Model sharedModel].appliedExhibitionList ContentsObject:e]) {
             [[Model sharedModel].appliedExhibitionList addObject:e];
             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
         }
-    }*/
+    }
+    [self updateData];
+    [self.theTableView reloadData];
+}
+
+- (void)updateData
+{
     [typeGroup removeAllObjects];
 	[typeVSExhibitions removeAllObjects];
     NSString *group;
     NSMutableArray *array;
     for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
         group = e.status;
+        NSLog(@"e.status = %@",e.status);
         array = [typeVSExhibitions objectForKey:group];
         if (array == nil)
         {
@@ -111,7 +165,6 @@
         
         [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find", ServerURL] params:params method:RequestMethodGET];
     }
-    
 }
 
 - (NSString *)getStatusTxt:(NSString *)status {
@@ -149,23 +202,7 @@
 }
 
 -(void)buttonTapped:(DataButton *)sender{
-    DataButton *button = (DataButton*)sender;
-    Exhibition *e;
-    if(activeTab == MainViewActiveTabAppliedExhibitions){
-        NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:button.selectIndex.section]];
-        e = (Exhibition *)[array objectAtIndex:button.selectIndex.row];
-        
-    } else {
-        e = (Exhibition *)[unAppliedExhibitions objectAtIndex:button.selectIndex.row];
-    }
     
-    [Model sharedModel].selectExhibition = e;
-    
-    ExhibitionDetailViewController *edvc = [[[ExhibitionDetailViewController alloc] init] autorelease];
-    [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
-    if ([e.status isEqualToString:@"N"]) {
-        [edvc ApplyViewShowOrDismiss];
-    }
 }
 
 
@@ -205,12 +242,12 @@
     if(activeTab == MainViewActiveTabAppliedExhibitions){
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 0, 310, 27)];
         UIImageView *bg = [[UIImageView alloc] initWithImage:[self getStatusHeaderImage:[typeGroup objectAtIndex:section]]];
-        bg.frame = CGRectMake(5, 0, 310, 25);
+        bg.frame = CGRectMake(5, 0, 310, 27);
         [headerView addSubview:bg];
         
         UIImageView *bottomLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
         bottomLine.frame = CGRectMake(10, 25, 300, 2);
-        [headerView addSubview:bottomLine];
+        //[headerView addSubview:bottomLine];
         
         UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake (35,0,280,27)];
         header.textColor = [UIColor colorWithRed:66 green:155 blue:221 alpha:1];
@@ -246,15 +283,19 @@
     DataButton *theButton = nil;
     UIImageView *theImage;
     
+    NSLog(@"UnApplied = %u",[unAppliedExhibitions count]);
+    for (Exhibition *el in unAppliedExhibitions) {
+        NSLog(@"title = %@",el.name);
+    }
+    
 	if (cell == nil)
 	{
 		cell = [[[ExhibitionTableCell alloc] initWithStyle:UITableViewCellStyleDefault
 									   reuseIdentifier:Title_ID] autorelease];
+        
         theButton = (DataButton *)[cell.contentView viewWithTag:5];
         [theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	}
-    theButton = (DataButton *)[cell.contentView viewWithTag:5];
-    theButton.selectIndex = indexPath;
     theTitle = (UILabel *)[cell.contentView viewWithTag:1];
     theDate = (UILabel *)[cell.contentView viewWithTag:2];
     theAddress = (UILabel *)[cell.contentView viewWithTag:3];
@@ -263,6 +304,7 @@
     theImage = (UIImageView *)[cell.contentView viewWithTag:6];
     
     Exhibition *e;
+    
     if(activeTab == MainViewActiveTabAppliedExhibitions){
         NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:indexPath.section]];
         //NSMutableArray *array = self.AppliedExhibitions;
@@ -271,20 +313,26 @@
     } else {
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
     }
+    
+    if ([e.status isEqualToString:EXHIBITION_STATUS_N]) {
+        theButton.hidden = NO;
+        [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
+    }else{
+        theButton.hidden = YES;
+    }
 	theTitle.text = e.name;
     theDate.text = e.date;
     theAddress.text = e.address;
     theOrganizer.text = e.organizer;
     //theImage.image = [UIImage imagewith]
-    
+    /*
     if([e.status isEqualToString:EXHIBITION_STATUS_N]){
         [theButton setBackgroundImage:[UIImage imageNamed:@"sign-unfocus.png"] forState:UIControlStateNormal];
         [theButton setBackgroundImage:[UIImage imageNamed:@"sign-focus.png"] forState:UIControlStateHighlighted];
     } else {
         [theButton setBackgroundImage:[UIImage imageNamed:@"enter-unfocus.png"] forState:UIControlStateNormal];
         [theButton setBackgroundImage:[UIImage imageNamed:@"enter-focus.png"] forState:UIControlStateHighlighted];
-    }
-    
+    }*/
     
     // Set up the cell...
     
@@ -310,7 +358,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 65;
+	return 70;
 }
 
 
@@ -349,29 +397,46 @@
     NSInteger requestType = [[request.userInfo objectForKey:@"MainViewRequestType"]integerValue];
     [super requestFinished:request];
     
-    if (requestType == RequestApplyStatus) {
-        NSDictionary *responseDic = [[request responseString]JSONValue];
-        NSString *theStatus = [responseDic objectForKey:@"status"];
-        Exhibition *e = [request.userInfo objectForKey:@"Exhibition"];
-        e.status = theStatus;
-        NSArray *logsArray = [responseDic objectForKey:@"logs"];
-        for (NSString *str in logsArray) {
-            //NSLog(@"str = %@",str);
-            e.logs = [e.logs stringByAppendingString:str];
-        }
-        if (![theStatus isEqualToString:@"N"]) {
-            if (![self AppliedExhibitions:self.AppliedExhibitions ContentsObject:e]) {
-                [AppliedExhibitions addObject:e];
-                //[unAppliedExhibitions removeObject:e];
-            }
+    if (requestType == RequestApplyExhibitionList) {
+        //NSLog(@"applylist = %@",[[request responseString]JSONValue]);
+        NSArray *ApplyList = [[request responseString]JSONValue];
+        for (NSDictionary *dic in ApplyList) {
             
+            Exhibition *e = [[Exhibition alloc]init];
+            e.exKey = [dic objectForKey:@"exKey"];
+            e.name = [dic objectForKey:@"name"];
+            e.status = [dic objectForKey:@"status"];
+            [self.AppliedExhibitions addObject:e];
         }
+    }else if (requestType == RequestApplyStatus){
+        
+        Exhibition *e = (Exhibition*)[request.userInfo objectForKey:@"Exhibition"];
+        NSDictionary *dic = [[request responseString] JSONValue];
+        e.status = [dic objectForKey:@"status"];
+        NSArray *logsArray = [dic objectForKey:@"logs"];
+        NSMutableString *logs = [[NSMutableString alloc]init];
+        for (NSString *str in logsArray) {
+            [logs appendString:str];
+            if (!(logsArray.lastObject == str)) {
+                [logs appendString:@"\n"];
+            }
+        }
+        e.logs = logs;
+        NSLog(@"str = %@",logs);
+    }else if (requestType == RequestExhibitonIcon){
+        UIImage *image = [UIImage imageWithData:[request responseData]];
+        Exhibition *e = (Exhibition*)[request.userInfo objectForKey:@"Exhibition"];
+        e.icon = image;
     }else{
+        if (!unAppliedExhibitions) {
+            unAppliedExhibitions = [[NSMutableArray alloc]init];
+        }
         [unAppliedExhibitions removeAllObjects];
         
         NSString *responseString = [request responseString];
+ 
         
-        NSDictionary *result = [Utils parseJson:responseString];
+        NSDictionary *result = [responseString JSONValue];
         
         NSArray *exhibitorArray = [result objectForKey:@"list"];
         
@@ -391,33 +456,29 @@
              [[Model sharedModel].appliedExhibitionList addObject:e];
              [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
              */
-            [e release];
             
-            NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/applies/get"];
-            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:e.exKey,                                @"exKey",
-                                                                              [Model sharedModel].systemConfig.token, @"token",
-                                                                               nil];
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestApplyStatus],@"MainViewRequestType",
-                                                                                 e,                                             @"Exhibition",
-                                                                                 nil];
-            [self sendRequestWith:urlString params:params method:RequestMethodGET requestUserInfo:userInfo];
+            NSString *statusString = [ServerURL stringByAppendingString:@"/rest/applies/get"];
+            statusString = [statusString stringByAppendingFormat:@"?token=%@&exKey=%@",[Model sharedModel].systemConfig.token,e.exKey];
+            NSDictionary *statusUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestApplyStatus],@"MainViewRequestType",
+                                                                                 e,                                              @"Exhibition",
+                                                                                nil];
+            ASIHTTPRequest *statusRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:statusString]];
+            [statusRequest setUserInfo:statusUserInfo];
+            [self.requestQueue addOperation:statusRequest];
+            
+            
+            NSString *iconString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/icon.png",e.exKey];
+            NSDictionary *iconUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestExhibitonIcon],@"MainViewRequestType",
+                                                                                     e,                                               @"Exhibition",
+                                                                                     nil];
+            ASIHTTPRequest *iconRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:iconString]];
+            [iconRequest setUserInfo:iconUserInfo];
+            NSLog(@"url = %@",iconString);
+            [self.requestQueue addOperation:iconRequest];
+            
+            [e release];
         }
-        
     }
-    [_theTableView reloadData];
-}
-
-- (void) reloadData
-{
-    //NSLog(@"array count %u",[self.AppliedExhibitions count]);
-    for (Exhibition *e in self.AppliedExhibitions) {
-        if (![self AppliedExhibitions:[Model sharedModel].appliedExhibitionList ContentsObject:e]) {
-            [[Model sharedModel].appliedExhibitionList addObject:e];
-            [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
-        }
-    }
-    [self updateData];
-    [self.theTableView reloadData];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -433,6 +494,9 @@
     [_tabImage release];
     [_appliedBtn release];
     [_unAppliedBtn release];
+    self.AppliedExhibitions = nil;
+    self.refreshHeaderView  = nil;
+    self.requestQueue       = nil;
     [super dealloc];
 }
 - (void)viewDidUnload {
@@ -446,11 +510,49 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    if ([textField canResignFirstResponder]) {
+        [textField resignFirstResponder];
+    }
+    
+    
     return YES;
 }
 
+#pragma mark - Drop_down to refresh
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+/*
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+ 
+}*/
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+    NSLog(@"loading~~~");
+    [self requestExhibitions];
+}
+
+- (void)RefreshStop
+{
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+    return self.reloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
+{
+    return [NSDate date]; 
+}
 
 #pragma mark - Table cell image support
 
@@ -512,6 +614,9 @@
 // -------------------------------------------------------------------------------
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if (!self.reloading) {
+        [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
     if (!decelerate)
 	{
         [self loadImagesForOnscreenRows];
@@ -527,12 +632,18 @@
 }
 - (IBAction)searchExhibition:(id)sender {
     [_searchInput resignFirstResponder];
+    [self UnApplyListShow];
     [self requestExhibitions];
 }
 - (IBAction)appliedTapped:(id)sender {
+    [self ApplyListShow];
+}
+
+- (void)ApplyListShow
+{
     if(activeTab == MainViewActiveTabAppliedExhibitions)
         return;
-    [_tabImage setImage:[UIImage imageNamed:@"tag-signed.png"]];
+    [_tabImage setImage:[UIImage imageNamed:@"2.png"]];
     [_appliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateNormal];
     [_appliedBtn setTitleColor:[UIColor colorWithRed:20 green:20 blue:18 alpha:1] forState:UIControlStateHighlighted];
     
@@ -544,9 +655,14 @@
 }
 
 - (IBAction)unAppliedTapped:(id)sender {
+    [self UnApplyListShow];
+}
+
+- (void)UnApplyListShow
+{
     if(activeTab == MainViewActiveTabExhibitions)
         return;
-    [_tabImage setImage:[UIImage imageNamed:@"tag-no sign up.png"]];
+    [_tabImage setImage:[UIImage imageNamed:@"1.png"]];
     [_appliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateNormal];
     [_appliedBtn setTitleColor:[UIColor colorWithRed:66 green:155 blue:221 alpha:1] forState:UIControlStateHighlighted];
     

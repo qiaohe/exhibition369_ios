@@ -32,18 +32,17 @@
 {
     [super viewDidLoad];
     self.titleLabel.text = self.aNew.Title;
-    [self updateData];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self updateData];
 }
 
 - (IBAction)PressBackButton:(id)sender
 {
     [self dismissModalViewControllerAnimated:YES];
-}
-
-- (IBAction)PressPhoneButton:(id)sender
-{
-    
 }
 
 - (void)updateData
@@ -57,8 +56,17 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSData *data = [request responseData];
-    [self.webView loadData:data MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
+    NSLog(@"responseString = %@",[request responseStatusMessage]);
+    NSString *requestResult = [request responseStatusMessage];
+    NSRange range = [requestResult rangeOfString:@"404 Not Found"];
+    if (range.location == NSNotFound) {
+        NSData *responseData = [request responseData];
+        [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
+    }else {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此页面不存在" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+    }
 }
 
 - (void)didReceiveMemoryWarning

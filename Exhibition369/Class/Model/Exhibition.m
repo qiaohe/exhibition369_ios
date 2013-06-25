@@ -38,6 +38,11 @@
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"exken = %@\nname = %@\nstatus = %@\nlogs = %@",self.exKey,self.name,self.status,self.logs];
+}
+
 - (void)dealloc
 {
     self.exKey = nil;

@@ -49,6 +49,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Do any additional setup after loading the view from its nib.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
     self.webView.layer.masksToBounds = YES;
     self.webView.layer.cornerRadius = 6.0;
     self.webView.layer.borderWidth = 1.0;
@@ -56,12 +63,6 @@
     self.view.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor clearColor];
     [self requestData];
-    // Do any additional setup after loading the view from its nib.
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
 }
 
 - (void)requestData
@@ -79,8 +80,17 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSData *responseData = [request responseData];
-    [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
+    NSLog(@"responseString = %@",[request responseStatusMessage]);
+    NSString *requestResult = [request responseStatusMessage];
+    NSRange range = [requestResult rangeOfString:@"404 Not Found"];
+    if (range.location == NSNotFound) {
+        NSData *responseData = [request responseData];
+        [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
+    }else {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此页面不存在" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+    }
 }
 
 

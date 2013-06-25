@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
+#import "ASINetworkQueue.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -30,7 +31,7 @@ typedef enum{
     RequestPhoneMessageList,                        //获取手机消息列表
     RequestHasReadMessage,                          //消息已读回执
     RequestNewsIcon,                                //新闻图标
-    RequestInfo,                                    //新闻内容
+    RequestContent,                                 //新闻内容
 }RequestType;
 
 typedef NS_OPTIONS(NSUInteger, RequestMethod) {
@@ -45,7 +46,7 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
 
 
 - (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method;
--(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestUserInfo:(NSDictionary*)UserInfo;
+-(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method request:(ASIHTTPRequest*)request;
 - (void)requestFinished:(ASIHTTPRequest *)request;
 - (void)requestFailed:(ASIHTTPRequest *)request;
 - (void)showLoadingIndicator;

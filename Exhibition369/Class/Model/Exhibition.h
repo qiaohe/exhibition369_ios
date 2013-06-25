@@ -21,4 +21,6 @@
 @property (nonatomic, retain) NSString *logs;
 
 - (NSString *)getIconImageURL;
+
+- (NSString *)description;
 @end

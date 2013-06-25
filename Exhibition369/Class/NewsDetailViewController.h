@@ -23,6 +23,5 @@
 @property (nonatomic, retain) IBOutlet UILabel   *titleLabel;
 
 - (IBAction)PressBackButton:(id)sender;
-- (IBAction)PressPhoneButton:(id)sender;
 
 @end

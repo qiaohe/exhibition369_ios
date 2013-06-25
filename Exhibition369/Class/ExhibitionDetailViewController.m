@@ -42,7 +42,7 @@
 
 - (void)updateData
 {    
-    CGRect subViewFrame = CGRectMake(5, 40, 320 - 10, 355);
+    CGRect subViewFrame = CGRectMake(0, 44, 320, 366);
     ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];
     exhibitionInfoView.view.tag = 101;
     exhibitionInfoView.view.frame = subViewFrame;
@@ -89,7 +89,25 @@
 - (IBAction)ButtonIsPress:(UIButton*)sender
 {
     NSInteger selectIndex = sender.tag - 200;
-    [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
+    if (selectIndex == 4) {
+        [self presentModalViewController:[self.viewControllers objectAtIndex:selectIndex] animated:YES];
+    }else
+        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
+}
+
+- (IBAction)PressPhoneButton:(id)sender
+{
+    NSString *phoneNum = @"10086";// 电话号码
+    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
+    
+    UIWebView *phoneCallWebView = nil;
+    
+    if (!phoneCallWebView ) {
+        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    }
+    
+    [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [phoneCallWebView release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,7 +118,7 @@
 
 -(void) RequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
 {
-    if ([[Model sharedModel].selectExhibition.status isEqualToString:@"N"]) {
+    if ([[Model sharedModel].selectExhibition.status isEqualToString:@"N"] || [[Model sharedModel].selectExhibition.status isEqualToString:@"D"]) {
         [self sendRequestWith:URL params:dic method:method];
         [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
         [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
@@ -145,7 +163,7 @@
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 401) {
         [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:4]];
@@ -156,12 +174,14 @@
 {
     static BOOL showOrDismiss = NO;
     showOrDismiss = showOrDismiss?NO:YES;
-    if (showOrDismiss) {
+    //if (showOrDismiss) {
         
         ApplyViewController *view = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
         view.view.frame = CGRectMake(0, 40, view.view.frame.size.width, view.view.frame.size.height);
         view.delegate = self;
         view.view.tag = 106;
+        [self presentModalViewController:view animated:YES];
+        /*
         for (UIView * view in self.view.subviews) {
             if (view.tag == self.prevIndex) {
                 [view removeFromSuperview];
@@ -169,7 +189,7 @@
         }
         self.titleLabel.text = view.title;
         [self.view addSubview:view.view];
-        self.prevIndex = view.view.tag;
+        self.prevIndex = view.view.tag;*/
         /*
          ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(5, 40, 320 - 10, 355) andDelegate:self];
          viewController.tag = 106;
@@ -180,10 +200,10 @@
          }
          self.titleLabel.text = viewController.title;
          [self.view addSubview:viewController];
-         self.prevIndex = viewController.tag;*/
+         self.prevIndex = viewController.tag;
     }else{
         [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:0]];
-    }
+    }*/
 }
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method

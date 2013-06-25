@@ -30,6 +30,8 @@
 
 - (IBAction)ButtonIsPress:(UIButton*)sender;
 
+- (IBAction)PressPhoneButton:(id)sender;
+
 - (void)ApplyViewShowOrDismiss;
 
 @end
