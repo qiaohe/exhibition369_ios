@@ -10,6 +10,7 @@
 #import "BaseUIViewController.h"
 #import "EGORefreshTableHeaderView.h"
 
+@class ApplyViewController;
 
 typedef enum{
     RequestUnApplyExhibitionsList = 1,

@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSString  *Title;
 @property (nonatomic, retain) NSString  *Content;
 @property (nonatomic, retain) NSString  *exKey;
+@property (nonatomic, retain) NSString  *NewsDate;
 
 - (id)initWithEXKey:(NSString*)_exKey;
 

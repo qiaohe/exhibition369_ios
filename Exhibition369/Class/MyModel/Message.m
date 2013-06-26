@@ -10,6 +10,7 @@
 
 @implementation Message
 
+@synthesize exKey;
 @synthesize messageTitle;
 @synthesize messageDate;
 @synthesize messageState;
@@ -20,6 +21,7 @@
 
 - (void)dealloc
 {
+    self.exKey        = nil;
     self.messageTitle = nil;
     self.messageDate  = nil;
     self.MsgKey       = nil;

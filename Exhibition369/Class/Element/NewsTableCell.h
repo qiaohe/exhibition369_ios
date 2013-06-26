@@ -15,4 +15,6 @@
 @property (nonatomic, retain) UIImageView *theImage;
 @property (nonatomic, retain) UIImageView *selectImage;
 
+- (UIColor *)getColor:(NSString *)stringToConvert;
+
 @end

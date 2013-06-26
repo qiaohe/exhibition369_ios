@@ -12,7 +12,6 @@
 #import "ASINetworkQueue.h"
 #import <QuartzCore/QuartzCore.h>
 
-
 typedef enum{
     RequestGlobalInformation = 0,                   //获取全局信息
     RequestCreateOrAmend,                           //获取创建或修改展会信息
@@ -51,4 +50,6 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
 - (void)requestFailed:(ASIHTTPRequest *)request;
 - (void)showLoadingIndicator;
 - (void)hideLoadingIndicator;
+- (UIColor *)getColor:(NSString *)stringToConvert;
+
 @end

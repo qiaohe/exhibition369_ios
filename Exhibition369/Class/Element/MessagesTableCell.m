@@ -1,68 +1,53 @@
 //
-//  NewsTableCell.m
+//  MessagesTableCell.m
 //  Exhibition369
 //
-//  Created by M J on 13-6-19.
+//  Created by M J on 13-6-25.
 //  Copyright (c) 2013年 MobilyDaily. All rights reserved.
 //
 
-#import "NewsTableCell.h"
+#import "MessagesTableCell.h"
 
-@implementation NewsTableCell
+@implementation MessagesTableCell
 
-@synthesize titleLabel;
-@synthesize detailLabel;
-@synthesize theImage;
 @synthesize selectImage;
+@synthesize titleLabel;
+@synthesize contentLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        // Initialization code
         [self initData];
     }
     return self;
 }
 
--(void)dealloc
-{
-    self.titleLabel = nil;
-    self.detailLabel = nil;
-    self.theImage = nil;
-    [super dealloc];
-}
-
 - (void)initData
 {
     self.backgroundColor = [UIColor clearColor];
-    
     self.textLabel.highlightedTextColor = [UIColor clearColor];
     
     UIImageView *backGroundImage = [[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 70)]autorelease];
     [backGroundImage setHighlightedImage:[UIImage imageNamed:@"beijing.png"]];
     [self addSubview:backGroundImage];
     
-    theImage = [[UIImageView alloc]initWithFrame:CGRectMake(15, 13, 45, 45)];
-    self.theImage.backgroundColor = [UIColor clearColor];
-    
     selectImage = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 310, 60)];
     [self.selectImage setImage:[UIImage imageNamed:@"xinxikuang.png"]];
-    [self.selectImage setHighlightedImage:[UIImage imageNamed:@"anxiaxinxikuang.png"]];
-    
+    [self.selectImage setHighlightedImage:[UIImage imageNamed:@"xinxikuang.png"]];
     [self addSubview:self.selectImage];
-    [self addSubview:self.theImage];
-
-    //titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.theImage.frame.origin.x + self.theImage.frame.size.width + 5, 5, self.frame.size.width - 10 - self.theImage.frame.size.width, (self.frame.size.height - 10)/2)];
-    titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.theImage.frame.origin.x + self.theImage.frame.size.width + 5, 10, 320 - (self.theImage.frame.origin.x + self.theImage.frame.size.width + 5) - 10, 30)];
-    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
-    titleLabel.backgroundColor = [UIColor clearColor];
+    
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 13, 300, 20)];
+    self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.titleLabel];
     
-    detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(titleLabel.frame.origin.x, 30, titleLabel.frame.size.width, titleLabel.frame.size.height)];
-    detailLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
-    detailLabel.backgroundColor = [UIColor clearColor];
-    detailLabel.textColor = [UIColor darkGrayColor];
-    [self addSubview:detailLabel];
+    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 36)];
+    self.contentLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+    self.contentLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.contentLabel];
+    
 }
 
 
@@ -103,14 +88,8 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    //self.selectImage.highlighted = selected;
+
     // Configure the view for the selected state
 }
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
-    [super setHighlighted:highlighted animated:animated];
-}
-
 
 @end

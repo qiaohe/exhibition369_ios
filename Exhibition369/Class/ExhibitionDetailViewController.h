@@ -16,7 +16,7 @@
 #import "QRCodeViewController.h"
 #import "ApplyViewController.h"
 
-@interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,ApplyRequestDelegate,NewsViewListDelegate>
+@interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,NewsViewListDelegate,ApplyRequestDelegate>
 
 @property (retain, nonatomic) IBOutlet UILabel     *titleLabel;
 @property (retain, nonatomic) IBOutlet UIView      *titleView;
@@ -26,12 +26,11 @@
 @property (assign, nonatomic) Exhibition *exhibition;
 @property (retain, nonatomic) NSArray *viewControllers;
 @property (assign, nonatomic) NSInteger prevIndex;
+@property (assign, nonatomic) NSInteger prevBtnIndex;
 - (IBAction)backToMainView:(id)sender;
 
 - (IBAction)ButtonIsPress:(UIButton*)sender;
 
-- (IBAction)PressPhoneButton:(id)sender;
-
-- (void)ApplyViewShowOrDismiss;
+- (void)ApplyViewShow;
 
 @end

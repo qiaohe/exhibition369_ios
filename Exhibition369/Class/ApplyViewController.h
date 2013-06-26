@@ -13,12 +13,12 @@
 @protocol ApplyRequestDelegate <NSObject>
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method;
-- (void) ApplyViewPressCancleButton;
+- (void) ApplyViewApplySuccess;
 
 @end
 
 
-@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate>
+@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
 @property (nonatomic, retain) IBOutlet NSArray     *statusArray;
@@ -28,10 +28,13 @@
 @property (nonatomic, assign) CGRect               OldFrame;
 @property (nonatomic, assign) CGRect               KeyboardFrame;
 @property (nonatomic, retain) UITextField          *currentTextField;
+@property (nonatomic, retain) NSMutableArray       *ExhibitorType;
+@property (nonatomic, retain) NSString             *ChoseType;
 
 
 - (IBAction)PressCancleButton:(id)sender;
 - (IBAction)PressOkButton:(id)sender;
 - (IBAction)PressPhoneButton:(id)sender;
+- (IBAction)SetExhibitorType:(UIButton*)sender;
 
 @end

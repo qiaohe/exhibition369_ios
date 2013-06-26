@@ -10,6 +10,7 @@
 
 @interface Message : NSObject
 
+@property (nonatomic, retain) NSString *exKey;
 @property (nonatomic, retain) NSString *messageTitle;
 @property (nonatomic, retain) NSString *messageDate;
 @property (nonatomic, assign) BOOL     messageState;

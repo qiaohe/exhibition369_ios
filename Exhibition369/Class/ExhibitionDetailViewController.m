@@ -22,6 +22,7 @@
 @synthesize exhibition = _exhibition;
 @synthesize viewControllers;
 @synthesize prevIndex;
+@synthesize prevBtnIndex;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,7 +56,7 @@
     ExhibitionNewsView.delegate = self;
     ExhibitionScheduleViewController *ExhibitionScheduleView = [[[ExhibitionScheduleViewController alloc]initWithNibName:@"ExhibitionScheduleViewController" bundle:nil]autorelease];
     ExhibitionScheduleView.view.tag = 104;
-    ExhibitionScheduleView.view.frame = subViewFrame;
+    ExhibitionScheduleView.view.frame = CGRectMake(0, 44, 320, 355);
     QRCodeViewController *QRCodeView = [[QRCodeViewController alloc]initWithNibName:@"QRCodeViewController" bundle:nil];
     QRCodeView.view.tag = 104;
     QRCodeView.view.frame = subViewFrame;
@@ -69,6 +70,9 @@
     }
     
     self.prevIndex = 101;
+    self.prevBtnIndex = 200;
+    UIButton *btn = (UIButton*)[self.view viewWithTag:self.prevBtnIndex];
+    btn.selected = YES;
     [self.view addSubview:exhibitionInfoView.view];
     self.titleLabel.text = exhibitionInfoView.title;
     [self setTitleViewToTop];
@@ -88,11 +92,18 @@
 
 - (IBAction)ButtonIsPress:(UIButton*)sender
 {
+    
     NSInteger selectIndex = sender.tag - 200;
     if (selectIndex == 4) {
         [self presentModalViewController:[self.viewControllers objectAtIndex:selectIndex] animated:YES];
-    }else
+    }else{
+        sender.selected = YES;
+        UIButton *button = (UIButton*)[self.view viewWithTag:self.prevBtnIndex];
+        button.selected = NO;
+        sender.selected = YES;
         [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
+        self.prevBtnIndex = sender.tag;
+    }
 }
 
 - (IBAction)PressPhoneButton:(id)sender
@@ -145,75 +156,55 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"finished\nrequestResponseStr = %@",[request responseString]);
     UIAlertView *alertView = (UIAlertView*)[self.view viewWithTag:301];
     [alertView setMessage:@"申请成功！请关注审批结果"];
 }
 
 - (IBAction)JumpToApplyView:(id)sender{
     NSString *status = [Model sharedModel].selectExhibition.status;
-    if ([status isEqualToString:@"N"]) {
-        [self ApplyViewShowOrDismiss];
-    }else{
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"您已报名，请在二维码页面查询审核状态" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        alertView.delegate = self;
+    NSLog(@"status = %@",status);
+    if ([status isEqualToString:@"N"] || [status isEqualToString:@"D"]) {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         alertView.tag = 401;
+        if ([status isEqualToString:@"N"]) {
+            [alertView setMessage:@"您还未报名，请先报名"];
+        }else{
+            [alertView setMessage:@"报名未通过，请完善资料后再确定再次报名"];
+        }
         [alertView show];
         [alertView release];
+    }
+    else{
+        UIViewController *viewController = [self.viewControllers objectAtIndex:4];
+        [self presentModalViewController:viewController animated:YES];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 401) {
-        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:4]];
+        [self ApplyViewShow];
     }
 }
 
-- (void)ApplyViewShowOrDismiss
+- (void)ApplyViewShow
 {
-    static BOOL showOrDismiss = NO;
-    showOrDismiss = showOrDismiss?NO:YES;
-    //if (showOrDismiss) {
-        
-        ApplyViewController *view = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
-        view.view.frame = CGRectMake(0, 40, view.view.frame.size.width, view.view.frame.size.height);
-        view.delegate = self;
-        view.view.tag = 106;
-        [self presentModalViewController:view animated:YES];
-        /*
-        for (UIView * view in self.view.subviews) {
-            if (view.tag == self.prevIndex) {
-                [view removeFromSuperview];
-            }
-        }
-        self.titleLabel.text = view.title;
-        [self.view addSubview:view.view];
-        self.prevIndex = view.view.tag;*/
-        /*
-         ApplyView *viewController = [[ApplyView alloc]initWithFrame:CGRectMake(5, 40, 320 - 10, 355) andDelegate:self];
-         viewController.tag = 106;
-         for (UIView * view in self.view.subviews) {
-         if (view.tag == self.prevIndex) {
-         [view removeFromSuperview];
-         }
-         }
-         self.titleLabel.text = viewController.title;
-         [self.view addSubview:viewController];
-         self.prevIndex = viewController.tag;
-    }else{
-        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:0]];
-    }*/
+    ApplyViewController *view = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
+    view.view.frame = CGRectMake(0, 40, view.view.frame.size.width, view.view.frame.size.height);
+    view.view.tag = 106;
+    view.delegate = self;
+    [self presentModalViewController:view animated:YES];
+}
+
+- (void) ApplyViewApplySuccess
+{
+    UIViewController *viewController = [self.viewControllers objectAtIndex:4];
+    [self presentModalViewController:viewController animated:YES];
 }
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
 {
     [self RequestWithURL:URL Params:dic Method:method];
-}
-
-- (void)ApplyViewPressCancleButton
-{
-    [self ApplyViewShowOrDismiss];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -8,10 +8,13 @@
 
 #import "BaseUIViewController.h"
 #import "Model.h"
+#import "MessagesTableCell.h"
+#import "Message.h"
 
-@interface ExhibitionMessageViewController : BaseUIViewController
+@interface ExhibitionMessageViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, retain) IBOutlet UIWebView       *webView;
-
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) NSMutableArray       *messageArray;
+@property (nonatomic, retain) Message              *aMessage;
 
 @end

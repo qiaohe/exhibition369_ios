@@ -49,7 +49,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self requestData];
+
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -62,7 +63,6 @@
     self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.view.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor clearColor];
-    [self requestData];
 }
 
 - (void)requestData
@@ -80,7 +80,6 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"responseString = %@",[request responseStatusMessage]);
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {

@@ -193,6 +193,16 @@
 		CE92F73A1773DA8200C0D179 /* ------------APP-----------.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE92F7391773DA8100C0D179 /* ------------APP-----------.jpg */; };
 		CE92F73E17742AE800C0D179 /* NewsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE92F73C17742AE800C0D179 /* NewsDetailViewController.m */; };
 		CE92F73F17742AE800C0D179 /* NewsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE92F73D17742AE800C0D179 /* NewsDetailViewController.xib */; };
+		CE9D99E317797E63008A99C6 /* shenhezhong.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99DF17797E63008A99C6 /* shenhezhong.png */; };
+		CE9D99E417797E63008A99C6 /* tonguo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99E017797E63008A99C6 /* tonguo.png */; };
+		CE9D99E517797E63008A99C6 /* weitongguo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99E117797E63008A99C6 /* weitongguo.png */; };
+		CE9D99E617797E63008A99C6 /* 首页 已报名.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99E217797E63008A99C6 /* 首页 已报名.png */; };
+		CE9D99ED17799BF7008A99C6 /* message.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99EC17799BF7008A99C6 /* message.txt */; };
+		CE9D99F017799DF2008A99C6 /* MessagesTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9D99EF17799DF1008A99C6 /* MessagesTableCell.m */; };
+		CE9D99F21779A38B008A99C6 /* son.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F11779A38B008A99C6 /* son.png */; };
+		CE9D99F41779A3E1008A99C6 /* son.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F31779A3E0008A99C6 /* son.png */; };
+		CE9D99F61779A513008A99C6 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F51779A513008A99C6 /* icon.png */; };
+		CE9D99F81779A520008A99C6 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F71779A51F008A99C6 /* icon.png */; };
 		CEA7BE2C1777D4B1004B8781 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7BE221777D4B1004B8781 /* EGORefreshTableHeaderView.m */; };
 		CEA7BE2D1777D4B1004B8781 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE241777D4B1004B8781 /* blackArrow.png */; };
 		CEA7BE2E1777D4B1004B8781 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE251777D4B1004B8781 /* blackArrow@2x.png */; };
@@ -457,6 +467,17 @@
 		CE92F73B17742AE700C0D179 /* NewsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDetailViewController.h; sourceTree = "<group>"; };
 		CE92F73C17742AE800C0D179 /* NewsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDetailViewController.m; sourceTree = "<group>"; };
 		CE92F73D17742AE800C0D179 /* NewsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsDetailViewController.xib; sourceTree = "<group>"; };
+		CE9D99DF17797E63008A99C6 /* shenhezhong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shenhezhong.png; sourceTree = "<group>"; };
+		CE9D99E017797E63008A99C6 /* tonguo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tonguo.png; sourceTree = "<group>"; };
+		CE9D99E117797E63008A99C6 /* weitongguo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weitongguo.png; sourceTree = "<group>"; };
+		CE9D99E217797E63008A99C6 /* 首页 已报名.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页 已报名.png"; sourceTree = "<group>"; };
+		CE9D99EC17799BF7008A99C6 /* message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = message.txt; sourceTree = "<group>"; };
+		CE9D99EE17799DF1008A99C6 /* MessagesTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesTableCell.h; sourceTree = "<group>"; };
+		CE9D99EF17799DF1008A99C6 /* MessagesTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesTableCell.m; sourceTree = "<group>"; };
+		CE9D99F11779A38B008A99C6 /* son.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = son.png; sourceTree = "<group>"; };
+		CE9D99F31779A3E0008A99C6 /* son.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = son.png; sourceTree = "<group>"; };
+		CE9D99F51779A513008A99C6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		CE9D99F71779A51F008A99C6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		CEA7BE211777D4B1004B8781 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		CEA7BE221777D4B1004B8781 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		CEA7BE241777D4B1004B8781 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -493,6 +514,8 @@
 		040C158E176E9D4500F859DB = {
 			isa = PBXGroup;
 			children = (
+				CE9D99F71779A51F008A99C6 /* icon.png */,
+				CE9D99F31779A3E0008A99C6 /* son.png */,
 				040C15A2176E9D4500F859DB /* Exhibition369 */,
 				040C1599176E9D4500F859DB /* Frameworks */,
 				040C1598176E9D4500F859DB /* Products */,
@@ -541,6 +564,8 @@
 		040C15A3176E9D4500F859DB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE9D99F51779A513008A99C6 /* icon.png */,
+				CE9D99F11779A38B008A99C6 /* son.png */,
 				040C15A4176E9D4500F859DB /* Exhibition369-Info.plist */,
 				040C15A5176E9D4500F859DB /* InfoPlist.strings */,
 				040C15A8176E9D4500F859DB /* main.m */,
@@ -697,6 +722,7 @@
 		04C377A41770AB0300674F32 /* plist */ = {
 			isa = PBXGroup;
 			children = (
+				CE9D99EC17799BF7008A99C6 /* message.txt */,
 				04C377A51770AB0300674F32 /* appliedExhibitions.plist */,
 			);
 			path = plist;
@@ -718,6 +744,8 @@
 				04C377EF177100C400674F32 /* ExhibitionTableCell.m */,
 				CE22402F1771B437009F0218 /* NewsTableCell.h */,
 				CE2240301771B438009F0218 /* NewsTableCell.m */,
+				CE9D99EE17799DF1008A99C6 /* MessagesTableCell.h */,
+				CE9D99EF17799DF1008A99C6 /* MessagesTableCell.m */,
 				CE0BA7BB17728BDC0043F4DD /* ApplyView.h */,
 				CE0BA7BC17728BDC0043F4DD /* ApplyView.m */,
 				CE0BA7B917728BDC0043F4DD /* ApplyStateView.h */,
@@ -836,6 +864,10 @@
 		CE402611177827100060C86E /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				CE9D99DF17797E63008A99C6 /* shenhezhong.png */,
+				CE9D99E017797E63008A99C6 /* tonguo.png */,
+				CE9D99E117797E63008A99C6 /* weitongguo.png */,
+				CE9D99E217797E63008A99C6 /* 首页 已报名.png */,
 				CE402612177827100060C86E /* 1.png */,
 				CE402613177827100060C86E /* 2.png */,
 				CE402614177827100060C86E /* anxiaxinxikuang.png */,
@@ -1142,6 +1174,15 @@
 				CE3886941779280E0005801E /* shijian.png in Resources */,
 				CE3886951779280E0005801E /* zuobiao.png in Resources */,
 				CE3886961779280E0005801E /* 二维码.png in Resources */,
+				CE9D99E317797E63008A99C6 /* shenhezhong.png in Resources */,
+				CE9D99E417797E63008A99C6 /* tonguo.png in Resources */,
+				CE9D99E517797E63008A99C6 /* weitongguo.png in Resources */,
+				CE9D99E617797E63008A99C6 /* 首页 已报名.png in Resources */,
+				CE9D99ED17799BF7008A99C6 /* message.txt in Resources */,
+				CE9D99F21779A38B008A99C6 /* son.png in Resources */,
+				CE9D99F41779A3E1008A99C6 /* son.png in Resources */,
+				CE9D99F61779A513008A99C6 /* icon.png in Resources */,
+				CE9D99F81779A520008A99C6 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1213,6 +1254,7 @@
 				CE92F73E17742AE800C0D179 /* NewsDetailViewController.m in Sources */,
 				CEA7BE2C1777D4B1004B8781 /* EGORefreshTableHeaderView.m in Sources */,
 				CE388689177921440005801E /* MainViewController.m in Sources */,
+				CE9D99F017799DF2008A99C6 /* MessagesTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

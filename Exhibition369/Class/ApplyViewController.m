@@ -14,12 +14,15 @@
 
 @implementation ApplyViewController
 
+@synthesize delegate;
 @synthesize nameTextField;
 @synthesize phoneNumTexField;
 @synthesize emailTextField;
 @synthesize OldFrame;
 @synthesize KeyboardFrame;
 @synthesize currentTextField;
+@synthesize ExhibitorType;
+@synthesize ChoseType;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,6 +39,9 @@
     self.nameTextField    = nil;
     self.phoneNumTexField = nil;
     self.emailTextField   = nil;
+    self.currentTextField = nil;
+    self.ExhibitorType    = nil;
+    self.ChoseType        = nil;
     [super dealloc];
 }
 
@@ -61,20 +67,15 @@
     NSDictionary *userInfo = [notification userInfo];
     NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
-    NSLog(@"keyboard Height = %f",keyboardRect.size.height);
     
     if ([self.nameTextField isFirstResponder]) {
-        NSLog(@"name");
         self.currentTextField = self.nameTextField;
     }if ([self.phoneNumTexField isFirstResponder]) {
-        NSLog(@"phone");
         self.currentTextField = self.phoneNumTexField;
     }if ([self.emailTextField isFirstResponder]) {
-        NSLog(@"email");
         self.currentTextField = self.emailTextField;
     }
     float YPath = [self YPathForTextFeild:self.currentTextField KeyBoardRect:keyboardRect];
-    NSLog(@"YPath = %f",YPath);
     if (YPath < 0) {
         //self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y + YPath, self.view.frame.size.width, self.view.frame.size.height);
     }
@@ -95,6 +96,45 @@
     //self.view.frame = OldFrame;
 }
 
+- (IBAction)SetExhibitorType:(UIButton*)sender
+{
+    [self setTypeWithTag:sender.tag];
+    switch (sender.tag) {
+        case 301:{
+            
+            break;
+        }case 302:{
+            
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)setTypeWithTag:(NSInteger)_tag
+{
+    switch (_tag) {
+        case 301:{
+            self.ChoseType = @"E";
+            UIImageView *view1 = (UIImageView*)[self.view viewWithTag:201];
+            UIImageView *view2 = (UIImageView*)[self.view viewWithTag:203];
+            view1.highlighted = YES;
+            view2.highlighted = NO;
+            break;
+        }case 302:{
+            self.ChoseType = @"A";
+            UIImageView *view1 = (UIImageView*)[self.view viewWithTag:201];
+            UIImageView *view2 = (UIImageView*)[self.view viewWithTag:203];
+            view2.highlighted = YES;
+            view1.highlighted = NO;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
@@ -102,7 +142,6 @@
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"touchBegan");
     [self ClearKeyBoard];
 }
 - (void)ClearKeyBoard{
@@ -134,53 +173,44 @@
 
 - (IBAction)PressCancleButton:(id)sender
 {
-    //[self.delegate ApplyViewPressCancleButton];
     [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)PressOkButton:(id)sender
 {
-    /*
-    NSLog(@"OK");
     if ([self TheUserInfoIsEmpty:self.nameTextField] || [self TheUserInfoIsEmpty:self.phoneNumTexField] || [self TheUserInfoIsEmpty:self.emailTextField]) {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"信息不能为空，请检查你的信息" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
         [alertView release];
+    }else if(!self.ChoseType || [self.ChoseType isEqualToString:@""]){
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您的身份" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
     }else{
-        NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/applies/put"];
+        NSString *urlString = [ServerURL stringByAppendingString:@"/rest/applies/put"];
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
                                        [Model sharedModel].systemConfig.token,     @"token",
-                                       self.nameTextField.text,                @"name",
-                                       self.phoneNumTexField.text,                @"mobile",
-                                       self.emailTextField.text,           @"email",
+                                       self.nameTextField.text,                    @"name",
+                                       self.phoneNumTexField.text,                 @"mobile",
+                                       self.emailTextField.text,                   @"email",
+                                       self.ChoseType,                             @"type",
                                        nil];
-        
-        NSLog(@"url = %@",urlString);
-        [self.delegate ApplyRequestWithURL:urlString Params:params Method:RequestMethodPOST];
-    }*/
-    NSString *urlString = [ServerURL stringByAppendingString:@"/rest/applies/put"];
-    NSLog(@"url = %@",urlString);
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
-                                                                                    [Model sharedModel].systemConfig.token,     @"token",
-                                                                                    self.nameTextField.text,                    @"name",
-                                                                                    self.phoneNumTexField.text,                 @"mobile",
-                                                                                    self.emailTextField.text,                   @"email",
-                                                                                    nil];
-    NSArray *paramArray = [params allKeys];
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
-    request.delegate = self;
-    request.postFormat = ASIURLEncodedPostFormat;
-    for (NSString *key in paramArray) {
-        [request setPostValue:[params objectForKey:key] forKey:key];
+        NSArray *paramArray = [params allKeys];
+        //NSLog(@"token = %@",[Model sharedModel].systemConfig.token);
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
+        request.delegate = self;
+        for (NSString *key in paramArray) {
+            [request setPostValue:[params objectForKey:key] forKey:key];
+            NSLog(@"key = %@,value = %@",key,[params objectForKey:key]);
+        }
+        [request startAsynchronous];
     }
-    [request startAsynchronous];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     NSLog(@"finished");
     
-    NSLog(@"responseString = %@",[request responseStatusMessage]);
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {
@@ -188,16 +218,25 @@
         NSInteger responseResult = request.responseStatusCode;
         switch (responseResult) {
             case 200:{
-                 [Model sharedModel].selectExhibition.status = @"P";
-                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
-                 [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                [Model sharedModel].selectExhibition.status = @"P";
+                [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
+                [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"提交成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                alertView.tag = 101;
+                alertView.delegate = self;
+                [alertView show];
+                [alertView release];
                 break;
             }case 400:{
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"参数错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                alertView.tag = 102;
+                alertView.delegate = self;
                 [alertView show];
                 [alertView release];
             }case 500:{
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"服务器内部错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                alertView.tag = 103;
+                alertView.delegate = self;
                 [alertView show];
                 [alertView release];
                 break;
@@ -213,6 +252,30 @@
     
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSInteger tag = alertView.tag;
+    switch (tag) {
+        case 101:{
+            if (self.delegate) {
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [self.delegate ApplyViewApplySuccess];
+                }];
+            }else
+                [self dismissModalViewControllerAnimated:YES];
+            break;
+        }case 102:{
+            
+            break;
+        }case 103:{
+            
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"Failed");
@@ -220,14 +283,22 @@
 
 - (BOOL)TheUserInfoIsEmpty:(UITextField*)_textField
 {
-    if (!self.nameTextField.text || [self.nameTextField.text isEqualToString:@""]) {
+    if (!_textField.text || [_textField.text isEqualToString:@""]) {
         return YES;
-    }return NO;
+    }else
+        return NO;
 }
 
 - (void)initData
 {
-    
+    self.nameTextField.keyboardType = UIKeyboardTypeNamePhonePad;
+    self.phoneNumTexField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    self.emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.ExhibitorType = [[NSMutableArray alloc]init];
+    for (int i = 201; i<205; i++) {
+        UIView *view = [self.view viewWithTag:i];
+        [self.ExhibitorType addObject:view];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

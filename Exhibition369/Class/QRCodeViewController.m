@@ -17,6 +17,7 @@
 @synthesize QRCodeImage;
 @synthesize RemindLabel;
 @synthesize exhibitionImage;
+@synthesize exhibitionTextView;
 @synthesize exhibitionTitle;
 @synthesize exhibitionDate;
 @synthesize exhibitionAddress;
@@ -39,6 +40,7 @@
     self.QRCodeImage         = nil;
     self.RemindLabel         = nil;
     self.exhibitionImage     = nil;
+    self.exhibitionTextView  = nil;
     self.exhibitionTitle     = nil;
     self.exhibitionDate      = nil;
     self.exhibitionAddress   = nil;
@@ -63,6 +65,9 @@
 
 - (void)updateData
 {
+    self.addressLabel.textColor = [self getColor:@"344e78"];
+    self.dateLabel.textColor = [self getColor:@"344e78"];
+    
     Exhibition *e = [Model sharedModel].selectExhibition;
 
     [self.exhibitionImage setImage:e.icon];
@@ -79,10 +84,23 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    NSString *urlString = [ServerURL stringByAppendingFormat:@"/%@/qrcode/%@.png",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-    request.delegate = self;
-    [request startAsynchronous];
+    NSString *status = [Model sharedModel].selectExhibition.status;
+    if ([status isEqualToString:@"D"] || [status isEqualToString:@"N"]) {
+        self.QRCodeImage.hidden = YES;
+        self.exhibitionTextView.hidden = NO;
+        [self.exhibitionTextView setText:@"您的审核未通过\n如需再次申请\n请整理好资料后再次报名"];
+    }else if ([status isEqualToString:@"P"]){
+        self.QRCodeImage.hidden = YES;
+        self.exhibitionTextView.hidden = NO;
+        [self.exhibitionTextView setText:@"您的资料正在审核中\n请关注消息通知"];
+    }else{
+        self.QRCodeImage.hidden = NO;
+        self.exhibitionTextView.hidden = YES;
+        NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/qrcode/%@.png",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        request.delegate = self;
+        [request startAsynchronous];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,18 +136,18 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     NSLog(@"finished");
-
-    NSLog(@"responseString = %@",[request responseStatusMessage]);
+    
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {
         NSData *responseData = [request responseData];
         [self.QRCodeImage setImage:[UIImage imageWithData:responseData]];
     }else {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"您还未报名" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
         [alertView release];
     }
+    
 }
 
 - (void)didReceiveMemoryWarning

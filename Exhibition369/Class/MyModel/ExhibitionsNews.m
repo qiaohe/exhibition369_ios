@@ -15,6 +15,7 @@
 @synthesize Title;
 @synthesize Content;
 @synthesize exKey;
+@synthesize NewsDate;
 
 - (id)initWithEXKey:(NSString*)_exKey
 {
@@ -31,6 +32,7 @@
     self.Title   = nil;
     self.Content = nil;
     self.exKey   = nil;
+    self.NewsDate = nil;
     [super dealloc];
 }
 

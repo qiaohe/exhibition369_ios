@@ -56,7 +56,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"responseString = %@",[request responseStatusMessage]);
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {

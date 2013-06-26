@@ -83,7 +83,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0;
+    return 70.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableViews cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -95,8 +95,9 @@
     }
     ExhibitionsNews *new = [self.NewsArray objectAtIndex:indexPath.row];
     
-    cell.titleLabel.text = new.Title;
+    [cell.titleLabel setText:new.Title];
     [cell.theImage setImage:new.Icon];
+    [cell.detailLabel setText:new.NewsDate];
     
     return cell;
 }
@@ -132,13 +133,23 @@
             ExhibitionsNews *new = [[ExhibitionsNews alloc]initWithEXKey:[Model sharedModel].selectExhibition.exKey];
             new.Title = [resultDic objectForKey:@"title"];
             new.NewsKey = [resultDic objectForKey:@"newsKey"];
-            NSLog(@"newsTitle = %@",new.Title);
+            
+            CGFloat timeoffset = [[resultDic objectForKey:@"createdAt"]floatValue];
+            
+            NSTimeInterval  timeZoneOffset=[[NSTimeZone systemTimeZone] secondsFromGMT];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd hh:mm"];
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeoffset/1000];
+            
+            NSString *NowDate = [dateFormat stringFromDate:date];
+            date = [date dateByAddingTimeInterval:timeZoneOffset];
+            
+            new.NewsDate = NowDate;
             
             [self.NewsArray addObject:new];
             [new release];
             
             NSString *urlStr = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/news/%@.png",[Model sharedModel].selectExhibition.exKey,new.NewsKey];
-            NSLog(@"url = %@",urlStr);
             ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestNewsIcon] ,@"RequestType",
                                                                                  new ,@"aNews",

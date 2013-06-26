@@ -16,6 +16,7 @@
 #import "ExhibitionTableCell.h"
 #import "IconDownloader.h"
 #import "PlistProxy.h"
+#import "ApplyViewController.h"
 
 @interface MainViewController ()
 
@@ -47,6 +48,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    [_theTableView reloadData];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -66,15 +68,15 @@
     activeTab = MainViewActiveTabAppliedExhibitions;
     [_tabImage setImage:[UIImage imageNamed:@"2.png"]];
     
-    [self updateData];
 
-    [self requestExhibitions];
     self.requestQueue = [[ASINetworkQueue alloc]init];
     self.requestQueue.delegate = self;
     [self.requestQueue setQueueDidFinishSelector:@selector(QueueDidFinish:)];
     [self.requestQueue setRequestDidFinishSelector:@selector(requestFinished:)];
     [self.requestQueue go];
     
+    [self updateData];
+    [self requestExhibitions];
 
     if(self.refreshHeaderView == nil)
     {
@@ -111,11 +113,14 @@
     }
     self.AppliedExhibitions = appliedList;
     */
+    [self.AppliedExhibitions removeAllObjects];
     for (Exhibition *e in unAppliedExhibitions) {
         if (![e.status isEqualToString:@"N"]) {
             [self.AppliedExhibitions addObject:e];
         }
     }
+    [Model sharedModel].appliedExhibitionList = AppliedExhibitions;
+    [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
     self.reloading = NO;
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
     [self reloadData];
@@ -124,7 +129,6 @@
 - (void) reloadData
 {
     for (Exhibition *e in self.AppliedExhibitions) {
-        NSLog(@"e.status = %@",e.status);
         if (![self AppliedExhibitions:[Model sharedModel].appliedExhibitionList ContentsObject:e]) {
             [[Model sharedModel].appliedExhibitionList addObject:e];
             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
@@ -142,7 +146,6 @@
     NSMutableArray *array;
     for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
         group = e.status;
-        NSLog(@"e.status = %@",e.status);
         array = [typeVSExhibitions objectForKey:group];
         if (array == nil)
         {
@@ -202,15 +205,21 @@
 }
 
 -(void)buttonTapped:(DataButton *)sender{
-    
+    NSIndexPath *indexPath = sender.selectIndex;
+    if (activeTab == MainViewActiveTabExhibitions) {
+        [Model sharedModel].selectExhibition = [unAppliedExhibitions objectAtIndex:indexPath.row];
+        ApplyViewController *viewController = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
+        [self presentModalViewController:viewController animated:YES];
+    }else{
+        
+    }
 }
 
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //NSLog(@"applyExhibition count = %u",[self.AppliedExhibitions count]);
     for (Exhibition *e in self.AppliedExhibitions) {
-        //NSLog(@"exKey = %@,status = %@",e.exKey,e.status);
+        
     }
     
     if(activeTab == MainViewActiveTabAppliedExhibitions){
@@ -228,15 +237,15 @@
     else
         return 1;
 }
-
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if(activeTab == MainViewActiveTabAppliedExhibitions)
         return [self getStatusTxt:[typeGroup objectAtIndex:section]];
     else
         return @"";
-}
-
+}*/
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     if(activeTab == MainViewActiveTabAppliedExhibitions){
@@ -262,31 +271,25 @@
     }
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 0)];
     
-}
-
+}*/
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(activeTab == MainViewActiveTabAppliedExhibitions)
         return 27;
     else
         return 0;
-    
 }
-
+*/
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *Title_ID = @"Title_ID";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Title_ID];
+	ExhibitionTableCell *cell = [tableView dequeueReusableCellWithIdentifier:Title_ID];
 	UILabel *theTitle = nil;
     UILabel *theDate = nil;
 	UILabel *theAddress = nil;
     UILabel *theOrganizer = nil;
     DataButton *theButton = nil;
     UIImageView *theImage;
-    
-    NSLog(@"UnApplied = %u",[unAppliedExhibitions count]);
-    for (Exhibition *el in unAppliedExhibitions) {
-        NSLog(@"title = %@",el.name);
-    }
     
 	if (cell == nil)
 	{
@@ -302,6 +305,7 @@
     theOrganizer = (UILabel *)[cell.contentView viewWithTag:4];
     theButton = (DataButton *)[cell.contentView viewWithTag:5];
     theImage = (UIImageView *)[cell.contentView viewWithTag:6];
+    theButton.selectIndex = indexPath;
     
     Exhibition *e;
     
@@ -316,14 +320,18 @@
     
     if ([e.status isEqualToString:EXHIBITION_STATUS_N]) {
         theButton.hidden = NO;
+        cell.ApplyStatus.hidden = YES;
         [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
     }else{
         theButton.hidden = YES;
+        cell.ApplyStatus.hidden = NO;
+        [cell setApplyStatusWithString:e.status];
     }
 	theTitle.text = e.name;
     theDate.text = e.date;
     theAddress.text = e.address;
     theOrganizer.text = e.organizer;
+    [theImage setImage:e.icon];
     //theImage.image = [UIImage imagewith]
     /*
     if([e.status isEqualToString:EXHIBITION_STATUS_N]){
@@ -337,21 +345,6 @@
     // Set up the cell...
     
     // Only load cached images; defer new downloads until scrolling ends
-    if (!e.icon)
-    {
-        if (_theTableView.dragging == NO && _theTableView.decelerating == NO)
-        {
-            [self startIconDownload:e forIndexPath:indexPath];
-        }
-        // if a download is deferred or in progress, return a placeholder image
-        theImage.image = [UIImage imageNamed:@"Placeholder.png"];
-    }
-    else
-    {
-        theImage.image = e.icon;
-    }
-    
-    
     
 	return cell;
 }
@@ -398,7 +391,6 @@
     [super requestFinished:request];
     
     if (requestType == RequestApplyExhibitionList) {
-        //NSLog(@"applylist = %@",[[request responseString]JSONValue]);
         NSArray *ApplyList = [[request responseString]JSONValue];
         for (NSDictionary *dic in ApplyList) {
             
@@ -422,7 +414,6 @@
             }
         }
         e.logs = logs;
-        NSLog(@"str = %@",logs);
     }else if (requestType == RequestExhibitonIcon){
         UIImage *image = [UIImage imageWithData:[request responseData]];
         Exhibition *e = (Exhibition*)[request.userInfo objectForKey:@"Exhibition"];
@@ -434,49 +425,54 @@
         [unAppliedExhibitions removeAllObjects];
         
         NSString *responseString = [request responseString];
- 
-        
+                
         NSDictionary *result = [responseString JSONValue];
         
         NSArray *exhibitorArray = [result objectForKey:@"list"];
         
-        for (NSDictionary *exhibitionData in exhibitorArray)
-        {
-            Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
-            
-            [unAppliedExhibitions addObject:e];
-            /*test data
-             if([e.exKey isEqualToString:@"1107"])
-             e.status = EXHIBITION_STATUS_A;
-             else if([e.exKey isEqualToString:@"1108"])
-             e.status = EXHIBITION_STATUS_D;
-             else
-             e.status = EXHIBITION_STATUS_P;
-             
-             [[Model sharedModel].appliedExhibitionList addObject:e];
-             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
-             */
-            
-            NSString *statusString = [ServerURL stringByAppendingString:@"/rest/applies/get"];
-            statusString = [statusString stringByAppendingFormat:@"?token=%@&exKey=%@",[Model sharedModel].systemConfig.token,e.exKey];
-            NSDictionary *statusUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestApplyStatus],@"MainViewRequestType",
-                                                                                 e,                                              @"Exhibition",
-                                                                                nil];
-            ASIHTTPRequest *statusRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:statusString]];
-            [statusRequest setUserInfo:statusUserInfo];
-            [self.requestQueue addOperation:statusRequest];
-            
-            
-            NSString *iconString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/icon.png",e.exKey];
-            NSDictionary *iconUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestExhibitonIcon],@"MainViewRequestType",
-                                                                                     e,                                               @"Exhibition",
-                                                                                     nil];
-            ASIHTTPRequest *iconRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:iconString]];
-            [iconRequest setUserInfo:iconUserInfo];
-            NSLog(@"url = %@",iconString);
-            [self.requestQueue addOperation:iconRequest];
-            
-            [e release];
+        if ([exhibitorArray count] == 0) {
+            [_theTableView reloadData];
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"未找到结果\n请重新设置关键字" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            [alertView release];
+        }else{
+            for (NSDictionary *exhibitionData in exhibitorArray)
+            {
+                Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
+                
+                [unAppliedExhibitions addObject:e];
+                /*test data
+                 if([e.exKey isEqualToString:@"1107"])
+                 e.status = EXHIBITION_STATUS_A;
+                 else if([e.exKey isEqualToString:@"1108"])
+                 e.status = EXHIBITION_STATUS_D;
+                 else
+                 e.status = EXHIBITION_STATUS_P;
+                 
+                 [[Model sharedModel].appliedExhibitionList addObject:e];
+                 [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+                 */
+                
+                NSString *statusString = [ServerURL stringByAppendingString:@"/rest/applies/get"];
+                statusString = [statusString stringByAppendingFormat:@"?token=%@&exKey=%@",[Model sharedModel].systemConfig.token,e.exKey];
+                NSDictionary *statusUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestApplyStatus],@"MainViewRequestType",
+                                                e,                                              @"Exhibition",
+                                                nil];
+                ASIHTTPRequest *statusRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:statusString]];
+                [statusRequest setUserInfo:statusUserInfo];
+                [self.requestQueue addOperation:statusRequest];
+                
+                
+                NSString *iconString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/icon.png",e.exKey];
+                NSDictionary *iconUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:RequestExhibitonIcon],@"MainViewRequestType",
+                                              e,                                               @"Exhibition",
+                                              nil];
+                ASIHTTPRequest *iconRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:iconString]];
+                [iconRequest setUserInfo:iconUserInfo];
+                [self.requestQueue addOperation:iconRequest];
+                
+                [e release];
+            }
         }
     }
 }
@@ -485,7 +481,8 @@
 {
     [super requestFinished:request];
     
-    
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
+    [self reloadData];
 }
 
 - (void)dealloc {
@@ -506,16 +503,6 @@
     [self setAppliedBtn:nil];
     [self setUnAppliedBtn:nil];
     [super viewDidUnload];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if ([textField canResignFirstResponder]) {
-        [textField resignFirstResponder];
-    }
-    
-    
-    return YES;
 }
 
 #pragma mark - Drop_down to refresh
@@ -561,6 +548,7 @@
 // -------------------------------------------------------------------------------
 - (void)startIconDownload:(Exhibition *)exhibition forIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
     if (iconDownloader == nil)
     {
@@ -580,7 +568,7 @@
         }];
         [self.imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
         [iconDownloader startDownload];
-    }
+    }*/
 }
 
 // -------------------------------------------------------------------------------
@@ -619,7 +607,7 @@
     }
     if (!decelerate)
 	{
-        [self loadImagesForOnscreenRows];
+        //[self loadImagesForOnscreenRows];
     }
 }
 
@@ -628,13 +616,28 @@
 // -------------------------------------------------------------------------------
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self loadImagesForOnscreenRows];
+    //[self loadImagesForOnscreenRows];
 }
 - (IBAction)searchExhibition:(id)sender {
+    [self ShouldSearchExhibition];
+}
+
+- (void)ShouldSearchExhibition
+{
     [_searchInput resignFirstResponder];
     [self UnApplyListShow];
     [self requestExhibitions];
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField canResignFirstResponder]) {
+        [textField resignFirstResponder];
+    }
+    [self ShouldSearchExhibition];
+    return YES;
+}
+
 - (IBAction)appliedTapped:(id)sender {
     [self ApplyListShow];
 }
@@ -672,4 +675,7 @@
     activeTab = MainViewActiveTabExhibitions;
     [_theTableView reloadData];
 }
+
+
+
 @end

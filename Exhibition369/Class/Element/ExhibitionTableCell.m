@@ -11,6 +11,9 @@
 
 @implementation ExhibitionTableCell
 
+@synthesize ApplyStatus;
+
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -59,26 +62,96 @@
         [self.contentView addSubview:theOrganizer];
         
         
-        theButton = [[[DataButton alloc] initWithFrame:CGRectMake(270, 0, 40, 50)] autorelease];
+        theButton = [[[DataButton alloc] initWithFrame:CGRectMake(270, 4, 40, 50)] autorelease];
         theButton.tag = 5;
+        theButton.hidden = YES;
         [self.contentView addSubview:theButton];
         
         
         theImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 13, 45, 45)];
         theImage.tag = 6;
         [self.contentView addSubview:theImage];
-        /*
-        bottomLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"line.png"]];
-        bottomLine.frame = CGRectMake(10, 64, 300, 2);
-        [self.contentView addSubview:bottomLine];
         
-        theTabLine = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab.png"]];
-        theTabLine.frame = CGRectMake(5, 11, 3, 43);
-        [self.contentView addSubview:theTabLine];*/
     }
     return self;
 }
 
+- (void)setApplyStatusWithString:(NSString*)Status{
+    if ([Status isEqualToString:@"N"]) {
+        
+    }else if ([Status isEqualToString:@"P"]) {
+        if (!self.ApplyStatus) {
+            self.ApplyStatus = [[UIImageView alloc]init];
+        }
+        self.ApplyStatus.frame = CGRectMake(270, 26, 40, 18);
+        [self.ApplyStatus setImage:[UIImage imageNamed:@"shenhezhong.png"]];
+        [self addSubview:self.ApplyStatus];
+    }else if ([Status isEqualToString:@"A"]) {
+        if (!self.ApplyStatus) {
+            self.ApplyStatus = [[UIImageView alloc]init];
+        }
+        self.ApplyStatus.frame = CGRectMake(263, 7, 50, 50);
+        [self.ApplyStatus setImage:[UIImage imageNamed:@"tonguo.png"]];
+        [self addSubview:self.ApplyStatus];
+    }else if ([Status isEqualToString:@"D"]) {
+        if (!self.ApplyStatus) {
+            self.ApplyStatus = [[UIImageView alloc]init];
+        }
+        self.ApplyStatus.frame = CGRectMake(270, 26, 40, 18);
+        [self.ApplyStatus setImage:[UIImage imageNamed:@"weitongguo.png"]];
+        [self addSubview:self.ApplyStatus];
+    }else{
+        
+    }
+}
+
+-(void)dealloc
+{
+    [theTitle     release];
+    [theDate      release];
+    [theAddress   release];
+    [theOrganizer release];
+    [theButton    release];
+    [theImage     release];
+    [selectedBG   release];
+    self.ApplyStatus = nil;
+    [super dealloc];
+}
+
+
+- (UIColor *)getColor:(NSString *)stringToConvert
+{
+    NSString *cString = [[stringToConvert stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    // String should be 6 or 8 characters
+    
+    if ([cString length] < 6) return [UIColor blackColor];
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"]) cString = [cString substringFromIndex:1];
+    if ([cString length] != 6) return [UIColor blackColor];
+    
+    // Separate into r, g, b substrings
+    
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    // Scan values
+    unsigned int r, g, b;
+    
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
+}
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];

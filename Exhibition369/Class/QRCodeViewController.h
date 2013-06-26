@@ -14,6 +14,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView    *QRCodeImage;
 @property (nonatomic, retain) IBOutlet UILabel        *RemindLabel;
 @property (nonatomic, retain) IBOutlet UIImageView    *exhibitionImage;
+@property (nonatomic, retain) IBOutlet UITextView     *exhibitionTextView;
 @property (nonatomic, retain) IBOutlet UILabel        *exhibitionTitle;
 @property (nonatomic, retain) IBOutlet UILabel        *exhibitionDate;
 @property (nonatomic, retain) IBOutlet UILabel        *exhibitionAddress;

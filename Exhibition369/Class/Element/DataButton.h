@@ -11,7 +11,7 @@
 @interface DataButton : UIButton
 
 @property(nonatomic, assign) NSObject *data;
-@property(nonatomic, assign) NSIndexPath *selectIndex;
+@property(nonatomic, retain) NSIndexPath *selectIndex;
 
 - (id)initWithFrame:(CGRect)frame data:(NSObject *)inObject;
 

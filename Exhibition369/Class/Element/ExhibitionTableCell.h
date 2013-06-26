@@ -18,8 +18,13 @@
     
     UIImageView *theImage;
     UIImageView *selectedBG;
-    UIImageView *bottomLine;
-    UIImageView *theTabLine;
+    
 }
+
+@property (nonatomic, retain) UIImageView *ApplyStatus;
+
+- (void)setApplyStatusWithString:(NSString*)Status;
+
+- (UIColor *)getColor:(NSString *)stringToConvert;
 
 @end
