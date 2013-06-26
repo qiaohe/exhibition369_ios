@@ -110,7 +110,7 @@
 
 - (IBAction)ReturnBtnPress:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)CallPhoneBtnPress:(id)sender
@@ -121,10 +121,12 @@
     UIWebView *phoneCallWebView = nil;
     
     if (!phoneCallWebView ) {
-        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        phoneCallWebView = [[UIWebView alloc] init];
+        phoneCallWebView.delegate = self;
     }
     
     [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [self.view addSubview:phoneCallWebView];
     [phoneCallWebView release];
 }
 

@@ -163,17 +163,19 @@
     UIWebView *phoneCallWebView = nil;
     
     if (!phoneCallWebView ) {
-        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        phoneCallWebView = [[UIWebView alloc] init];
+        phoneCallWebView.delegate = self;
     }
     
     [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [self.view addSubview:phoneCallWebView];
     [phoneCallWebView release];
 }
 
 
 - (IBAction)PressCancleButton:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)PressOkButton:(id)sender
@@ -262,7 +264,7 @@
                     [self.delegate ApplyViewApplySuccess];
                 }];
             }else
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }case 102:{
             

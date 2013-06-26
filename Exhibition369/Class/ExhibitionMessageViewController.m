@@ -14,6 +14,7 @@
 
 @implementation ExhibitionMessageViewController
 
+@synthesize delegate;
 @synthesize tableView;
 @synthesize messageArray;
 @synthesize aMessage;
@@ -64,8 +65,8 @@
         cell = [[MessagesTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IdentifierStr];
     }
     Message *m = [self.messageArray objectAtIndex:indexPath.row];
-    [cell.titleLabel setText:m.messageDate];
-    [cell.contentLabel setText:m.Content];
+    [cell.titleLabel setText:m.Content];
+    [cell.contentLabel setText:m.messageDate];
     
     
     return cell;
@@ -74,10 +75,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.layer.masksToBounds = YES;
-    self.view.layer.cornerRadius = 6.0;
-    self.view.layer.borderWidth = 1.0;
-    self.view.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.view.backgroundColor = [UIColor clearColor];
     
     self.messageArray = [[NSMutableArray alloc]init];
@@ -121,7 +118,8 @@
         m.Content = [dic objectForKey:@"content"];
         m.exKey   = [Model sharedModel].selectExhibition.exKey;
         m.MsgKey  = [dic objectForKey:@"msgKey"];
-        if ([dic objectForKey:@"Y"]) {
+        NSString *read = [dic objectForKey:@"read"];
+        if ([read isEqualToString:@"Y"]) {
             m.messageState = YES;
         }else {
             m.messageState = NO;
@@ -141,12 +139,21 @@
         [self.messageArray addObject:m];
         [m release];
     }
+    
+    NSInteger i = 0;
+    for (Message * m in self.messageArray) {
+        if (!m.messageState) {
+            i ++;
+        }
+    }
+    [self.delegate ShowMessageUnReadWithNum:i];
+    
     [self.tableView reloadData];
 }
 
 -(void)requestFailed:(ASIHTTPRequest *)request
 {
-    NSLog(@"Failed");
+    NSLog(@"Message Failed");
 }
 
 - (void)didReceiveMemoryWarning

@@ -40,10 +40,21 @@
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    LaunchViewController *launchView = [[[LaunchViewController alloc] init] autorelease];
-    self.transitionController = [[[TransitionController alloc] initWithViewController:launchView] autorelease];
     
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
+    NSDictionary *pushNotificationPayload = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if(pushNotificationPayload) {
+        for (id key in pushNotificationPayload) {
+            NSLog(@"key: %@, value: %@ \n", key, [pushNotificationPayload objectForKey:key]);
+        }
+        //[[Model sharedModel] addNewMessage:pushNotificationPayload];
+        [self application:application didReceiveRemoteNotification:pushNotificationPayload];
+    }else{
+        LaunchViewController *launchView = [[[LaunchViewController alloc] init] autorelease];
+        self.transitionController = [[[TransitionController alloc] initWithViewController:launchView] autorelease];
+    }
+    
+    //self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.window.rootViewController = self.transitionController;
     [self.window makeKeyAndVisible];
     return YES;

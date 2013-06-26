@@ -16,7 +16,7 @@
 #import "QRCodeViewController.h"
 #import "ApplyViewController.h"
 
-@interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,NewsViewListDelegate,ApplyRequestDelegate>
+@interface ExhibitionDetailViewController : BaseUIViewController<UIAlertViewDelegate,UITabBarDelegate,UITextFieldDelegate,RequestDelegate,NewsViewListDelegate,ApplyRequestDelegate,UIWebViewDelegate,ExhibitionMessageDelegate>
 
 @property (retain, nonatomic) IBOutlet UILabel     *titleLabel;
 @property (retain, nonatomic) IBOutlet UIView      *titleView;
@@ -27,6 +27,7 @@
 @property (retain, nonatomic) NSArray *viewControllers;
 @property (assign, nonatomic) NSInteger prevIndex;
 @property (assign, nonatomic) NSInteger prevBtnIndex;
+@property (retain, nonatomic) IBOutlet UIButton    *messageUnReadNum;
 - (IBAction)backToMainView:(id)sender;
 
 - (IBAction)ButtonIsPress:(UIButton*)sender;

@@ -18,7 +18,7 @@
 @end
 
 
-@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate>
+@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIWebViewDelegate>
 
 @property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
 @property (nonatomic, retain) IBOutlet NSArray     *statusArray;

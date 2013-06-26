@@ -46,10 +46,11 @@
 {
     [super viewWillAppear:YES];
     [self requestData];
+    /*
     self.webView.layer.masksToBounds = YES;
     self.webView.layer.cornerRadius = 6.0;
     self.webView.layer.borderWidth = 1.0;
-    self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];*/
     self.view.backgroundColor = [UIColor clearColor];
 }
 

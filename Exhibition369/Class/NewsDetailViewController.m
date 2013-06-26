@@ -42,7 +42,7 @@
 
 - (IBAction)PressBackButton:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateData

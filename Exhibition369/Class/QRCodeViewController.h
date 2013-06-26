@@ -9,7 +9,7 @@
 #import "BaseUIViewController.h"
 #import "Model.h"
 
-@interface QRCodeViewController : BaseUIViewController
+@interface QRCodeViewController : BaseUIViewController<UIWebViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView    *QRCodeImage;
 @property (nonatomic, retain) IBOutlet UILabel        *RemindLabel;

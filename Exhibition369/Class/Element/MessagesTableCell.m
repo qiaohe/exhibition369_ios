@@ -45,6 +45,7 @@
     
     self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 36)];
     self.contentLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+    self.contentLabel.textColor = [UIColor darkGrayColor];
     self.contentLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.contentLabel];
     

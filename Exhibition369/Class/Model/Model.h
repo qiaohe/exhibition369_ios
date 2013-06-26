@@ -17,7 +17,7 @@
 #import "IData.h"
 #import "PlistProxy.h"
 #import "SystemConfig.h"
-#import "Exhibition369-Prefix.pch"
+#import "369展会资讯-Prefix.pch"
 #import "SBJson.h"
 #import "ExhibitionsNews.h"
 #import <QuartzCore/QuartzCore.h>

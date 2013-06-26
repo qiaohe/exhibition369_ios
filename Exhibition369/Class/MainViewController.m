@@ -48,7 +48,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [_theTableView reloadData];
+    /*
+    activeTab = MainViewActiveTabAppliedExhibitions;
+    self.appliedBtn.selected = YES;
+    self.unAppliedBtn.selected = NO;
+    [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
+    [_theTableView reloadData];*/
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -65,8 +70,8 @@
     [super viewDidLoad];
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
     
-    activeTab = MainViewActiveTabAppliedExhibitions;
-    [_tabImage setImage:[UIImage imageNamed:@"2.png"]];
+    activeTab = MainViewActiveTabExhibitions;
+    [_tabImage setImage:[UIImage imageNamed:@"1.png"]];
     
 
     self.requestQueue = [[ASINetworkQueue alloc]init];
@@ -77,7 +82,8 @@
     
     [self updateData];
     [self requestExhibitions];
-
+    
+    /*
     if(self.refreshHeaderView == nil)
     {
         self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
@@ -87,7 +93,7 @@
         [self.theTableView addSubview:self.refreshHeaderView];
         self.reloading = NO;
     }
-    [self.refreshHeaderView refreshLastUpdatedDate];
+    [self.refreshHeaderView refreshLastUpdatedDate];*/
 }
 
 - (void)QueueDidFinish:(ASIHTTPRequest*)request
@@ -209,12 +215,17 @@
     if (activeTab == MainViewActiveTabExhibitions) {
         [Model sharedModel].selectExhibition = [unAppliedExhibitions objectAtIndex:indexPath.row];
         ApplyViewController *viewController = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
-        [self presentModalViewController:viewController animated:YES];
+        [self presentViewController:viewController animated:YES completion:nil];
     }else{
         
     }
 }
 
+- (void) ApplyViewApplySuccess
+{
+    activeTab = MainViewActiveTabAppliedExhibitions;
+    [_theTableView reloadData];
+}
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -432,9 +443,10 @@
         
         if ([exhibitorArray count] == 0) {
             [_theTableView reloadData];
+            /*
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"未找到结果\n请重新设置关键字" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
-            [alertView release];
+            [alertView release];*/
         }else{
             for (NSDictionary *exhibitionData in exhibitorArray)
             {
@@ -639,6 +651,9 @@
 }
 
 - (IBAction)appliedTapped:(id)sender {
+    if ([self.searchInput canResignFirstResponder]) {
+        [self.searchInput resignFirstResponder];
+    }
     [self ApplyListShow];
 }
 
@@ -658,6 +673,9 @@
 }
 
 - (IBAction)unAppliedTapped:(id)sender {
+    if ([self.searchInput canResignFirstResponder]) {
+        [self.searchInput resignFirstResponder];
+    }
     [self UnApplyListShow];
 }
 

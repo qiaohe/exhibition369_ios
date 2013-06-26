@@ -180,6 +180,7 @@
 		CE5C33F61772D77400DF3A14 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = CE5C33DC1772D77400DF3A14 /* title.png */; };
 		CE5C33F71772D77400DF3A14 /* unread.png in Resources */ = {isa = PBXBuildFile; fileRef = CE5C33DD1772D77400DF3A14 /* unread.png */; };
 		CE5C33FC1772E3DF00DF3A14 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5C33FB1772E3DE00DF3A14 /* QuartzCore.framework */; };
+		CE6485E8177B179B001316DB /* 369展会资讯-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6485E7177B179B001316DB /* 369展会资讯-Info.plist */; };
 		CE92F72F1773DA4500C0D179 /* ------------APP-------------.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE92F7251773DA4500C0D179 /* ------------APP-------------.jpg */; };
 		CE92F7301773DA4500C0D179 /* ------.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE92F7261773DA4500C0D179 /* ------.jpg */; };
 		CE92F7311773DA4500C0D179 /* cancel-focus.png in Resources */ = {isa = PBXBuildFile; fileRef = CE92F7271773DA4500C0D179 /* cancel-focus.png */; };
@@ -200,9 +201,7 @@
 		CE9D99ED17799BF7008A99C6 /* message.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99EC17799BF7008A99C6 /* message.txt */; };
 		CE9D99F017799DF2008A99C6 /* MessagesTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9D99EF17799DF1008A99C6 /* MessagesTableCell.m */; };
 		CE9D99F21779A38B008A99C6 /* son.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F11779A38B008A99C6 /* son.png */; };
-		CE9D99F41779A3E1008A99C6 /* son.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F31779A3E0008A99C6 /* son.png */; };
 		CE9D99F61779A513008A99C6 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F51779A513008A99C6 /* icon.png */; };
-		CE9D99F81779A520008A99C6 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9D99F71779A51F008A99C6 /* icon.png */; };
 		CEA7BE2C1777D4B1004B8781 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7BE221777D4B1004B8781 /* EGORefreshTableHeaderView.m */; };
 		CEA7BE2D1777D4B1004B8781 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE241777D4B1004B8781 /* blackArrow.png */; };
 		CEA7BE2E1777D4B1004B8781 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE251777D4B1004B8781 /* blackArrow@2x.png */; };
@@ -215,15 +214,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		040C1597176E9D4500F859DB /* Exhibition369.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exhibition369.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		040C1597176E9D4500F859DB /* 369展会资讯.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "369展会资讯.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		040C159A176E9D4500F859DB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		040C159C176E9D4500F859DB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		040C159E176E9D4500F859DB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		040C15A0176E9D4500F859DB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		040C15A4176E9D4500F859DB /* Exhibition369-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Exhibition369-Info.plist"; sourceTree = "<group>"; };
 		040C15A6176E9D4500F859DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		040C15A8176E9D4500F859DB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		040C15AA176E9D4500F859DB /* Exhibition369-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Exhibition369-Prefix.pch"; sourceTree = "<group>"; };
 		040C15AB176E9D4500F859DB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		040C15AC176E9D4500F859DB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		040C15AE176E9D4500F859DB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -453,6 +450,8 @@
 		CE5C33DC1772D77400DF3A14 /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
 		CE5C33DD1772D77400DF3A14 /* unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread.png; sourceTree = "<group>"; };
 		CE5C33FB1772E3DE00DF3A14 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE6485E6177B173C001316DB /* 369展会资讯-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "369展会资讯-Prefix.pch"; sourceTree = "<group>"; };
+		CE6485E7177B179B001316DB /* 369展会资讯-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "369展会资讯-Info.plist"; sourceTree = "<group>"; };
 		CE92F7251773DA4500C0D179 /* ------------APP-------------.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "------------APP-------------.jpg"; sourceTree = "<group>"; };
 		CE92F7261773DA4500C0D179 /* ------.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "------.jpg"; sourceTree = "<group>"; };
 		CE92F7271773DA4500C0D179 /* cancel-focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-focus.png"; sourceTree = "<group>"; };
@@ -475,9 +474,7 @@
 		CE9D99EE17799DF1008A99C6 /* MessagesTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesTableCell.h; sourceTree = "<group>"; };
 		CE9D99EF17799DF1008A99C6 /* MessagesTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesTableCell.m; sourceTree = "<group>"; };
 		CE9D99F11779A38B008A99C6 /* son.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = son.png; sourceTree = "<group>"; };
-		CE9D99F31779A3E0008A99C6 /* son.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = son.png; sourceTree = "<group>"; };
 		CE9D99F51779A513008A99C6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		CE9D99F71779A51F008A99C6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		CEA7BE211777D4B1004B8781 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		CEA7BE221777D4B1004B8781 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		CEA7BE241777D4B1004B8781 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -514,8 +511,6 @@
 		040C158E176E9D4500F859DB = {
 			isa = PBXGroup;
 			children = (
-				CE9D99F71779A51F008A99C6 /* icon.png */,
-				CE9D99F31779A3E0008A99C6 /* son.png */,
 				040C15A2176E9D4500F859DB /* Exhibition369 */,
 				040C1599176E9D4500F859DB /* Frameworks */,
 				040C1598176E9D4500F859DB /* Products */,
@@ -525,7 +520,7 @@
 		040C1598176E9D4500F859DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				040C1597176E9D4500F859DB /* Exhibition369.app */,
+				040C1597176E9D4500F859DB /* 369展会资讯.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -564,12 +559,12 @@
 		040C15A3176E9D4500F859DB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE6485E7177B179B001316DB /* 369展会资讯-Info.plist */,
+				CE6485E6177B173C001316DB /* 369展会资讯-Prefix.pch */,
 				CE9D99F51779A513008A99C6 /* icon.png */,
 				CE9D99F11779A38B008A99C6 /* son.png */,
-				040C15A4176E9D4500F859DB /* Exhibition369-Info.plist */,
 				040C15A5176E9D4500F859DB /* InfoPlist.strings */,
 				040C15A8176E9D4500F859DB /* main.m */,
-				040C15AA176E9D4500F859DB /* Exhibition369-Prefix.pch */,
 				040C15AE176E9D4500F859DB /* Default.png */,
 				040C15B0176E9D4500F859DB /* Default@2x.png */,
 				040C15B2176E9D4500F859DB /* Default-568h@2x.png */,
@@ -1002,9 +997,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		040C1596176E9D4500F859DB /* Exhibition369 */ = {
+		040C1596176E9D4500F859DB /* 369展会资讯 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 040C15B9176E9D4500F859DB /* Build configuration list for PBXNativeTarget "Exhibition369" */;
+			buildConfigurationList = 040C15B9176E9D4500F859DB /* Build configuration list for PBXNativeTarget "369展会资讯" */;
 			buildPhases = (
 				040C1593176E9D4500F859DB /* Sources */,
 				040C1594176E9D4500F859DB /* Frameworks */,
@@ -1014,9 +1009,9 @@
 			);
 			dependencies = (
 			);
-			name = Exhibition369;
+			name = "369展会资讯";
 			productName = Exhibition369;
-			productReference = 040C1597176E9D4500F859DB /* Exhibition369.app */;
+			productReference = 040C1597176E9D4500F859DB /* 369展会资讯.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1028,7 +1023,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = MobilyDaily;
 			};
-			buildConfigurationList = 040C1592176E9D4500F859DB /* Build configuration list for PBXProject "Exhibition369" */;
+			buildConfigurationList = 040C1592176E9D4500F859DB /* Build configuration list for PBXProject "369展会资讯" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1040,7 +1035,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				040C1596176E9D4500F859DB /* Exhibition369 */,
+				040C1596176E9D4500F859DB /* 369展会资讯 */,
 			);
 		};
 /* End PBXProject section */
@@ -1180,9 +1175,8 @@
 				CE9D99E617797E63008A99C6 /* 首页 已报名.png in Resources */,
 				CE9D99ED17799BF7008A99C6 /* message.txt in Resources */,
 				CE9D99F21779A38B008A99C6 /* son.png in Resources */,
-				CE9D99F41779A3E1008A99C6 /* son.png in Resources */,
 				CE9D99F61779A513008A99C6 /* icon.png in Resources */,
-				CE9D99F81779A520008A99C6 /* icon.png in Resources */,
+				CE6485E8177B179B001316DB /* 369展会资讯-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1329,15 +1323,16 @@
 		040C15BA176E9D4500F859DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jack Wang (BCBU22V5NF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jack Wang (BCBU22V5NF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Exhibition369/Exhibition369-Prefix.pch";
-				INFOPLIST_FILE = "Exhibition369/Exhibition369-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3C7A346B-8B1F-43FE-A668-46B91C6407FB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3C7A346B-8B1F-43FE-A668-46B91C6407FB";
+				GCC_PREFIX_HEADER = "Exhibition369/369展会资讯-Prefix.pch";
+				INFOPLIST_FILE = "Exhibition369/369展会资讯-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "369展会资讯";
+				PROVISIONING_PROFILE = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1345,15 +1340,16 @@
 		040C15BB176E9D4500F859DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jack Wang (BCBU22V5NF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jack Wang (BCBU22V5NF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Exhibition369/Exhibition369-Prefix.pch";
-				INFOPLIST_FILE = "Exhibition369/Exhibition369-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3C7A346B-8B1F-43FE-A668-46B91C6407FB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3C7A346B-8B1F-43FE-A668-46B91C6407FB";
+				GCC_PREFIX_HEADER = "Exhibition369/369展会资讯-Prefix.pch";
+				INFOPLIST_FILE = "Exhibition369/369展会资讯-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "369展会资讯";
+				PROVISIONING_PROFILE = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1361,7 +1357,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		040C1592176E9D4500F859DB /* Build configuration list for PBXProject "Exhibition369" */ = {
+		040C1592176E9D4500F859DB /* Build configuration list for PBXProject "369展会资讯" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				040C15B7176E9D4500F859DB /* Debug */,
@@ -1370,7 +1366,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		040C15B9176E9D4500F859DB /* Build configuration list for PBXNativeTarget "Exhibition369" */ = {
+		040C15B9176E9D4500F859DB /* Build configuration list for PBXNativeTarget "369展会资讯" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				040C15BA176E9D4500F859DB /* Debug */,

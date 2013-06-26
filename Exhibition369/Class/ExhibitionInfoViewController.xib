@@ -41,6 +41,8 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 366}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="191373623"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="194628031">
 							<int key="NSColorSpace">3</int>
@@ -58,7 +60,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 366}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="580156193"/>
+						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="194628031"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -68,14 +70,9 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 366}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="191373623"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<object class="NSColorSpace" key="NSCustomColorSpace">
-						<int key="NSID">2</int>
-					</object>
-				</object>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="580156193"/>
+				<reference key="IBUIBackgroundColor" ref="194628031"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
 					<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
