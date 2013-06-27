@@ -83,7 +83,7 @@
     [self updateData];
     [self requestExhibitions];
     
-    /*
+    
     if(self.refreshHeaderView == nil)
     {
         self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
@@ -93,7 +93,7 @@
         [self.theTableView addSubview:self.refreshHeaderView];
         self.reloading = NO;
     }
-    [self.refreshHeaderView refreshLastUpdatedDate];*/
+    [self.refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (void)QueueDidFinish:(ASIHTTPRequest*)request
@@ -141,7 +141,7 @@
         }
     }
     [self updateData];
-    [self.theTableView reloadData];
+    
 }
 
 - (void)updateData
@@ -161,6 +161,7 @@
         }
         [array addObject:e];
     }
+    [self.theTableView reloadData];
 }
 
 - (void)requestExhibitions{
@@ -215,16 +216,35 @@
     if (activeTab == MainViewActiveTabExhibitions) {
         [Model sharedModel].selectExhibition = [unAppliedExhibitions objectAtIndex:indexPath.row];
         ApplyViewController *viewController = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
+        viewController.applyDelegate = self;
         [self presentViewController:viewController animated:YES completion:nil];
     }else{
         
     }
 }
 
+- (void)SetListStateWithActiveTab:(MainViewActiveTab)_activeTab
+{
+    [self requestExhibitions];
+    NSLog(@"_activeTab = %d",_activeTab);
+    NSLog(@"tab        = %d",MainViewActiveTabAppliedExhibitions);
+    NSString *stringValue1 = [[NSNumber numberWithInteger:_activeTab] stringValue];
+    NSString *stringValue2 = [[NSNumber numberWithInteger:MainViewActiveTabAppliedExhibitions] stringValue];
+    if ([stringValue1 isEqualToString:stringValue2]) {
+        self.appliedBtn.selected = YES;
+        self.unAppliedBtn.selected = NO;
+        [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
+    }else{
+        self.appliedBtn.selected = NO;
+        self.unAppliedBtn.selected = YES;
+        [self.tabImage setImage:[UIImage imageNamed:@"1.png"]];
+    }
+}
+
 - (void) ApplyViewApplySuccess
 {
     activeTab = MainViewActiveTabAppliedExhibitions;
-    [_theTableView reloadData];
+    [self SetListStateWithActiveTab:MainViewActiveTabAppliedExhibitions];
 }
 
 #pragma mark UITableViewDataSource

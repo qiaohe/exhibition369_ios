@@ -82,13 +82,13 @@
 
 - (void)ShowMessageUnReadWithNum:(NSInteger)num
 {
-    /*
+    
     if (num > 0) {
         self.messageUnReadNum.hidden = NO;
         self.messageUnReadNum.titleLabel.text = [[NSNumber numberWithInteger:num]stringValue];
     }else {
         self.messageUnReadNum.hidden = YES;
-    }*/
+    }
 }
 
 - (void)setTitleViewToTop

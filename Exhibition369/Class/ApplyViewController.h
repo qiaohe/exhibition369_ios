@@ -10,6 +10,8 @@
 #import "ApplyView.h"
 #import <Foundation/Foundation.h>
 
+@class MainViewController;
+
 @protocol ApplyRequestDelegate <NSObject>
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method;
@@ -21,6 +23,7 @@
 @interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIWebViewDelegate>
 
 @property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
+@property (nonatomic, retain) MainViewController   *applyDelegate;
 @property (nonatomic, retain) IBOutlet NSArray     *statusArray;
 @property (nonatomic, retain) IBOutlet UITextField *nameTextField;
 @property (nonatomic, retain) IBOutlet UITextField *phoneNumTexField;

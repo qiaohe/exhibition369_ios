@@ -1323,15 +1323,15 @@
 		040C15BA176E9D4500F859DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Exhibition369/369展会资讯-Prefix.pch";
 				INFOPLIST_FILE = "Exhibition369/369展会资讯-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "369展会资讯";
-				PROVISIONING_PROFILE = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1340,15 +1340,15 @@
 		040C15BB176E9D4500F859DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Exhibition369/369展会资讯-Prefix.pch";
 				INFOPLIST_FILE = "Exhibition369/369展会资讯-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "369展会资讯";
-				PROVISIONING_PROFILE = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7A433EE6-72C7-4334-B0AF-9DC5CB22D1FB";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

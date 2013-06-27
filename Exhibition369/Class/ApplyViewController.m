@@ -7,6 +7,7 @@
 //
 
 #import "ApplyViewController.h"
+#import "MainViewController.h"
 
 @interface ApplyViewController ()
 
@@ -36,6 +37,7 @@
 
 - (void)dealloc
 {
+    self.applyDelegate    = nil;
     self.nameTextField    = nil;
     self.phoneNumTexField = nil;
     self.emailTextField   = nil;
@@ -262,6 +264,10 @@
             if (self.delegate) {
                 [self dismissViewControllerAnimated:YES completion:^{
                     [self.delegate ApplyViewApplySuccess];
+                }];
+            }else if(self.applyDelegate){
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [self.applyDelegate ApplyViewApplySuccess];
                 }];
             }else
                 [self dismissViewControllerAnimated:YES completion:nil];

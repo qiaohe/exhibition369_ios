@@ -48,5 +48,6 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) ASINetworkQueue           *requestQueue;
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
+- (void) ApplyViewApplySuccess;
 
 @end
