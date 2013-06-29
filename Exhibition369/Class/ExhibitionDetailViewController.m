@@ -24,6 +24,7 @@
 @synthesize prevIndex;
 @synthesize prevBtnIndex;
 @synthesize messageUnReadNum;
+@synthesize ApplyButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,41 +35,68 @@
     return self;
 }
 
+- (void)dealloc {
+    [_tabBar release];
+    self.titleLabel       = nil;
+    self.titleView        = nil;
+    self.titleImageView   = nil;
+    self.backImageView    = nil;
+    self.exhibition       = nil;
+    self.viewControllers  = nil;
+    self.messageUnReadNum = nil;
+    self.ApplyButton      = nil;
+    [super dealloc];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tabBar.hidden = YES;
     [self updateData];
     // Do any additional setup after loading the view from its nib.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (![[Model sharedModel].selectExhibition.status isEqualToString:@"N"] && ![[Model sharedModel].selectExhibition.status isEqualToString:@"D"]) {
+        self.ApplyButton.hidden = YES;
+    }else {
+        self.ApplyButton.hidden = NO;
+    }
+}
+
 - (void)updateData
-{    
-    CGRect subViewFrame = CGRectMake(0, 44, 320, 366);
+{
+    [self ShowMessageUnReadWithNum:[Model sharedModel].selectExhibition.messageUnRead];
+    
+    CGRect subViewFrame = CGRectMake(0, 40, 320, baseHeight);
     ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];
     exhibitionInfoView.view.tag = 101;
     exhibitionInfoView.view.frame = subViewFrame;
-    ExhibitionMessageViewController *ExhibitionMessageView = [[[ExhibitionMessageViewController alloc]initWithNibName:@"ExhibitionMessageViewController" bundle:nil]autorelease];
-    ExhibitionMessageView.view.tag = 102;
-    ExhibitionMessageView.delegate = self;
-    ExhibitionMessageView.view.frame = subViewFrame;
+    
+    ExhibitionScheduleViewController *ExhibitionScheduleView = [[[ExhibitionScheduleViewController alloc]initWithNibName:@"ExhibitionScheduleViewController" bundle:nil]autorelease];
+    ExhibitionScheduleView.view.tag = 102;
+    ExhibitionScheduleView.view.frame = subViewFrame;
+    
     ExhibitionNewsViewController *ExhibitionNewsView = [[[ExhibitionNewsViewController alloc]initWithNibName:@"ExhibitionNewsViewController" bundle:nil]autorelease];
     ExhibitionNewsView.view.tag = 103;
     ExhibitionNewsView.view.frame = subViewFrame;
     ExhibitionNewsView.delegate = self;
-    ExhibitionScheduleViewController *ExhibitionScheduleView = [[[ExhibitionScheduleViewController alloc]initWithNibName:@"ExhibitionScheduleViewController" bundle:nil]autorelease];
-    ExhibitionScheduleView.view.tag = 104;
-    ExhibitionScheduleView.view.frame = CGRectMake(0, 44, 320, 355);
+    
+    ExhibitionMessageViewController *ExhibitionMessageView = [[[ExhibitionMessageViewController alloc]initWithNibName:@"ExhibitionMessageViewController" bundle:nil]autorelease];
+    ExhibitionMessageView.view.tag = 104;
+    ExhibitionMessageView.delegate = self;
+    ExhibitionMessageView.view.frame = subViewFrame;
+    
     QRCodeViewController *QRCodeView = [[QRCodeViewController alloc]initWithNibName:@"QRCodeViewController" bundle:nil];
-    QRCodeView.view.tag = 104;
+    QRCodeView.view.tag = 105;
     QRCodeView.view.frame = subViewFrame;
     
-    self.viewControllers = [NSArray arrayWithObjects:exhibitionInfoView,ExhibitionMessageView,ExhibitionNewsView,ExhibitionScheduleView,QRCodeView, nil];
+    self.viewControllers = [NSArray arrayWithObjects:exhibitionInfoView,ExhibitionScheduleView,ExhibitionNewsView,ExhibitionMessageView,QRCodeView, nil];
     
     for (int i = 0; i<[self.viewControllers count]; i++) {
-        UIBarButtonItem *buttonItem = [self.tabBar.items objectAtIndex:i];
-        UIViewController *controller = [self.viewControllers objectAtIndex:i];
-        buttonItem.title = controller.title;
+        //UIBarButtonItem *buttonItem = [self.tabBar.items objectAtIndex:i];
+        //UIViewController *controller = [self.viewControllers objectAtIndex:i];
+        //buttonItem.title = controller.title;
     }
     
     self.prevIndex = 101;
@@ -105,6 +133,7 @@
 
 - (IBAction)ButtonIsPress:(UIButton*)sender
 {
+    sender.selected = YES;
     NSInteger selectIndex = sender.tag - 200;
     NSString *status = [Model sharedModel].selectExhibition.status;
     if (selectIndex == 4) {
@@ -215,15 +244,7 @@
     NSString *status = [Model sharedModel].selectExhibition.status;
     NSLog(@"status = %@",status);
     if ([status isEqualToString:@"N"] || [status isEqualToString:@"D"]) {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        alertView.tag = 401;
-        if ([status isEqualToString:@"N"]) {
-            [alertView setMessage:@"您还未报名，请先报名"];
-        }else{
-            [alertView setMessage:@"报名未通过，请完善资料后再确定再次报名"];
-        }
-        [alertView show];
-        [alertView release];
+        [self ApplyViewShow];
     }
     else{
         UIViewController *viewController = [self.viewControllers objectAtIndex:4];
@@ -236,15 +257,7 @@
     NSString *status = [Model sharedModel].selectExhibition.status;
     NSLog(@"status = %@",status);
     if ([status isEqualToString:@"N"] || [status isEqualToString:@"D"]) {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        alertView.tag = 401;
-        if ([status isEqualToString:@"N"]) {
-            [alertView setMessage:@"您还未报名，请先报名"];
-        }else{
-            [alertView setMessage:@"报名未通过，请完善资料后再确定再次报名"];
-        }
-        [alertView show];
-        [alertView release];
+        [self ApplyViewShow];
     }
     else{
         UIViewController *viewController = [self.viewControllers objectAtIndex:4];
@@ -270,8 +283,7 @@
 
 - (void) ApplyViewApplySuccess
 {
-    UIViewController *viewController = [self.viewControllers objectAtIndex:4];
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:4]];
 }
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method
@@ -285,10 +297,6 @@
     return YES;
 }
 
-- (void)dealloc {
-    [_tabBar release];
-    [super dealloc];
-}
 - (void)viewDidUnload {
     [self setTabBar:nil];
     [super viewDidUnload];
@@ -298,6 +306,7 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item // called when a new view is selected by the user (but not programatically)
 {
     NSInteger index = [tabBar.items indexOfObject:item];
+    [self SetButtonHeightLightWithIndex:(index + 200)];
     for (UIView * view in self.view.subviews) {
         if (view.tag == self.prevIndex) {
             [view removeFromSuperview];
@@ -307,6 +316,15 @@
     [self.view addSubview:viewController.view];
     self.titleLabel.text = viewController.title;
     self.prevIndex = viewController.view.tag;
+}
+
+- (void)SetButtonHeightLightWithIndex:(NSInteger)_index
+{
+    UIButton *btn = (UIButton*)[self.view viewWithTag:_index];
+    UIButton *prevBtn = (UIButton*)[self.view viewWithTag:self.prevBtnIndex];
+    prevBtn.selected = NO;
+    btn.selected     = YES;
+    self.prevBtnIndex = _index;
 }
 
 /* called when user shows or dismisses customize sheet. you can use the 'willEnd' to set up what appears underneath.
@@ -333,7 +351,8 @@
     
 }
 - (IBAction)backToMainView:(id)sender {
-    [Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
-    [[Model sharedModel] pushView:[Model sharedModel].mainView option:ViewTrasitionEffectMoveRight];
+    //[Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
+    //[[Model sharedModel] pushView:[Model sharedModel].mainView option:ViewTrasitionEffectMoveRight];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 @end

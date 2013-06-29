@@ -16,5 +16,8 @@
 @property (nonatomic, assign) BOOL     messageState;
 @property (nonatomic, retain) NSString *MsgKey;
 @property (nonatomic, retain) NSString *Content;
+@property (nonatomic, assign) BOOL     isExpand;
+
+- (id)init;
 
 @end

@@ -19,6 +19,7 @@ static Model *sharedModel;
 @synthesize documentDirectory = _documentDirectory;
 @synthesize mainView = _mainView;
 @synthesize selectExhibition = _selectExhibition;
+@synthesize HaveNetwork;
 
 
 + (Model *)sharedModel

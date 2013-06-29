@@ -16,6 +16,7 @@
 
 @synthesize webView;
 @synthesize myExhibition;
+@synthesize UnloadImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,7 +38,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor clearColor];
+    if ([Model sharedModel].HaveNetwork) {
+        [self requestData];
+    }
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -45,13 +49,19 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [self requestData];
+    if ([Model sharedModel].HaveNetwork) {
+        [self requestData];
+    }
     /*
     self.webView.layer.masksToBounds = YES;
     self.webView.layer.cornerRadius = 6.0;
     self.webView.layer.borderWidth = 1.0;
     self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];*/
-    self.view.backgroundColor = [UIColor clearColor];
+}
+
+- (void)ExhibitionInfoShow:(BOOL)CanShow
+{
+    self.UnloadImage.hidden = CanShow;
 }
 
 - (void)requestData
@@ -62,6 +72,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [self ExhibitionInfoShow:NO];
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
     [alertView show];
     [alertView release];
@@ -73,11 +84,10 @@
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {
         NSData *responseData = [request responseData];
+        [self ExhibitionInfoShow:YES];
         [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
     }else {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此页面不存在" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        [self ExhibitionInfoShow:NO];
     }
 }
 

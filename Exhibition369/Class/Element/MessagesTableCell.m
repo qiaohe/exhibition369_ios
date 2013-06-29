@@ -13,12 +13,16 @@
 @synthesize selectImage;
 @synthesize titleLabel;
 @synthesize contentLabel;
+@synthesize backGroundImages;
+@synthesize isExpand;
+@synthesize CellHeight;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.CellHeight = 70.0f;
         [self initData];
     }
     return self;
@@ -26,31 +30,85 @@
 
 - (void)initData
 {
+    [self addObserver:self
+           forKeyPath:@"CellHeight"
+              options:NSKeyValueObservingOptionOld
+                     |NSKeyValueObservingOptionNew context:nil];
+
     self.backgroundColor = [UIColor clearColor];
     self.textLabel.highlightedTextColor = [UIColor clearColor];
     
-    UIImageView *backGroundImage = [[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 70)]autorelease];
-    [backGroundImage setHighlightedImage:[UIImage imageNamed:@"beijing.png"]];
-    [self addSubview:backGroundImage];
+    backGroundImages = [[UIImageView alloc]init];
+    [backGroundImages setHighlightedImage:[UIImage imageNamed:@"beijing.png"]];
+    [self addSubview:backGroundImages];
     
-    selectImage = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 310, 60)];
+    selectImage = [[UIImageView alloc]init];
     [self.selectImage setImage:[UIImage imageNamed:@"xinxikuang.png"]];
     [self.selectImage setHighlightedImage:[UIImage imageNamed:@"xinxikuang.png"]];
     [self addSubview:self.selectImage];
     
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 13, 300, 20)];
+    self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+    self.titleLabel.numberOfLines = 0;
+    self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.titleLabel];
     
-    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 36)];
+    self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 13, 300, 20)];
     self.contentLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
     self.contentLabel.textColor = [UIColor darkGrayColor];
     self.contentLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.contentLabel];
     
+    [self ChangeCellHeightWithNum:[NSNumber numberWithFloat:-1]];
+    
 }
 
+- (void)setMessageTextWithHeignt:(CGFloat)_height
+{
+    self.titleLabel.frame = CGRectMake(10, 30, 300, 25);
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary *)change
+                      context:(void *)context
+{
+    CGFloat changeNum = self.CellHeight - 70.0f;
+    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height + changeNum);
+    self.backGroundImages.frame = CGRectMake(0, 0, 320, self.CellHeight);
+    self.selectImage.frame = CGRectMake(5, 5, 310, self.CellHeight - 10);
+}
+
+- (void)addObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChangeCellHeightWithNum:) name:_CHANGE_HEIGHT_ object:nil];
+}
+
+- (void)removeObserver
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:_CHANGE_HEIGHT_ object:nil];
+}
+
+- (void)ChangeCellHeightWithNum:(NSNumber*)num
+{
+    //UIView setAnimation
+    CGFloat number = [num floatValue];
+    if (number <= 0) {
+        self.titleLabel.frame = CGRectMake(10, 30, 300, 25);
+        self.backGroundImages.frame = CGRectMake(0, 0, 320, 70);
+        self.selectImage.frame = CGRectMake(5, 5, 310, 60);
+    }else{
+        self.titleLabel.frame = CGRectMake(10, 35, 300, 25 + number);
+        self.backGroundImages.frame = CGRectMake(0, 0, 320, 70 + number);
+        self.selectImage.frame = CGRectMake(5, 5, 310, 60 + number);
+    }
+}
+
+- (void)changeCellHeight
+{
+    NSLog(@"change");
+}
 
 - (UIColor *)getColor:(NSString *)stringToConvert
 {

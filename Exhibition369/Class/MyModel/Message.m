@@ -16,8 +16,15 @@
 @synthesize messageState;
 @synthesize MsgKey;
 @synthesize Content;
+@synthesize isExpand;
 
-
+-(id)init
+{
+    if (self = [super init]) {
+        self.isExpand = NO;
+    }
+    return self;
+}
 
 - (void)dealloc
 {

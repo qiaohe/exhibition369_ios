@@ -35,6 +35,7 @@
 @property (nonatomic, retain) NSString *documentDirectory;
 @property (nonatomic, retain) MainViewController *mainView;
 @property (nonatomic, retain) Exhibition *selectExhibition;
+@property (nonatomic, assign) BOOL       HaveNetwork;
 
 - (void)createFolder:(NSArray *)pathComponents;
 - (NSString *)createPath:(NSArray *)pathComponents;

@@ -12,6 +12,13 @@
 
 @class MainViewController;
 
+typedef enum{
+    NameIsEmpty,
+    PhoneNumIsEmpty,
+    EmailIsEmpty,
+    NotChoseType,
+}PresentationType;
+
 @protocol ApplyRequestDelegate <NSObject>
 
 - (void) ApplyRequestWithURL:(NSString*)URL Params:(NSMutableDictionary*)dic Method:(RequestMethod)method;
@@ -22,17 +29,19 @@
 
 @interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIWebViewDelegate>
 
-@property (nonatomic, assign) id <ApplyRequestDelegate> delegate;
-@property (nonatomic, retain) MainViewController   *applyDelegate;
-@property (nonatomic, retain) IBOutlet NSArray     *statusArray;
-@property (nonatomic, retain) IBOutlet UITextField *nameTextField;
-@property (nonatomic, retain) IBOutlet UITextField *phoneNumTexField;
-@property (nonatomic, retain) IBOutlet UITextField *emailTextField;
-@property (nonatomic, assign) CGRect               OldFrame;
-@property (nonatomic, assign) CGRect               KeyboardFrame;
-@property (nonatomic, retain) UITextField          *currentTextField;
-@property (nonatomic, retain) NSMutableArray       *ExhibitorType;
-@property (nonatomic, retain) NSString             *ChoseType;
+@property (nonatomic, assign) id <ApplyRequestDelegate>        delegate;
+@property (nonatomic, retain) MainViewController               *applyDelegate;
+@property (nonatomic, retain) IBOutlet NSArray                 *statusArray;
+@property (nonatomic, retain) IBOutlet UITextField             *nameTextField;
+@property (nonatomic, retain) IBOutlet UITextField             *phoneNumTexField;
+@property (nonatomic, retain) IBOutlet UITextField             *emailTextField;
+@property (nonatomic, assign) CGRect                           OldFrame;
+@property (nonatomic, assign) CGRect                           KeyboardFrame;
+@property (nonatomic, retain) UITextField                      *currentTextField;
+@property (nonatomic, retain) NSMutableArray                   *ExhibitorType;
+@property (nonatomic, retain) NSString                         *ChoseType;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activity;
+@property (nonatomic, retain) UIView                           *PresentationView;
 
 
 - (IBAction)PressCancleButton:(id)sender;

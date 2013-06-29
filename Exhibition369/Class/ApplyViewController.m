@@ -24,6 +24,8 @@
 @synthesize currentTextField;
 @synthesize ExhibitorType;
 @synthesize ChoseType;
+@synthesize activity;
+@synthesize PresentationView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +46,8 @@
     self.currentTextField = nil;
     self.ExhibitorType    = nil;
     self.ChoseType        = nil;
+    self.activity         = nil;
+    self.PresentationView = nil;
     [super dealloc];
 }
 
@@ -59,6 +63,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
+    self.activity.hidesWhenStopped = YES;
+    [self.activity stopAnimating];
 
     [self initData];
     // Do any additional setup after loading the view from its nib.
@@ -182,17 +188,23 @@
 
 - (IBAction)PressOkButton:(id)sender
 {
-    if ([self TheUserInfoIsEmpty:self.nameTextField] || [self TheUserInfoIsEmpty:self.phoneNumTexField] || [self TheUserInfoIsEmpty:self.emailTextField]) {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"信息不能为空，请检查你的信息" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+    [self CheckUserInfoIsCorrect];
+}
+
+- (void) CheckUserInfoIsCorrect
+{
+    if ([self TheUserInfoIsEmpty:self.nameTextField]) {
+        
+    }else if([self TheUserInfoIsEmpty:self.phoneNumTexField] ){
+        
+    }else if([self TheUserInfoIsEmpty:self.emailTextField]){
+        
     }else if(!self.ChoseType || [self.ChoseType isEqualToString:@""]){
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您的身份" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        
     }else{
         NSString *urlString = [ServerURL stringByAppendingString:@"/rest/applies/put"];
-        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       [Model sharedModel].selectExhibition.exKey, @"exKey",
                                        [Model sharedModel].systemConfig.token,     @"token",
                                        self.nameTextField.text,                    @"name",
                                        self.phoneNumTexField.text,                 @"mobile",
@@ -200,14 +212,44 @@
                                        self.ChoseType,                             @"type",
                                        nil];
         NSArray *paramArray = [params allKeys];
-        //NSLog(@"token = %@",[Model sharedModel].systemConfig.token);
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
         request.delegate = self;
         for (NSString *key in paramArray) {
             [request setPostValue:[params objectForKey:key] forKey:key];
-            NSLog(@"key = %@,value = %@",key,[params objectForKey:key]);
         }
+        self.activity.hidden = NO;
+        [self.activity startAnimating];
         [request startAsynchronous];
+    }
+}
+
+- (void)CheckAPropertyIsCorrectWithType:(PresentationType)_type
+{
+    
+}
+
+- (void)presentationShow:(PresentationType)type
+{
+    if (type == NameIsEmpty) {
+        UILabel *namePresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
+        namePresentation.tag = 401;
+        namePresentation.textAlignment = NSTextAlignmentCenter;
+        namePresentation.text          = @"*请检查你的姓名是否为空*";
+        [self.view addSubview:namePresentation];
+    }else if(type == PhoneNumIsEmpty){
+        UILabel *PhonePresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
+        PhonePresentation.tag = 401;
+        PhonePresentation.textAlignment = NSTextAlignmentCenter;
+        PhonePresentation.text          = @"*请检查你的姓名是否为空*";
+        [self.view addSubview:PhonePresentation];
+    }else if(type == EmailIsEmpty){
+        UILabel *emailPresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
+        emailPresentation.tag = 401;
+        emailPresentation.textAlignment = NSTextAlignmentCenter;
+        emailPresentation.text          = @"*请检查你的姓名是否为空*";
+        [self.view addSubview:emailPresentation];
+    }else{
+        
     }
 }
 
@@ -225,11 +267,13 @@
                 [Model sharedModel].selectExhibition.status = @"P";
                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
                 [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                /*
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"提交成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 alertView.tag = 101;
                 alertView.delegate = self;
                 [alertView show];
-                [alertView release];
+                [alertView release];*/
+                self.activity.hidden = YES;
                 break;
             }case 400:{
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"参数错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -253,6 +297,11 @@
         [alertView show];
         [alertView release];
     }
+    
+}
+
+- (void)ApplySuccess
+{
     
 }
 

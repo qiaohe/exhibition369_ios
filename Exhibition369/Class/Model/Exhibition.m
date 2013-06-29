@@ -20,6 +20,7 @@
 @synthesize createdAt = _createdAt;
 @synthesize icon = _icon;
 @synthesize logs;
+@synthesize messageUnRead;
 
 - (id)initWithPData:(NSObject *)data
 {
@@ -69,6 +70,8 @@
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
         //_status = @"N";
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
+        NSString *unReadNum = [[(NSDictionary*)data objectForKey:@"count"]retain];
+        self.messageUnRead = [unReadNum integerValue];
     }
     
     return self;

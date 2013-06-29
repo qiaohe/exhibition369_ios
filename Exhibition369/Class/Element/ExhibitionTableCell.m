@@ -12,6 +12,7 @@
 @implementation ExhibitionTableCell
 
 @synthesize ApplyStatus;
+@synthesize NumOfMessageUnRead;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -72,6 +73,11 @@
         theImage.tag = 6;
         [self.contentView addSubview:theImage];
         
+        NumOfMessageUnRead = [[UIImageView alloc]initWithFrame:CGRectMake(45, 3, 25, 25)];
+        self.NumOfMessageUnRead.hidden = YES;
+        [self.NumOfMessageUnRead setImage:[UIImage imageNamed:@"new message.png"]];
+        [self.contentView addSubview:self.NumOfMessageUnRead];
+        
     }
     return self;
 }
@@ -115,6 +121,7 @@
     [theImage     release];
     [selectedBG   release];
     self.ApplyStatus = nil;
+    self.NumOfMessageUnRead = nil;
     [super dealloc];
 }
 

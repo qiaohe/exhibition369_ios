@@ -74,7 +74,7 @@
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     NSString *currentDeviceToken = [[token stringByReplacingOccurrencesOfString:@" " withString:@""] retain];
     
-    [Model sharedModel].systemConfig.token = currentDeviceToken;
+    //[Model sharedModel].systemConfig.token = currentDeviceToken;
     
     NSLog(@"Did register for remote notifications: %@", currentDeviceToken);
     
@@ -239,6 +239,7 @@
         [Model sharedModel].systemConfig = sc;
         [[Model sharedModel] updateSystemConfig];
         [sc release];
+        [Model sharedModel].HaveNetwork = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationAppConfigRecived object:nil userInfo:nil];
 
     }
@@ -249,6 +250,7 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"Registration push token failed.");
+    [Model sharedModel].HaveNetwork = NO;
     NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
     [userInfo setBool:NO forKey:@"registerTokenSucc"];
     [userInfo synchronize];

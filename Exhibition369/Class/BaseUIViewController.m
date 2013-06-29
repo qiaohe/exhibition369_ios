@@ -14,6 +14,9 @@
 
 @implementation BaseUIViewController
 
+@synthesize refreshHeaderView;
+@synthesize reloading;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -22,6 +25,13 @@
         loadingData = NO;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    self.theRequest = nil;
+    self.refreshHeaderView  = nil;
+    [super dealloc];
 }
 
 - (void)viewDidLoad

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseUIViewController.h"
-#import "EGORefreshTableHeaderView.h"
+
 
 @class ApplyViewController;
 
@@ -43,8 +43,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) IBOutlet UIButton         *unAppliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton         *appliedStateBtn;
 @property (retain, nonatomic) NSMutableArray            *AppliedExhibitions;
-@property (retain, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property (assign, nonatomic) BOOL                      reloading;
+@property (retain, nonatomic) NSMutableArray            *SearchArray;
 @property (retain, nonatomic) ASINetworkQueue           *requestQueue;
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;

@@ -49,15 +49,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self requestData];
-
+    if ([Model sharedModel].HaveNetwork) {
+        [self requestData];
+    }
+    self.view.backgroundColor = [UIColor clearColor];
     // Do any additional setup after loading the view from its nib.
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    self.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)requestData

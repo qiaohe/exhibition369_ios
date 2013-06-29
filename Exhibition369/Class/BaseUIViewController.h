@@ -10,7 +10,10 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "ASINetworkQueue.h"
+#import "EGORefreshTableHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
+
+#define baseHeight [UIScreen mainScreen].applicationFrame.size.height - 40 - 50
 
 typedef enum{
     RequestGlobalInformation = 0,                   //获取全局信息
@@ -42,6 +45,8 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
     BOOL loadingData;
 }
 @property (nonatomic, retain) ASIHTTPRequest*theRequest;
+@property (retain, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property (assign, nonatomic) BOOL                      reloading;
 
 
 - (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method;

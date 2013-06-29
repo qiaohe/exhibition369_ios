@@ -17,6 +17,7 @@
 @synthesize delegate;
 @synthesize tableView;
 @synthesize NewsArray;
+@synthesize UnloadImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,13 +36,73 @@
     [super dealloc];
 }
 
+- (void)ExhibitionNewsShow:(BOOL)CanShow
+{
+    self.UnloadImage.hidden = CanShow;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
     NewsArray = [[NSMutableArray alloc]init];
-    [self updateData];
+    if ([Model sharedModel].HaveNetwork) {
+        if(self.refreshHeaderView == nil)
+        {
+            self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
+            
+            self.refreshHeaderView.delegate = self;
+            self.refreshHeaderView.backgroundColor = [UIColor clearColor];
+            [self.tableView addSubview:self.refreshHeaderView];
+            self.reloading = NO;
+            [self updateData];
+        }
+        [self.refreshHeaderView refreshLastUpdatedDate];
+    }
     // Do any additional setup after loading the view from its nib.
+}
+
+
+#pragma mark - Drop_down to refresh
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+    
+    NSLog(@"loading~~~");
+    [self updateData];
+}
+
+- (void)RefreshStop
+{
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+    return self.reloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
+{
+    return [NSDate date];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!self.reloading) {
+        [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    if (!decelerate)
+	{
+        //[self loadImagesForOnscreenRows];
+    }
 }
 
 - (void)NewsDetailViewDisMiss:(UIView*)view
@@ -74,6 +135,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"array count = %u",[self.NewsArray count]);
     return [self.NewsArray count];
 }
 
@@ -84,6 +146,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableViews cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"self.new count = %u",[self.NewsArray count]);
     static NSString *IdentifierStr = @"cell";
     NewsTableCell *cell = [tableViews dequeueReusableCellWithIdentifier:IdentifierStr];
     if (cell == nil) {
@@ -109,6 +172,7 @@
 
 -(void)requestFailed:(ASIHTTPRequest *)request
 {
+    [self ExhibitionNewsShow:NO];
     NSLog(@"failed");
 }
 
@@ -121,6 +185,7 @@
         
         [self reloadData];
     }else{
+        [self.NewsArray removeAllObjects];
         NSString *responseStr = [request responseString];
         NSDictionary *dic = [responseStr JSONValue];
         NSArray *array = [dic objectForKey:@"list"];
@@ -155,8 +220,16 @@
             [request startAsynchronous];
             [request release];
         }
-        [self reloadData];
+        
+        if ([self.NewsArray count]) {
+            [self ExhibitionNewsShow:YES];
+        }else{
+            [self ExhibitionNewsShow:NO];
+        }
+        NSLog(@"newarray = %u",[self.NewsArray count]);
     }
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning

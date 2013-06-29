@@ -85,10 +85,14 @@
 {
     [super viewDidAppear:YES];
     NSString *status = [Model sharedModel].selectExhibition.status;
-    if ([status isEqualToString:@"D"] || [status isEqualToString:@"N"]) {
+    if ([status isEqualToString:@"D"]) {
         self.QRCodeImage.hidden = YES;
         self.exhibitionTextView.hidden = NO;
         [self.exhibitionTextView setText:@"您的审核未通过\n如需再次申请\n请整理好资料后再次报名"];
+    }else if([status isEqualToString:@"N"]){
+        self.QRCodeImage.hidden = YES;
+        self.exhibitionTextView.hidden = NO;
+        [self.exhibitionTextView setText:@"您还未报名\n请先报名"];
     }else if ([status isEqualToString:@"P"]){
         self.QRCodeImage.hidden = YES;
         self.exhibitionTextView.hidden = NO;

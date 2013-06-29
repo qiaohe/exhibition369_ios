@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic, retain) UIImageView *ApplyStatus;
+@property (nonatomic, retain) UIImageView *NumOfMessageUnRead;
 
 - (void)setApplyStatusWithString:(NSString*)Status;
 

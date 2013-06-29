@@ -25,10 +25,9 @@
 @implementation MainViewController
 
 @synthesize AppliedExhibitions;
-@synthesize refreshHeaderView;
-@synthesize reloading;
 @synthesize requestQueue;
 @synthesize appliedStateBtn;
+@synthesize SearchArray;
 
 
 -(id)init
@@ -40,6 +39,7 @@
         
         unAppliedExhibitions = [[NSMutableArray alloc] init];
         AppliedExhibitions = [[NSMutableArray alloc]init];
+        SearchArray = [[NSMutableArray alloc]init];
     }
     
     return self;
@@ -81,7 +81,15 @@
     [self.requestQueue go];
     
     [self updateData];
-    [self requestExhibitions];
+    if ([Model sharedModel].HaveNetwork) {
+        [self requestExhibitions];
+    }else{
+        /*
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"未连接网络" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];*/
+        [self SetListStateWithActiveTab:MainViewActiveTabAppliedExhibitions];
+    }
     
     
     if(self.refreshHeaderView == nil)
@@ -164,7 +172,27 @@
     [self.theTableView reloadData];
 }
 
+- (void)Update
+{
+    [typeGroup removeAllObjects];
+	[typeVSExhibitions removeAllObjects];
+    NSString *group;
+    NSMutableArray *array;
+    for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
+        group = e.status;
+        array = [typeVSExhibitions objectForKey:group];
+        if (array == nil)
+        {
+            array = [NSMutableArray array];
+            [typeVSExhibitions setObject:array forKey:group];
+            [typeGroup addObject:group];
+        }
+        [array addObject:e];
+    }
+}
+
 - (void)requestExhibitions{
+    NSLog(@"text = %@",_searchInput.text);
     if([Model sharedModel].systemConfig){
         NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                        [Model sharedModel].systemConfig.token, @"token",
@@ -225,9 +253,9 @@
 
 - (void)SetListStateWithActiveTab:(MainViewActiveTab)_activeTab
 {
+    activeTab = _activeTab;
+
     [self requestExhibitions];
-    NSLog(@"_activeTab = %d",_activeTab);
-    NSLog(@"tab        = %d",MainViewActiveTabAppliedExhibitions);
     NSString *stringValue1 = [[NSNumber numberWithInteger:_activeTab] stringValue];
     NSString *stringValue2 = [[NSNumber numberWithInteger:MainViewActiveTabAppliedExhibitions] stringValue];
     if ([stringValue1 isEqualToString:stringValue2]) {
@@ -243,7 +271,6 @@
 
 - (void) ApplyViewApplySuccess
 {
-    activeTab = MainViewActiveTabAppliedExhibitions;
     [self SetListStateWithActiveTab:MainViewActiveTabAppliedExhibitions];
 }
 
@@ -358,6 +385,12 @@
         cell.ApplyStatus.hidden = NO;
         [cell setApplyStatusWithString:e.status];
     }
+    NSLog(@"count = %d",e.messageUnRead);
+    if (e.messageUnRead != 0) {
+        cell.NumOfMessageUnRead.hidden = NO;
+    }else{
+        cell.NumOfMessageUnRead.hidden = YES;
+    }
 	theTitle.text = e.name;
     theDate.text = e.date;
     theAddress.text = e.address;
@@ -396,11 +429,17 @@
     } else {
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
     }
+    if ([self.searchInput canResignFirstResponder]){
+        [self.searchInput resignFirstResponder];
+    }
     
     [Model sharedModel].selectExhibition = e;
     
     ExhibitionDetailViewController *edvc = [[[ExhibitionDetailViewController alloc] init] autorelease];
-    [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
+
+    //[[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
+    [self.navigationController pushViewController:edvc animated:YES];
+    
 }
 
 - (BOOL)AppliedExhibitions:(NSArray*)exhibitions ContentsObject:(NSObject*)object
@@ -420,6 +459,9 @@
 {
     NSInteger requestType = [[request.userInfo objectForKey:@"MainViewRequestType"]integerValue];
     [super requestFinished:request];
+    if (!unAppliedExhibitions) {
+        unAppliedExhibitions = [[NSMutableArray alloc]init];
+    }
     
     if (requestType == RequestApplyExhibitionList) {
         NSArray *ApplyList = [[request responseString]JSONValue];
@@ -456,7 +498,7 @@
         [unAppliedExhibitions removeAllObjects];
         
         NSString *responseString = [request responseString];
-                
+        
         NSDictionary *result = [responseString JSONValue];
         
         NSArray *exhibitorArray = [result objectForKey:@"list"];
@@ -506,6 +548,7 @@
                 [e release];
             }
         }
+        [self.theTableView reloadData];
     }
 }
 
@@ -524,8 +567,8 @@
     [_appliedBtn release];
     [_unAppliedBtn release];
     self.AppliedExhibitions = nil;
-    self.refreshHeaderView  = nil;
     self.requestQueue       = nil;
+    self.SearchArray        = nil;
     [super dealloc];
 }
 - (void)viewDidUnload {
@@ -542,6 +585,9 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    if ([self.searchInput canResignFirstResponder]){
+        [self.searchInput resignFirstResponder];
+    }
     
 }
 /*
@@ -551,9 +597,19 @@
  
 }*/
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    
+}
+
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
+    
     NSLog(@"loading~~~");
+    if ([self.searchInput canResignFirstResponder]){
+        [self.searchInput resignFirstResponder];
+    }
+    
     [self requestExhibitions];
 }
 
@@ -651,14 +707,66 @@
     //[self loadImagesForOnscreenRows];
 }
 - (IBAction)searchExhibition:(id)sender {
-    [self ShouldSearchExhibition];
+    if ([self.searchInput canResignFirstResponder]) {
+        [self.searchInput resignFirstResponder];
+    }
+    if (activeTab == MainViewActiveTabExhibitions) {
+        [self UnAppliedViewShouldSearchExhibition];
+    }else
+        [self AppliedViewShouldSearchExhibition];
 }
 
-- (void)ShouldSearchExhibition
+- (void)UnAppliedViewShouldSearchExhibition
 {
-    [_searchInput resignFirstResponder];
-    [self UnApplyListShow];
+    if ([self.searchInput canResignFirstResponder]) {
+        [self.searchInput resignFirstResponder];
+    }
     [self requestExhibitions];
+}
+
+- (void)AppliedViewShouldSearchExhibition
+{
+    if (!self.SearchArray) {
+        SearchArray = [[NSMutableArray alloc]init];
+    }
+    if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]) {
+        [typeGroup removeAllObjects];
+        [typeVSExhibitions removeAllObjects];
+        NSString *group;
+        NSMutableArray *array;
+        for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
+            group = e.status;
+            array = [typeVSExhibitions objectForKey:group];
+            if (array == nil)
+            {
+                array = [NSMutableArray array];
+                [typeVSExhibitions setObject:array forKey:group];
+                [typeGroup addObject:group];
+            }
+            NSRange rang = [e.name rangeOfString:self.searchInput.text];
+            if (rang.location != NSNotFound) {
+                [array addObject:e];
+            }
+        }
+        [self.theTableView reloadData];
+    }else{
+        [typeGroup removeAllObjects];
+        [typeVSExhibitions removeAllObjects];
+        NSString *group;
+        NSMutableArray *array;
+        for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
+            group = e.status;
+            array = [typeVSExhibitions objectForKey:group];
+            if (array == nil)
+            {
+                array = [NSMutableArray array];
+                [typeVSExhibitions setObject:array forKey:group];
+                [typeGroup addObject:group];
+            }
+            [array addObject:e];
+        }
+        [self updateData];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -666,7 +774,10 @@
     if ([textField canResignFirstResponder]) {
         [textField resignFirstResponder];
     }
-    [self ShouldSearchExhibition];
+    if (activeTab == MainViewActiveTabExhibitions) {
+        [self UnAppliedViewShouldSearchExhibition];
+    }else
+        [self AppliedViewShouldSearchExhibition];
     return YES;
 }
 

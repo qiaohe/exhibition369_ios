@@ -22,12 +22,13 @@
 @property (retain, nonatomic) IBOutlet UIView      *titleView;
 @property (retain, nonatomic) IBOutlet UIImageView *titleImageView;
 @property (retain, nonatomic) IBOutlet UIImageView *backImageView;
-@property (retain, nonatomic) IBOutlet UITabBar *tabBar;
-@property (assign, nonatomic) Exhibition *exhibition;
-@property (retain, nonatomic) NSArray *viewControllers;
-@property (assign, nonatomic) NSInteger prevIndex;
-@property (assign, nonatomic) NSInteger prevBtnIndex;
+@property (retain, nonatomic) IBOutlet UITabBar    *tabBar;
+@property (assign, nonatomic) Exhibition           *exhibition;
+@property (retain, nonatomic) NSArray              *viewControllers;
+@property (assign, nonatomic) NSInteger            prevIndex;
+@property (assign, nonatomic) NSInteger            prevBtnIndex;
 @property (retain, nonatomic) IBOutlet UIButton    *messageUnReadNum;
+@property (retain, nonatomic) IBOutlet UIButton    *ApplyButton;
 - (IBAction)backToMainView:(id)sender;
 
 - (IBAction)ButtonIsPress:(UIButton*)sender;

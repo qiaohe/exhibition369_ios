@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSDate *createdAt;
 @property (nonatomic, retain) UIImage *icon;
 @property (nonatomic, retain) NSString *logs;
+@property (nonatomic, assign) NSInteger messageUnRead;
 
 - (NSString *)getIconImageURL;
 

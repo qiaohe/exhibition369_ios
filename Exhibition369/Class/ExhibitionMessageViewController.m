@@ -18,6 +18,12 @@
 @synthesize tableView;
 @synthesize messageArray;
 @synthesize aMessage;
+@synthesize heightsForRows;
+@synthesize NewTouchCell;
+@synthesize OldTouchCell;
+@synthesize OldIndexPath;
+@synthesize OldMessage;
+@synthesize UnloadImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,9 +37,15 @@
 
 -(void)dealloc
 {
-    self.tableView    = nil;
-    self.messageArray = nil;
-    self.aMessage     = nil;
+    self.tableView      = nil;
+    self.messageArray   = nil;
+    self.aMessage       = nil;
+    self.heightsForRows = nil;
+    self.NewTouchCell   = nil;
+    self.OldTouchCell   = nil;
+    self.OldIndexPath   = nil;
+    self.OldMessage     = nil;
+    self.UnloadImage    = nil;
     [super dealloc];
 }
 
@@ -54,7 +66,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70.0f;
+    Message *m = [self.messageArray objectAtIndex:indexPath.row];
+    CGSize size = [m.Content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue" size:13] constrainedToSize:CGSizeMake(320, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat changeHeight = size.height - 25.0f;
+    if (m.isExpand) {
+        if (changeHeight > 0) {
+            return 70.0f + changeHeight;
+        }else
+            return 70.0f;
+    }else{
+        return 70.0f;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,14 +84,42 @@
     static NSString *IdentifierStr = @"cell";
     MessagesTableCell *cell = [_tableView dequeueReusableCellWithIdentifier:IdentifierStr];
     if (cell == nil) {
-        cell = [[MessagesTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IdentifierStr];
+        cell = [[[MessagesTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IdentifierStr]autorelease];
     }
+    cell.hidden = NO;
     Message *m = [self.messageArray objectAtIndex:indexPath.row];
+    CGSize size = [m.Content sizeWithFont:cell.titleLabel.font constrainedToSize:CGSizeMake(320, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping];
+    NSInteger isExit = m.isExpand;
+    if (isExit) {
+        NSNumber *num = [NSNumber numberWithFloat:(size.height - 25.0f)];
+        [cell ChangeCellHeightWithNum:num];
+    }else if(isExit == 0){
+        [cell ChangeCellHeightWithNum:[NSNumber numberWithFloat:-1]];
+    }
+ 
     [cell.titleLabel setText:m.Content];
     [cell.contentLabel setText:m.messageDate];
     
-    
     return cell;
+}
+
+- (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Message *m = [self.messageArray objectAtIndex:indexPath.row];
+    MessagesTableCell *cell = (MessagesTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    self.OldTouchCell = cell;
+    m.isExpand = m.isExpand?NO:YES;
+    if (m.isExpand) {
+        cell.hidden = YES;
+    }else if(!m.isExpand){
+        cell.hidden = YES;
+    }
+    [self reloadRowAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+}
+
+- (void) reloadRowAtIndexPaths:(NSArray*)IndexPaths
+{
+    [self.tableView reloadRowsAtIndexPaths:IndexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)viewDidLoad
@@ -77,29 +127,37 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.messageArray = [[NSMutableArray alloc]init];
-    self.tableView.editing = NO;
-    [self initData];
+    messageArray = [[NSMutableArray alloc]init];
+    heightsForRows = [[NSMutableArray alloc]init];
+    //self.tableView.editing = NO;
+        
     // Do any additional setup after loading the view from its nib.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self CheckMessageNum];
+}
+
+- (void)CheckMessageNum
+{
+    if ([Model sharedModel].HaveNetwork) {
+        if(self.refreshHeaderView == nil)
+        {
+            self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
+                
+            self.refreshHeaderView.delegate = self;
+            self.refreshHeaderView.backgroundColor = [UIColor clearColor];
+            [self.tableView addSubview:self.refreshHeaderView];
+            self.reloading = NO;
+        }
+        [self.refreshHeaderView refreshLastUpdatedDate];
+        [self initData];
+    }
 }
 
 - (void)initData
 {
-    /*
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSString *message = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"message" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSArray *array = [message JSONValue];
-            for (NSDictionary *dic in array) {
-                NSLog(@"name = %@",[dic objectForKey:@"name"]);
-                Message *m = [[Message alloc]init];
-                m.messageTitle = [dic objectForKey:@"name"];
-                m.Content      = [dic objectForKey:@"content"];
-                [self.messageArray addObject:m];
-                [self.tableView reloadData];
-            }
-        });
-    });*/
     NSString *urlString = [ServerURL stringByAppendingString:@"/rest/messages/find"];
     urlString = [urlString stringByAppendingFormat:@"?exKey=%@&token=%@",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -108,11 +166,54 @@
     [request startAsynchronous];
 }
 
+
+#pragma mark - Drop_down to refresh
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+    
+    NSLog(@"loading~~~");
+    [self initData];
+}
+
+- (void)RefreshStop
+{
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+    return self.reloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
+{
+    return [NSDate date];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!self.reloading) {
+        [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    if (!decelerate)
+	{
+        //[self loadImagesForOnscreenRows];
+    }
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"response = %@",[request responseString]);
     NSDictionary *requestDic = [[request responseString] JSONValue];
     NSArray *MessageList = [requestDic objectForKey:@"list"];
+    [messageArray removeAllObjects];
     for (NSDictionary *dic in MessageList) {
         Message *m = [[Message alloc]init];
         m.Content = [dic objectForKey:@"content"];
@@ -137,6 +238,7 @@
         m.messageDate = NowDate;
         
         [self.messageArray addObject:m];
+        [self.heightsForRows addObject:[NSNumber numberWithFloat:70.0f]];
         [m release];
     }
     
@@ -146,7 +248,15 @@
             i ++;
         }
     }
-    [self.delegate ShowMessageUnReadWithNum:i];
+    if ([self.messageArray count]) {
+        self.UnloadImage.hidden = YES;
+    }else{
+        self.UnloadImage.hidden = NO;
+    }
+    self.reloading = NO;
+    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    
+    //[self.delegate ShowMessageUnReadWithNum:i];
     
     [self.tableView reloadData];
 }
