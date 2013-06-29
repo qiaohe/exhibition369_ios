@@ -247,6 +247,8 @@
         } else {
             [self startIconDownload:e];
         }
+    } else {
+        [theImage setImage:nil];
     }
     
 	return cell;
