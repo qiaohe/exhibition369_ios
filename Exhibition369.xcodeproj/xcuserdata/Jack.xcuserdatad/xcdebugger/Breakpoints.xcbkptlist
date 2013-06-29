@@ -99,7 +99,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Exhibition369/Class/MainViewController.m"
-         timestampString = "394214466.79699"
+         timestampString = "394216623.597626"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "380"
@@ -170,45 +170,6 @@
          startingLineNumber = "184"
          endingLineNumber = "184"
          landmarkName = "-loadingMoreTableScrollViewDidScroll:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Exhibition369/Class/MainViewController.m"
-         timestampString = "394214466.79699"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "536"
-         endingLineNumber = "536"
-         landmarkName = "-unAppliedViewShouldSearchExhibition"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Exhibition369/Class/MainViewController.m"
-         timestampString = "394214466.79699"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "525"
-         endingLineNumber = "525"
-         landmarkName = "-searchExhibition:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Exhibition369/Class/MainViewController.m"
-         timestampString = "394214466.79699"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "544"
-         endingLineNumber = "544"
-         landmarkName = "-appliedViewShouldSearchExhibition"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

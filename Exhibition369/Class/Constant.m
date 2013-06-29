@@ -31,6 +31,6 @@ NSString *const EXHIBITION_STATUS_P = @"P";
 NSString *const EXHIBITION_STATUS_A = @"A";
 NSString *const EXHIBITION_STATUS_D = @"D";
 
-int const PAGE_LOAD_ITEM_SIZE = 2;
+int const PAGE_LOAD_ITEM_SIZE = 5;
 
 @end

@@ -214,40 +214,41 @@
     theImage = (UIImageView *)[cell.contentView viewWithTag:6];
     theButton.selectIndex = indexPath;
     
-    Exhibition *e;
+    Exhibition *e = nil;
     
-    if(activeTab == MainViewActiveTabAppliedExhibitions){
-        e = (Exhibition *)[appliedExhibitions objectAtIndex:indexPath.row];
+    NSMutableArray *dataSource = [self getDataSource];
+    
+    if([dataSource count] > indexPath.row){
+        e = (Exhibition *)[dataSource objectAtIndex:indexPath.row];
+    }
+    if(e != nil){
+        if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
+            theButton.hidden = NO;
+            cell.ApplyStatus.hidden = YES;
+            [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
+        }else{
+            theButton.hidden = YES;
+            cell.ApplyStatus.hidden = NO;
+            [cell setApplyStatusWithString:e.status];
+        }
+        NSLog(@"count = %d",e.messageUnRead);
+        if (e.messageUnRead != 0) {
+            cell.NumOfMessageUnRead.hidden = NO;
+        }else{
+            cell.NumOfMessageUnRead.hidden = YES;
+        }
+        theTitle.text = e.name;
+        theDate.text = e.date;
+        theAddress.text = e.address;
+        theOrganizer.text = e.organizer;
         
-    } else {
-        e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
+        if(e.icon){
+            [theImage setImage:e.icon];
+        } else {
+            [self startIconDownload:e];
+        }
     }
     
-    if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
-        theButton.hidden = NO;
-        cell.ApplyStatus.hidden = YES;
-        [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
-    }else{
-        theButton.hidden = YES;
-        cell.ApplyStatus.hidden = NO;
-        [cell setApplyStatusWithString:e.status];
-    }
-    NSLog(@"count = %d",e.messageUnRead);
-    if (e.messageUnRead != 0) {
-        cell.NumOfMessageUnRead.hidden = NO;
-    }else{
-        cell.NumOfMessageUnRead.hidden = YES;
-    }
-	theTitle.text = e.name;
-    theDate.text = e.date;
-    theAddress.text = e.address;
-    theOrganizer.text = e.organizer;
-    
-    if(e.icon){
-        [theImage setImage:e.icon];
-    } else {
-        [self startIconDownload:e];
-    }
 	return cell;
 }
 
@@ -261,8 +262,7 @@
 {
     Exhibition *e;
     if(activeTab == MainViewActiveTabAppliedExhibitions){
-        NSMutableArray *array = [typeVSExhibitions objectForKey:[typeGroup objectAtIndex:indexPath.section]];
-        e = (Exhibition *)[array objectAtIndex:indexPath.row];
+        e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
         
     } else {
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
@@ -402,12 +402,6 @@
     [self refreshExhibitions];
 }
 
-- (void)RefreshStop
-{
-    self.reloading = NO;
-    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
-}
-
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
 {
     return self.reloading; // should return if data source model is reloading
@@ -438,7 +432,7 @@
             {
                 NSMutableArray *dataSource = [self getDataSource];
                 if([dataSource count] > indexPath.row){
-                    Exhibition *e = [[self getDataSource] objectAtIndex:indexPath.row];
+                    Exhibition *e = [dataSource objectAtIndex:indexPath.row];
                     if([e.exKey isEqualToString:exhibition.exKey]){
                         UITableViewCell *cell = [_theTableView cellForRowAtIndexPath:indexPath];
                         UIImageView *theImage = (UIImageView *)[cell viewWithTag:6];
@@ -473,15 +467,14 @@
 - (void)loadImagesForOnscreenRows
 {
     if(activeTab == MainViewActiveTabExhibitions){
-        if ([unAppliedExhibitions count] > 0)
+        
+        NSArray *visiblePaths = [_theTableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
         {
-            NSArray *visiblePaths = [_theTableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in visiblePaths)
-            {
-                Exhibition *e = [unAppliedExhibitions objectAtIndex:indexPath.row];
-                
+            NSMutableArray *dataSource = [self getDataSource];
+            if([dataSource count] > indexPath.row){
+                Exhibition *e = (Exhibition *)[dataSource objectAtIndex:indexPath.row];
                 if (e.icon)
-                    // Avoid the app icon download if the app already has an icon
                 {
                     [self startIconDownload:e];
                 }
