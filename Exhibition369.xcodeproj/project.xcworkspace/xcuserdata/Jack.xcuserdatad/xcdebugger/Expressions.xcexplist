@@ -3,18 +3,26 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[MainViewController tableView:cellForRowAtIndexPath:]:MainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[Exhibition compare:]:Exhibition.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MainViewController appliedViewShouldSearchExhibition]:MainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[Model sharedModel].appliedExhibitionList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[BaseUIViewController sendRequestWith:params:method:]:BaseUIViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "params">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MainViewController requestFailed:]:MainViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[SystemConfig initWithJSONData:]:SystemConfig.m">
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate requestFinished:]:AppDelegate.m">
@@ -28,10 +36,33 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MainViewController requestExhibitions]:MainViewController.m">
+         contextName = "-[MainViewController requestFailed:]:MainViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[BaseUIViewController requestFinished:]:BaseUIViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LoadingMoreTableFooterView loadingMoreTableScrollViewDidScroll:]:LoadingMoreTableFooterView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[scrollView contentSize].height">
+            </PersistentString>
+            <PersistentString
+               value = "[scrollView contentOffset].y">
+            </PersistentString>
+            <PersistentString
+               value = "scrollView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[SystemConfig initWithJSONData:]:SystemConfig.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MainViewController requestExhibitions]:MainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MainViewController refreshExhibitions]:MainViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

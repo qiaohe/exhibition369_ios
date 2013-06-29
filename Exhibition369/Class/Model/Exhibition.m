@@ -16,6 +16,7 @@
 @synthesize date = _date;
 @synthesize address = _address;
 @synthesize organizer = _organizer;
+@synthesize applied = _applied;
 @synthesize status = _status;
 @synthesize createdAt = _createdAt;
 @synthesize icon = _icon;
@@ -31,6 +32,7 @@
         _date = [[(NSDictionary *)data objectForKey:@"date"] retain];
         _address = [[(NSDictionary *)data objectForKey:@"address"] retain];
         _organizer = [[(NSDictionary *)data objectForKey:@"organizer"] retain];
+        _applied = [[(NSDictionary *)data objectForKey:@"applied"] retain];
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
         self.logs = @"";
@@ -51,6 +53,7 @@
     self.date = nil;
     self.address = nil;
     self.organizer = nil;
+    self.applied = nil;
     self.status = nil;
     self.createdAt = nil;
     self.icon = nil;
@@ -67,6 +70,7 @@
         _date = [[(NSDictionary *)data objectForKey:@"date"] retain];
         _address = [[(NSDictionary *)data objectForKey:@"address"] retain];
         _organizer = [[(NSDictionary *)data objectForKey:@"organizer"] retain];
+        _applied = [[(NSDictionary *)data objectForKey:@"applied"] retain];
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
         //_status = @"N";
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
@@ -84,6 +88,7 @@
             [Utils NullToEmpty:_date], @"date",
             [Utils NullToEmpty:_address], @"address",
             [Utils NullToEmpty:_organizer], @"organizer",
+            [Utils NullToEmpty:_applied], @"applied",
             [Utils NullToEmpty:_status], @"status",
             [Utils NullToEmpty:_createdAt], @"createdAt",
             nil];
@@ -94,5 +99,14 @@
     return [NSString stringWithFormat:@"%@/%@/icon.png", [Model sharedModel].systemConfig.assetServer, _exKey];
 }
 
+- (NSComparisonResult)compare:(Exhibition *)e {
+    return [self.status compare:e.status];
+    /*
+     //TODO need backend change the api return the createAt when get applied Exhibition
+     if(NSOrderedSame == [self.status compare:e.status])
+        return [self.createdAt compare:e.createdAt];
+    else
+        return [self.status compare:e.status];*/
+}
 
 @end

@@ -136,4 +136,11 @@ static Model *sharedModel;
     }
 }
 
+-(BaseUIViewController *)getMainViewController{
+    if(![Model sharedModel].mainView){
+        [Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
+    }
+    return [Model sharedModel].mainView;
+}
+
 @end

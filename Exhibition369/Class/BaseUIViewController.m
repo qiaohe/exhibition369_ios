@@ -47,7 +47,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 -(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method{
+    [self sendRequestWith:url params:params method:method userInfo:NULL];
+}
+
+-(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method userInfo:(NSDictionary *)userInfo{
     if(method == RequestMethodGET){
         NSString *urlprams = @"";
         for (id keys in params) {
@@ -64,6 +69,8 @@
         ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:nsurl];
         [request setTimeOutSeconds:60];
         request.delegate = self;
+        if(userInfo != NULL)
+            [request setUserInfo:userInfo];
         [request startAsynchronous];
         loadingData = YES;
         [self showLoadingIndicator];
@@ -74,6 +81,8 @@
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsurl];
         [request setTimeOutSeconds:60];
         request.delegate = self;
+        if(userInfo != NULL)
+            [request setUserInfo:userInfo];
         NSArray *keyArray = [params allKeys];
         for (int i = 0; i<[keyArray count]; i++) {
             [request setPostValue:[params objectForKey:[keyArray objectAtIndex:i]] forKey:[keyArray objectAtIndex:i]];
@@ -85,8 +94,8 @@
     }
 }
 
--(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method request:(ASIHTTPRequest*)request
-{
+-(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestTag:(int)requestTag{
+    
     if(method == RequestMethodGET){
         NSString *urlprams = @"";
         for (id keys in params) {
@@ -100,28 +109,39 @@
         NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         
-        request = [ASIHTTPRequest requestWithURL:nsurl];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:nsurl];
         [request setTimeOutSeconds:60];
         request.delegate = self;
+        request.tag = requestTag;
         [request startAsynchronous];
         loadingData = YES;
         [self showLoadingIndicator];
     }else if (method == RequestMethodPOST){
-        ASIFormDataRequest *dataRequest = (ASIFormDataRequest*)request;
+        
         NSURL *nsurl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
-        dataRequest = [ASIFormDataRequest requestWithURL:nsurl];
-        [dataRequest setTimeOutSeconds:60];
-        dataRequest.delegate = self;
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:nsurl];
+        [request setTimeOutSeconds:60];
+        request.delegate = self;
+        request.tag = requestTag;
         NSArray *keyArray = [params allKeys];
         for (int i = 0; i<[keyArray count]; i++) {
-            [dataRequest setPostValue:[params objectForKey:[keyArray objectAtIndex:i]] forKey:[keyArray objectAtIndex:i]];
+            [request setPostValue:[params objectForKey:[keyArray objectAtIndex:i]] forKey:[keyArray objectAtIndex:i]];
         }
         
-        [dataRequest startAsynchronous];
+        [request startAsynchronous];
         loadingData = YES;
         [self showLoadingIndicator];
     }
+    
+}
+
+-(void)sendRequestWith:(ASIHTTPRequest*)request
+{
+    request.delegate = self;
+    [request startAsynchronous];
+    loadingData = YES;
+    [self showLoadingIndicator];
 }
 
 -(void) showLoadingIndicator{
@@ -178,6 +198,8 @@
     
     //NSLog(@"Request Finished: %@", responseString);
     
+    [self done:request];
+    
     
 }
 
@@ -186,6 +208,17 @@
     loadingData = NO;
     [self hideLoadingIndicator];
     //NSLog(@"Request Failed: %@", request.error);
+}
+
+- (void)done:(ASIHTTPRequest *)request
+{
+    //handler by children
+}
+
+- (void)error:(ASIHTTPRequest *)request
+{
+    //handler by children
+    [self error:request];
 }
 
 

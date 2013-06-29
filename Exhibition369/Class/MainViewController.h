@@ -11,19 +11,20 @@
 
 
 @class ApplyViewController;
+@protocol LoadingMoreTableFooterDelegate;
 
 typedef enum{
     RequestUnApplyExhibitionsList = 1,
     RequestApplyExhibitionList,
-    RequestApplyStatus,
-    RequestExhibitonIcon,
+    RequestUnApplyExhibitionsLoadingMore,
 }MainViewRequestType;
+
 typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     MainViewActiveTabExhibitions           = 1 << 0,
     MainViewActiveTabAppliedExhibitions    = 1 << 1
 };
 
-@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate> {
+@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate, LoadingMoreTableFooterDelegate> {
     MainViewActiveTab activeTab;
     
     NSMutableArray *typeGroup;
@@ -31,7 +32,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     
     
     NSMutableArray *unAppliedExhibitions;
-    NSMutableArray *AppliedExhibitions;
+    NSMutableArray *appliedExhibitions;
     
 }
 @property (retain, nonatomic) IBOutlet UITableView      *theTableView;
@@ -42,11 +43,9 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) IBOutlet UIButton         *appliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton         *unAppliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton         *appliedStateBtn;
-@property (retain, nonatomic) NSMutableArray            *AppliedExhibitions;
-@property (retain, nonatomic) NSMutableArray            *SearchArray;
-@property (retain, nonatomic) ASINetworkQueue           *requestQueue;
+@property (retain, nonatomic) NSMutableArray            *appliedExhibitions;
+@property (retain, nonatomic) LoadingMoreTableFooterView *loadingMoreFooterView;
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
-- (void) ApplyViewApplySuccess;
 
 @end

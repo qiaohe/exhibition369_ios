@@ -32,14 +32,14 @@
         //[self setSelectedBackgroundView:selectedBG];
 		
 		theTitle = [[[UILabel alloc] initWithFrame:CGRectMake(75, 11, 220, 13)] autorelease];
-        theTitle.minimumScaleFactor = 13;
+        theTitle.minimumFontSize = 13;
         theTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
         theTitle.backgroundColor = [UIColor clearColor];
 		theTitle.tag = 1;
 		[self.contentView addSubview:theTitle];
         
         theDate = [[[UILabel alloc] initWithFrame:CGRectMake(75, 25, 220, 12)] autorelease];
-        theDate.minimumScaleFactor = 11;
+        theDate.minimumFontSize = 11;
         theDate.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
         theDate.backgroundColor = [UIColor clearColor];
         theDate.textColor = [UIColor darkGrayColor];
@@ -47,7 +47,7 @@
         [self.contentView addSubview:theDate];
         
         theAddress = [[[UILabel alloc] initWithFrame:CGRectMake(75, 37, 220, 12)] autorelease];
-        theAddress.minimumScaleFactor = 11;
+        theAddress.minimumFontSize = 11;
         theAddress.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
         theAddress.backgroundColor = [UIColor clearColor];
         theAddress.textColor = [UIColor darkGrayColor];
@@ -55,7 +55,7 @@
         [self.contentView addSubview:theAddress];
         
         theOrganizer = [[[UILabel alloc] initWithFrame:CGRectMake(75, 49, 220, 12)] autorelease];
-        theOrganizer.minimumScaleFactor = 11;
+        theOrganizer.minimumFontSize = 11;
         theOrganizer.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
         theOrganizer.backgroundColor = [UIColor clearColor];
         theOrganizer.textColor = [UIColor darkGrayColor];

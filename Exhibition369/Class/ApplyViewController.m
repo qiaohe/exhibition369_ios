@@ -8,6 +8,7 @@
 
 #import "ApplyViewController.h"
 #import "MainViewController.h"
+#import "Constant.h"
 
 @interface ApplyViewController ()
 
@@ -264,9 +265,10 @@
         NSInteger responseResult = request.responseStatusCode;
         switch (responseResult) {
             case 200:{
-                [Model sharedModel].selectExhibition.status = @"P";
+                [Model sharedModel].selectExhibition.applied = EXHIBITION_APPLIED_Y;
+                [Model sharedModel].selectExhibition.status = EXHIBITION_STATUS_P;
                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
-                [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
                 /*
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"提交成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 alertView.tag = 101;

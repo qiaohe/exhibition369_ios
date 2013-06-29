@@ -21,11 +21,16 @@ NSString *const HTTP_AUTHENTICATION_PASS = @"pass";
 
 NSString *const DATE_FORMAT = @"yyyy-MM-dd'T'HH:mm:ss";
 
-//审核状态，N 未报名(Not Applied)，P 审核中，A 审核通过，D 未通过
+//是否已报名，Y 已报名，N 未报名
+NSString *const EXHIBITION_APPLIED_Y = @"Y";
+NSString *const EXHIBITION_APPLIED_N = @"N";
 
+//审核状态，N 未报名(Not Applied)，P 审核中，A 审核通过，D 未通过
 NSString *const EXHIBITION_STATUS_N = @"N";
 NSString *const EXHIBITION_STATUS_P = @"P";
 NSString *const EXHIBITION_STATUS_A = @"A";
 NSString *const EXHIBITION_STATUS_D = @"D";
+
+int const PAGE_LOAD_ITEM_SIZE = 2;
 
 @end

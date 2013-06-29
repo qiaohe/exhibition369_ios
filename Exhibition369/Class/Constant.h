@@ -21,9 +21,15 @@ extern NSString *const HTTP_AUTHENTICATION_PASS;
 
 extern NSString *const DATE_FORMAT;
 
+extern NSString *const EXHIBITION_APPLIED_Y;
+extern NSString *const EXHIBITION_APPLIED_N;
+
 extern NSString *const EXHIBITION_STATUS_N;
 extern NSString *const EXHIBITION_STATUS_P;
 extern NSString *const EXHIBITION_STATUS_A;
 extern NSString *const EXHIBITION_STATUS_D;
+
+
+extern int const PAGE_LOAD_ITEM_SIZE;
 
 @end

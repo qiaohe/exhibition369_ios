@@ -11,6 +11,7 @@
 #import "ASIFormDataRequest.h"
 #import "ASINetworkQueue.h"
 #import "EGORefreshTableHeaderView.h"
+#import "LoadingMoreTableFooterView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define baseHeight [UIScreen mainScreen].applicationFrame.size.height - 40 - 50
@@ -50,9 +51,12 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
 
 
 - (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method;
--(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method request:(ASIHTTPRequest*)request;
-- (void)requestFinished:(ASIHTTPRequest *)request;
-- (void)requestFailed:(ASIHTTPRequest *)request;
+- (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method userInfo:(NSDictionary *)userInfo;
+- (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestTag:(int)requestTag;
+- (void)sendRequestWith:(ASIHTTPRequest*)request;
+
+- (void)done:(ASIHTTPRequest *)request;
+- (void)error:(ASIHTTPRequest *)request;
 - (void)showLoadingIndicator;
 - (void)hideLoadingIndicator;
 - (UIColor *)getColor:(NSString *)stringToConvert;

@@ -17,7 +17,6 @@
 #import "IData.h"
 #import "PlistProxy.h"
 #import "SystemConfig.h"
-#import "369展会资讯-Prefix.pch"
 #import "SBJson.h"
 #import "ExhibitionsNews.h"
 #import <QuartzCore/QuartzCore.h>
@@ -43,4 +42,5 @@
 - (void)displayTip:(NSString *)tip modal:(BOOL)modal;
 - (void)pushView:(UIViewController *)view option:(ViewTrasitionEffect)options;
 - (void)updateSystemConfig;
+- (BaseUIViewController *)getMainViewController;
 @end

@@ -351,8 +351,7 @@
     
 }
 - (IBAction)backToMainView:(id)sender {
-    //[Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
-    //[[Model sharedModel] pushView:[Model sharedModel].mainView option:ViewTrasitionEffectMoveRight];
+    [[Model sharedModel] pushView:[[Model sharedModel] getMainViewController] option:ViewTrasitionEffectMoveRight];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 @end

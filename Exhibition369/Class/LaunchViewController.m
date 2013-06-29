@@ -54,10 +54,7 @@
 {
     
     [Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
-    /*[[Model sharedModel] pushView:[Model sharedModel].mainView option:ViewTrasitionEffectNone];*/
-    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:[Model sharedModel].mainView];
-    navigationController.navigationBarHidden = YES;
-    [self presentViewController:navigationController animated:NO completion:nil];
+    [[Model sharedModel] pushView:[[Model sharedModel] getMainViewController] option:ViewTrasitionEffectNone];
 }
 
 - (void)failedGetAppConfig:(NSNotification *)notification
