@@ -37,15 +37,16 @@
 
 -(void)dealloc
 {
-    self.tableView      = nil;
-    self.messageArray   = nil;
-    self.aMessage       = nil;
-    self.heightsForRows = nil;
-    self.NewTouchCell   = nil;
-    self.OldTouchCell   = nil;
-    self.OldIndexPath   = nil;
-    self.OldMessage     = nil;
-    self.UnloadImage    = nil;
+    [self.delegate       release];
+    [self.tableView      release];
+    [self.messageArray   release];
+    [self.aMessage       release];
+    [self.heightsForRows release];
+    [self.NewTouchCell   release];
+    [self.OldTouchCell   release];
+    [self.OldIndexPath   release];
+    [self.OldMessage     release];
+    [self.UnloadImage    release];
     [super dealloc];
 }
 
@@ -141,7 +142,7 @@
 
 - (void)CheckMessageNum
 {
-    if ([Model sharedModel].HaveNetwork) {
+    if ([[Model sharedModel] isConnectionAvailable]) {
         if(self.refreshHeaderView == nil)
         {
             self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
@@ -151,8 +152,20 @@
             [self.tableView addSubview:self.refreshHeaderView];
             self.reloading = NO;
         }
+        if(self.loadingMoreFooterView == nil)
+        {
+            self.loadingMoreFooterView = [[LoadingMoreTableFooterView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 60)];
+            self.loadingMoreFooterView.haveMoreData = NO;
+            self.loadingMoreFooterView.delegate = self;
+            self.loadingMoreFooterView.backgroundColor = [UIColor clearColor];
+            if (self.loadingMoreFooterView.haveMoreData == YES) {
+                [self.tableView setTableFooterView:self.loadingMoreFooterView];
+            }
+        }
         [self.refreshHeaderView refreshLastUpdatedDate];
         [self initData];
+    }else{
+        self.UnloadImage.hidden = NO;
     }
 }
 
@@ -161,7 +174,6 @@
     NSString *urlString = [ServerURL stringByAppendingString:@"/rest/messages/find"];
     urlString = [urlString stringByAppendingFormat:@"?exKey=%@&token=%@",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSLog(@"title = %@,exKey = %@",[Model sharedModel].selectExhibition.name,[Model sharedModel].selectExhibition.exKey);
     request.delegate = self;
     [request startAsynchronous];
 }
@@ -172,7 +184,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
+    [self.loadingMoreFooterView loadingMoreTableScrollViewDidScroll:scrollView];
 }
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
@@ -198,18 +210,31 @@
     return [NSDate date];
 }
 
+#pragma mark - Drop_up to refresh
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!self.reloading) {
         [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     }
+    [self.loadingMoreFooterView setState:LoadingMoreNormal];
     if (!decelerate)
 	{
         //[self loadImagesForOnscreenRows];
     }
 }
 
-- (void)requestFinished:(ASIHTTPRequest *)request
+
+#pragma mark - LoadingMoreTableFooterDelegate
+
+- (void)didTriggerLoadingMore:(LoadingMoreTableFooterView*)view{
+    //self.loadingMoreFooterView.isLoading = NO;
+    //[self.loadingMoreFooterView loadingMoreTableDataSourceDidFinishedLoading:self.tableView];
+}
+
+
+
+- (void)done:(ASIHTTPRequest *)request
 {
     NSDictionary *requestDic = [[request responseString] JSONValue];
     NSArray *MessageList = [requestDic objectForKey:@"list"];
@@ -261,7 +286,7 @@
     [self.tableView reloadData];
 }
 
--(void)requestFailed:(ASIHTTPRequest *)request
+-(void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"Message Failed");
 }

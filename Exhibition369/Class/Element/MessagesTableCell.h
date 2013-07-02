@@ -21,8 +21,5 @@
 
 - (UIColor *)getColor:(NSString *)stringToConvert;
 - (void)ChangeCellHeightWithNum:(NSNumber*)num;
-- (void)setMessageTextWithHeignt:(CGFloat)_height;
-- (void)addObserver;
-- (void)removeObserver;
 
 @end

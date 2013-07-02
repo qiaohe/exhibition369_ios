@@ -7,6 +7,7 @@
 //
 
 #import "IData.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @interface SystemConfig : IData
 @property (nonatomic, retain) NSString *assetServer;
@@ -14,4 +15,5 @@
 @property (nonatomic, retain) NSString *token;
 @property (nonatomic, retain) NSString *upgrade;
 @property (nonatomic, retain) NSString *upgradeNote;
+
 @end

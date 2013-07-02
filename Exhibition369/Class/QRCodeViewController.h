@@ -21,6 +21,7 @@
 @property (nonatomic, retain) IBOutlet UILabel        *exhibitionOrganizer;
 @property (nonatomic, retain) IBOutlet UILabel        *addressLabel;
 @property (nonatomic, retain) IBOutlet UILabel        *dateLabel;
+@property (nonatomic, retain) NSString                *qrcodeImagePath;
 
 - (IBAction)ReturnBtnPress:(id)sender;
 - (IBAction)CallPhoneBtnPress:(id)sender;

@@ -17,7 +17,7 @@
 
 @end
 
-@interface ExhibitionNewsViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate,newsDetailViewControllerDelegate,EGORefreshTableHeaderDelegate>
+@interface ExhibitionNewsViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate,LoadingMoreTableFooterDelegate>
 
 @property (nonatomic, assign) id<NewsViewListDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView     *tableView;

@@ -31,8 +31,10 @@
 
 - (void)dealloc
 {
-    self.tableView = nil;
-    self.NewsArray = nil;
+    [self.delegate    release];
+    [self.tableView   release];
+    [self.NewsArray   release];
+    [self.UnloadImage release];
     [super dealloc];
 }
 
@@ -46,7 +48,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
     NewsArray = [[NSMutableArray alloc]init];
-    if ([Model sharedModel].HaveNetwork) {
+    if ([[Model sharedModel] isConnectionAvailable]) {
         if(self.refreshHeaderView == nil)
         {
             self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(5.0f, 0.0f - 67, self.view.frame.size.width - 10.0f, 60)];
@@ -57,7 +59,19 @@
             self.reloading = NO;
             [self updateData];
         }
+        if(self.loadingMoreFooterView == nil)
+        {
+            self.loadingMoreFooterView = [[LoadingMoreTableFooterView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 60)];
+            self.loadingMoreFooterView.haveMoreData = NO;
+            self.loadingMoreFooterView.delegate = self;
+            self.loadingMoreFooterView.backgroundColor = [UIColor clearColor];
+            if (self.loadingMoreFooterView.haveMoreData == YES) {
+                [self.tableView setTableFooterView:self.loadingMoreFooterView];
+            }
+        }
         [self.refreshHeaderView refreshLastUpdatedDate];
+    }else{
+            self.UnloadImage.hidden = NO;
     }
     // Do any additional setup after loading the view from its nib.
 }
@@ -66,9 +80,8 @@
 #pragma mark - Drop_down to refresh
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
+    [self.loadingMoreFooterView loadingMoreTableScrollViewDidScroll:scrollView];
 }
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
@@ -99,13 +112,14 @@
     if (!self.reloading) {
         [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     }
+    [self.loadingMoreFooterView setState:LoadingMoreNormal];
     if (!decelerate)
 	{
         //[self loadImagesForOnscreenRows];
     }
 }
 
-- (void)NewsDetailViewDisMiss:(UIView*)view
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
 }
@@ -135,7 +149,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"array count = %u",[self.NewsArray count]);
     return [self.NewsArray count];
 }
 
@@ -146,7 +159,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableViews cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"self.new count = %u",[self.NewsArray count]);
     static NSString *IdentifierStr = @"cell";
     NewsTableCell *cell = [tableViews dequeueReusableCellWithIdentifier:IdentifierStr];
     if (cell == nil) {
@@ -164,7 +176,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NewsDetailViewController *newsView = [[NewsDetailViewController alloc]initWithNibName:@"NewsDetailViewController" bundle:nil];
-    newsView.delegate = self;
     newsView.aNew = [self.NewsArray objectAtIndex:indexPath.row];
     [self.delegate SuperViewPresentViewController:newsView];
     [newsView release];
@@ -226,7 +237,6 @@
         }else{
             [self ExhibitionNewsShow:NO];
         }
-        NSLog(@"newarray = %u",[self.NewsArray count]);
     }
     self.reloading = NO;
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];

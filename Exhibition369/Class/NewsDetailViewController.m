@@ -28,6 +28,14 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self.webView  release];
+    [self.aNew     release];
+    [self.title    release];
+    [super         dealloc];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

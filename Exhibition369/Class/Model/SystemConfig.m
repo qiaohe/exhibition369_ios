@@ -29,4 +29,14 @@
     
     return self;
 }
+
+- (void)dealloc
+{
+    [self.assetServer release];
+    [self.tel         release];
+    [self.token       release];
+    [self.upgrade     release];
+    [self.upgradeNote release];
+    [super dealloc];
+}
 @end

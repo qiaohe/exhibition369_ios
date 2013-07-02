@@ -199,7 +199,7 @@
 						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{30, 98}, {25, 25}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="1053672347"/>
+						<reference key="NSNextKeyView" ref="253308464"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -213,7 +213,7 @@
 						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{65, 98}, {220, 25}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="311755948"/>
+						<reference key="NSNextKeyView" ref="1053672347"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="383603892"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -241,7 +241,7 @@
 						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{30, 127}, {25, 25}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="253308464"/>
+						<reference key="NSNextKeyView" ref="76424154"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -255,7 +255,7 @@
 						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{65, 127}, {220, 25}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="133745049"/>
+						<reference key="NSNextKeyView" ref="311755948"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -272,7 +272,7 @@
 					</object>
 					<object class="IBUIImageView" id="311755948">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">-2147483348</int>
+						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{60, 195}, {200, 200}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView" ref="416607354"/>
@@ -285,7 +285,7 @@
 						<int key="NSvFlags">-2147483348</int>
 						<string key="NSFrame">{{60, 195}, {200, 200}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="76424154"/>
+						<reference key="NSNextKeyView" ref="133745049"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="383603892"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -598,7 +598,94 @@
 			<nil key="sourceID"/>
 			<int key="maxID">61</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">BaseUIViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BaseUIViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">QRCodeViewController</string>
+					<string key="superclassName">BaseUIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="CallPhoneBtnPress:">id</string>
+						<string key="ReturnBtnPress:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="CallPhoneBtnPress:">
+							<string key="name">CallPhoneBtnPress:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="ReturnBtnPress:">
+							<string key="name">ReturnBtnPress:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="QRCodeImage">UIImageView</string>
+						<string key="RemindLabel">UILabel</string>
+						<string key="addressLabel">UILabel</string>
+						<string key="dateLabel">UILabel</string>
+						<string key="exhibitionAddress">UILabel</string>
+						<string key="exhibitionDate">UILabel</string>
+						<string key="exhibitionImage">UIImageView</string>
+						<string key="exhibitionOrganizer">UILabel</string>
+						<string key="exhibitionTextView">UITextView</string>
+						<string key="exhibitionTitle">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="QRCodeImage">
+							<string key="name">QRCodeImage</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="RemindLabel">
+							<string key="name">RemindLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="addressLabel">
+							<string key="name">addressLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="dateLabel">
+							<string key="name">dateLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionAddress">
+							<string key="name">exhibitionAddress</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionDate">
+							<string key="name">exhibitionDate</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionImage">
+							<string key="name">exhibitionImage</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionOrganizer">
+							<string key="name">exhibitionOrganizer</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionTextView">
+							<string key="name">exhibitionTextView</string>
+							<string key="candidateClassName">UITextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="exhibitionTitle">
+							<string key="name">exhibitionTitle</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/QRCodeViewController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

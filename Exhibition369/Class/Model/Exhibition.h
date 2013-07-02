@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UIImage *icon;
 @property (nonatomic, retain) NSString *logs;
 @property (nonatomic, assign) NSInteger messageUnRead;
+@property (nonatomic, retain) NSString *iconPath;
 
 - (NSString *)getIconImageURL;
 

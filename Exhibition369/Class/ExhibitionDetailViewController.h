@@ -31,7 +31,6 @@
 @property (retain, nonatomic) IBOutlet UIButton    *ApplyButton;
 - (IBAction)backToMainView:(id)sender;
 
-- (IBAction)ButtonIsPress:(UIButton*)sender;
 
 - (void)ApplyViewShow;
 

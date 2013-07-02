@@ -166,13 +166,11 @@
 
 - (void)loadingMoreTableScrollViewDidScroll:(UIScrollView *)scrollView{
     if (_state == LoadingMoreLoading) {
-		
 		CGFloat offset = MAX(scrollView.contentOffset.y * -1, 0);
 		offset = MIN(offset, 60);
 		scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 		
 	} else if (scrollView.isDragging) {
-		
         if (_haveMoreData && !_isLoading && _state == LoadingMorePullingUp) {
             if(([scrollView contentOffset].y + scrollView.frame.size.height <= [scrollView contentSize].height + 40 && scrollView.frame.size.height < [scrollView contentSize].height - 40) || (scrollView.frame.size.height >= [scrollView contentSize].height && [scrollView contentOffset].y <= 40))
                 [self setState:LoadingMoreNormal];
@@ -195,12 +193,11 @@
             
             [self setState:LoadingMoreLoading];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.2];
+            [UIView setAnimationDuration:0.5];
             scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
             [UIView commitAnimations];
         }
 	}
-	
 }
 
 - (void)loadingMoreTableDataSourceDidFinishedLoading:(UIScrollView *)scrollView{

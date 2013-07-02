@@ -50,6 +50,7 @@
 
 #import "IconDownloader.h"
 #import "Exhibition.h"
+#import "Model.h"
 
 #define kAppIconSize 48
 
@@ -102,6 +103,13 @@
 {
     // Set appIcon and clear temporary data/image
     UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
+    if (self.exhibition.status) {
+        if (![self.exhibition.status isEqualToString:@"N"]) {
+            if (![[Model sharedModel].shareFileManager fileExistsAtPath:self.exhibition.iconPath]) {
+                [self.activeDownload writeToFile:self.exhibition.iconPath atomically:YES];
+            }
+        }
+    }
     
     if (image.size.width != kAppIconSize || image.size.height != kAppIconSize)
 	{

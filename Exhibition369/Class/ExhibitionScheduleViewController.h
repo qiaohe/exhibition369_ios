@@ -13,7 +13,7 @@
 
 @property (nonatomic, retain) IBOutlet UIWebView       *webView;
 @property (nonatomic, retain) Exhibition               *myExhibition;
-
+@property (nonatomic, retain) IBOutlet UIImageView *UnloadImage;
 
 - (IBAction)BackView:(id)sender;
 - (IBAction)JumpToApplyView:(id)sender;

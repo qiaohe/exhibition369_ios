@@ -49,7 +49,7 @@
  */
 
 @class Exhibition;
-
+@class Model;
 
 @interface IconDownloader : NSObject
 

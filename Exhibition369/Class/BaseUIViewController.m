@@ -16,6 +16,7 @@
 
 @synthesize refreshHeaderView;
 @synthesize reloading;
+@synthesize loadingMoreFooterView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,8 +30,9 @@
 
 - (void)dealloc
 {
-    self.theRequest = nil;
-    self.refreshHeaderView  = nil;
+    [self.theRequest            release];
+    [self.refreshHeaderView     release];
+    [self.loadingMoreFooterView release];
     [super dealloc];
 }
 

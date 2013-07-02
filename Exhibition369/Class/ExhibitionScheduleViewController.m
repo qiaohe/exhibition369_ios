@@ -16,6 +16,7 @@
 
 @synthesize webView;
 @synthesize myExhibition;
+@synthesize UnloadImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,8 +30,9 @@
 
 - (void)dealloc
 {
-    self.webView = nil;
-    self.myExhibition = nil;
+    [self.webView      release];
+    [self.myExhibition release];
+    [self.UnloadImage  release];
     [super dealloc];
 }
 
@@ -49,8 +51,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if ([Model sharedModel].HaveNetwork) {
+    if ([[Model sharedModel] isConnectionAvailable]) {
         [self requestData];
+    }else{
+        self.UnloadImage.hidden = NO;
     }
     self.view.backgroundColor = [UIColor clearColor];
     // Do any additional setup after loading the view from its nib.
@@ -66,7 +70,7 @@
     [self sendRequestWith:[[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/schedule.html",[Model sharedModel].selectExhibition.exKey] params:nil method:RequestMethodGET];
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
+- (void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"failed");
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
@@ -74,7 +78,7 @@
     [alertView release];
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+-(void)done:(ASIHTTPRequest *)request
 {
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];

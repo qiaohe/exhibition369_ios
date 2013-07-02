@@ -67,7 +67,6 @@
 		CE177FED177C41DA00538D40 /* anxiajieshao.png in Resources */ = {isa = PBXBuildFile; fileRef = CE177FEB177C41D900538D40 /* anxiajieshao.png */; };
 		CE177FEE177C41DA00538D40 /* anxiarichegn.png in Resources */ = {isa = PBXBuildFile; fileRef = CE177FEC177C41D900538D40 /* anxiarichegn.png */; };
 		CE17A663177D37730042FDCD /* MDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE17A662177D37730042FDCD /* MDataModel.m */; };
-		CE17A666177D7BCD0042FDCD /* PullRefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE17A665177D7BCD0042FDCD /* PullRefreshTableHeaderView.m */; };
 		CE17A668177D96250042FDCD /* no_message.png in Resources */ = {isa = PBXBuildFile; fileRef = CE17A667177D96230042FDCD /* no_message.png */; };
 		CE22401E17719566009F0218 /* ExhibitionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22401317719566009F0218 /* ExhibitionInfoViewController.m */; };
 		CE22401F17719566009F0218 /* ExhibitionInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22401417719566009F0218 /* ExhibitionInfoViewController.xib */; };
@@ -269,8 +268,6 @@
 		CE177FEC177C41D900538D40 /* anxiarichegn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anxiarichegn.png; sourceTree = "<group>"; };
 		CE17A661177D37730042FDCD /* MDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDataModel.h; sourceTree = "<group>"; };
 		CE17A662177D37730042FDCD /* MDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDataModel.m; sourceTree = "<group>"; };
-		CE17A664177D7BCD0042FDCD /* PullRefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableHeaderView.h; sourceTree = "<group>"; };
-		CE17A665177D7BCD0042FDCD /* PullRefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableHeaderView.m; sourceTree = "<group>"; };
 		CE17A667177D96230042FDCD /* no_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_message.png; sourceTree = "<group>"; };
 		CE22401217719566009F0218 /* ExhibitionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExhibitionInfoViewController.h; sourceTree = "<group>"; };
 		CE22401317719566009F0218 /* ExhibitionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionInfoViewController.m; sourceTree = "<group>"; };
@@ -833,11 +830,9 @@
 			children = (
 				CEA7BE211777D4B1004B8781 /* EGORefreshTableHeaderView.h */,
 				CEA7BE221777D4B1004B8781 /* EGORefreshTableHeaderView.m */,
-				CE17A664177D7BCD0042FDCD /* PullRefreshTableHeaderView.h */,
-				CE17A665177D7BCD0042FDCD /* PullRefreshTableHeaderView.m */,
-				CEA7BE231777D4B1004B8781 /* image */,
 				04C09A92177ED830009462EA /* LoadingMoreTableFooterView.h */,
 				04C09A93177ED830009462EA /* LoadingMoreTableFooterView.m */,
+				CEA7BE231777D4B1004B8781 /* image */,
 			);
 			path = EGORefireshTableHeader;
 			sourceTree = "<group>";
@@ -1065,7 +1060,6 @@
 				CE388689177921440005801E /* MainViewController.m in Sources */,
 				CE9D99F017799DF2008A99C6 /* MessagesTableCell.m in Sources */,
 				CE17A663177D37730042FDCD /* MDataModel.m in Sources */,
-				CE17A666177D7BCD0042FDCD /* PullRefreshTableHeaderView.m in Sources */,
 				04C09A94177ED830009462EA /* LoadingMoreTableFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,6 +10,7 @@
 #import "MainViewController.h"
 #import "Constant.h"
 
+
 @interface ApplyViewController ()
 
 @end
@@ -17,6 +18,7 @@
 @implementation ApplyViewController
 
 @synthesize delegate;
+@synthesize mainViewDelegate;
 @synthesize nameTextField;
 @synthesize phoneNumTexField;
 @synthesize emailTextField;
@@ -27,6 +29,10 @@
 @synthesize ChoseType;
 @synthesize activity;
 @synthesize PresentationView;
+@synthesize nameError;
+@synthesize phoneNumError;
+@synthesize emailError;
+@synthesize noChooseType;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,15 +46,20 @@
 
 - (void)dealloc
 {
-    self.applyDelegate    = nil;
-    self.nameTextField    = nil;
-    self.phoneNumTexField = nil;
-    self.emailTextField   = nil;
-    self.currentTextField = nil;
-    self.ExhibitorType    = nil;
-    self.ChoseType        = nil;
-    self.activity         = nil;
-    self.PresentationView = nil;
+    [self.delegate         release];
+    [self.mainViewDelegate release];
+    [self.nameTextField    release];
+    [self.phoneNumTexField release];
+    [self.emailTextField   release];
+    [self.currentTextField release];
+    [self.ExhibitorType    release];
+    [self.ChoseType        release];
+    [self.activity         release];
+    [self.PresentationView release];
+    [self.nameError        release];
+    [self.phoneNumError    release];
+    [self.emailError       release];
+    [self.noChooseType     release];
     [super dealloc];
 }
 
@@ -108,17 +119,6 @@
 - (IBAction)SetExhibitorType:(UIButton*)sender
 {
     [self setTypeWithTag:sender.tag];
-    switch (sender.tag) {
-        case 301:{
-            
-            break;
-        }case 302:{
-            
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 - (void)setTypeWithTag:(NSInteger)_tag
@@ -184,7 +184,11 @@
 
 - (IBAction)PressCancleButton:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (self.delegate) {
+            [self.delegate ApplyViewApplySuccess];
+        }
+    }];
 }
 
 - (IBAction)PressOkButton:(id)sender
@@ -195,13 +199,13 @@
 - (void) CheckUserInfoIsCorrect
 {
     if ([self TheUserInfoIsEmpty:self.nameTextField]) {
-        
-    }else if([self TheUserInfoIsEmpty:self.phoneNumTexField] ){
-        
-    }else if([self TheUserInfoIsEmpty:self.emailTextField]){
-        
+        [self presentationShow:NameIsEmpty];
+    }else if(![self isValidatePhoneNum:self.phoneNumTexField.text]){
+        [self presentationShow:PhoneNumIsNotValidate];
+    }else if(![self isValidateEmail:self.emailTextField.text]){
+        [self presentationShow:EmailIsNotValidate];
     }else if(!self.ChoseType || [self.ChoseType isEqualToString:@""]){
-        
+        [self presentationShow:NotChoseType];
     }else{
         NSString *urlString = [ServerURL stringByAppendingString:@"/rest/applies/put"];
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -224,44 +228,87 @@
     }
 }
 
-- (void)CheckAPropertyIsCorrectWithType:(PresentationType)_type
+-(BOOL)isValidatePhoneNum:(NSString *)PhoneNum
 {
     
+    NSString *phoneNumRegex = @"(\\+\\d+)?1[3458]\\d{9}$";
+    
+    NSPredicate *phoneNumTest = [NSPredicate predicateWithFormat:@"SELF MATCHES%@",phoneNumRegex];
+    
+    return [phoneNumTest evaluateWithObject:PhoneNum];
+}
+
+-(BOOL)isValidateEmail:(NSString *)email
+{
+    
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES%@",emailRegex];
+    
+    return [emailTest evaluateWithObject:email];
 }
 
 - (void)presentationShow:(PresentationType)type
 {
     if (type == NameIsEmpty) {
-        UILabel *namePresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
-        namePresentation.tag = 401;
-        namePresentation.textAlignment = NSTextAlignmentCenter;
-        namePresentation.text          = @"*请检查你的姓名是否为空*";
-        [self.view addSubview:namePresentation];
-    }else if(type == PhoneNumIsEmpty){
-        UILabel *PhonePresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
-        PhonePresentation.tag = 401;
-        PhonePresentation.textAlignment = NSTextAlignmentCenter;
-        PhonePresentation.text          = @"*请检查你的姓名是否为空*";
-        [self.view addSubview:PhonePresentation];
-    }else if(type == EmailIsEmpty){
-        UILabel *emailPresentation = [[UILabel alloc]initWithFrame:CGRectMake(self.nameTextField.frame.origin.x, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, self.nameTextField.frame.size.width, 20)];
-        emailPresentation.tag = 401;
-        emailPresentation.textAlignment = NSTextAlignmentCenter;
-        emailPresentation.text          = @"*请检查你的姓名是否为空*";
-        [self.view addSubview:emailPresentation];
+        if (!self.nameError) {
+            nameError = [[UILabel alloc]initWithFrame:CGRectMake(50, self.nameTextField.frame.origin.y + self.nameTextField.frame.size.height, 220, 20)];
+            nameError.tag = 401;
+            nameError.textColor = [UIColor redColor];
+            nameError.backgroundColor = [UIColor clearColor];
+            nameError.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+            nameError.textAlignment = NSTextAlignmentCenter;
+            nameError.text          = @"*请检查你的姓名是否为空*";
+            [self.view addSubview:nameError];
+        }
+        self.nameError.hidden = NO;
+    }else if(type == PhoneNumIsNotValidate){
+        if (!self.phoneNumError) {
+            phoneNumError = [[UILabel alloc]initWithFrame:CGRectMake(50, self.phoneNumTexField.frame.origin.y + self.phoneNumTexField.frame.size.height, 220, 20)];
+            phoneNumError.tag = 402;
+            phoneNumError.textColor = [UIColor redColor];
+            phoneNumError.backgroundColor = [UIColor clearColor];
+            phoneNumError.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+            phoneNumError.textAlignment = NSTextAlignmentCenter;
+            phoneNumError.text          = @"*电话号码格式不正确*";
+            [self.view addSubview:phoneNumError];
+        }
+        self.phoneNumError.hidden = NO;
+    }else if(type == EmailIsNotValidate){
+        if (!self.emailError) {
+            emailError = [[UILabel alloc]initWithFrame:CGRectMake(50, self.emailTextField.frame.origin.y + self.emailTextField.frame.size.height, 220, 20)];
+            emailError.tag = 403;
+            emailError.textColor = [UIColor redColor];
+            emailError.backgroundColor = [UIColor clearColor];
+            emailError.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+            emailError.textAlignment = NSTextAlignmentCenter;
+            emailError.text          = @"*Email格式不正确*";
+            [self.view addSubview:emailError];
+        }
+        self.emailError.hidden = NO;
     }else{
-        
+        if (!self.noChooseType) {
+            UIButton *btn = (UIButton*)[self.view viewWithTag:301];
+            noChooseType = [[UILabel alloc]initWithFrame:CGRectMake(50, btn.frame.origin.y + btn.frame.size.height, 220, 20)];
+            noChooseType.tag = 404;
+            noChooseType.textColor = [UIColor redColor];
+            noChooseType.backgroundColor = [UIColor clearColor];
+            noChooseType.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+            noChooseType.textAlignment = NSTextAlignmentCenter;
+            noChooseType.text          = @"*请选择参展身份*";
+            [self.view addSubview:noChooseType];
+        }
+        self.noChooseType.hidden = NO;
     }
 }
 
-- (void)requestFinished:(ASIHTTPRequest *)request
+- (void)done:(ASIHTTPRequest *)request
 {
     NSLog(@"finished");
     
     NSString *requestResult = [request responseStatusMessage];
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {
-        
         NSInteger responseResult = request.responseStatusCode;
         switch (responseResult) {
             case 200:{
@@ -269,75 +316,47 @@
                 [Model sharedModel].selectExhibition.status = EXHIBITION_STATUS_P;
                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
                 [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
-                /*
-                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"提交成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                alertView.tag = 101;
-                alertView.delegate = self;
-                [alertView show];
-                [alertView release];*/
-                self.activity.hidden = YES;
+                if (self.delegate) {
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        [self.delegate ApplyViewApplySuccess];
+                    }];
+                }else if(self.mainViewDelegate){
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        [self.mainViewDelegate applySuccess];
+                    }];
+                }
                 break;
             }case 400:{
-                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"参数错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                alertView.tag = 102;
-                alertView.delegate = self;
-                [alertView show];
-                [alertView release];
+                [[Model sharedModel] displayTip:@"参数错误" modal:NO];
+                break;
             }case 500:{
-                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"服务器内部错误" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                alertView.tag = 103;
-                alertView.delegate = self;
-                [alertView show];
-                [alertView release];
+                [[Model sharedModel] displayTip:@"服务器内部错误" modal:NO];
                 break;
             }
             default:
                 break;
         }
     }else {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"报名失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        [[Model sharedModel] displayTip:@"报名失败" modal:NO];
     }
+    [self.activity stopAnimating];
+}
+
+- (void)showApplyErrorWithMessage:(NSString*)message
+{
     
+}
+
+- (void)error:(ASIHTTPRequest *)request
+{
+    NSLog(@"Failed");
+    [[Model sharedModel] displayTip:@"报名失败" modal:NO];
+    [self.activity stopAnimating];
 }
 
 - (void)ApplySuccess
 {
     
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSInteger tag = alertView.tag;
-    switch (tag) {
-        case 101:{
-            if (self.delegate) {
-                [self dismissViewControllerAnimated:YES completion:^{
-                    [self.delegate ApplyViewApplySuccess];
-                }];
-            }else if(self.applyDelegate){
-                [self dismissViewControllerAnimated:YES completion:^{
-                    [self.applyDelegate ApplyViewApplySuccess];
-                }];
-            }else
-                [self dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case 102:{
-            
-            break;
-        }case 103:{
-            
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    NSLog(@"Failed");
 }
 
 - (BOOL)TheUserInfoIsEmpty:(UITextField*)_textField
@@ -363,6 +382,15 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    self.nameError.hidden     = YES;
+    self.phoneNumError.hidden = YES;
+    self.emailError.hidden    = YES;
+    self.noChooseType.hidden  = YES;
     return YES;
 }
 

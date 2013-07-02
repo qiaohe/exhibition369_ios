@@ -21,6 +21,7 @@
 #import "ExhibitionsNews.h"
 #import <QuartzCore/QuartzCore.h>
 
+
 @class HomePageViewController;
 
 @interface Model : NSObject<ASIHTTPRequestDelegate> {
@@ -35,6 +36,7 @@
 @property (nonatomic, retain) MainViewController *mainView;
 @property (nonatomic, retain) Exhibition *selectExhibition;
 @property (nonatomic, assign) BOOL       HaveNetwork;
+@property (nonatomic, retain) NSFileManager *shareFileManager;
 
 - (void)createFolder:(NSArray *)pathComponents;
 - (NSString *)createPath:(NSArray *)pathComponents;
@@ -42,5 +44,6 @@
 - (void)displayTip:(NSString *)tip modal:(BOOL)modal;
 - (void)pushView:(UIViewController *)view option:(ViewTrasitionEffect)options;
 - (void)updateSystemConfig;
+- (BOOL) isConnectionAvailable;
 - (BaseUIViewController *)getMainViewController;
 @end

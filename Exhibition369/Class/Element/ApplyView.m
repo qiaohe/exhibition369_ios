@@ -116,7 +116,6 @@
 
 - (void)PressOK:(UIButton*)_btn
 {
-    NSLog(@"OK");
     NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/applies/put"];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].selectExhibition.exKey, @"exKey",
                                                                                     [Model sharedModel].systemConfig.token,     @"token",
@@ -125,7 +124,6 @@
                                                                                     self.emailAddressLTextField.text,           @"email",
                                                                                     nil];
     [self.delegate RequestWithURL:urlString Params:params Method:RequestMethodPOST];
-    NSLog(@"url = %@",urlString);
 }
 
 - (void)PressCancle:(UIButton*)_btn

@@ -14,8 +14,8 @@
 
 typedef enum{
     NameIsEmpty,
-    PhoneNumIsEmpty,
-    EmailIsEmpty,
+    PhoneNumIsNotValidate,
+    EmailIsNotValidate,
     NotChoseType,
 }PresentationType;
 
@@ -27,10 +27,10 @@ typedef enum{
 @end
 
 
-@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIWebViewDelegate>
+@interface ApplyViewController : BaseUIViewController<UITextFieldDelegate,UIWebViewDelegate>
 
 @property (nonatomic, assign) id <ApplyRequestDelegate>        delegate;
-@property (nonatomic, retain) MainViewController               *applyDelegate;
+@property (nonatomic, retain) MainViewController               *mainViewDelegate;
 @property (nonatomic, retain) IBOutlet NSArray                 *statusArray;
 @property (nonatomic, retain) IBOutlet UITextField             *nameTextField;
 @property (nonatomic, retain) IBOutlet UITextField             *phoneNumTexField;
@@ -42,7 +42,10 @@ typedef enum{
 @property (nonatomic, retain) NSString                         *ChoseType;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activity;
 @property (nonatomic, retain) UIView                           *PresentationView;
-
+@property (nonatomic, retain) UILabel                          *nameError;
+@property (nonatomic, retain) UILabel                          *phoneNumError;
+@property (nonatomic, retain) UILabel                          *emailError;
+@property (nonatomic, retain) UILabel                          *noChooseType;
 
 - (IBAction)PressCancleButton:(id)sender;
 - (IBAction)PressOkButton:(id)sender;

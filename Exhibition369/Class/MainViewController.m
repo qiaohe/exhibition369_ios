@@ -27,8 +27,8 @@
 
 @synthesize appliedExhibitions;
 @synthesize appliedStateBtn;
-@synthesize loadingMoreFooterView;
-
+@synthesize applyListOldSearchKey;
+@synthesize unapplyListOldSearchKey;
 
 -(id)init
 {
@@ -39,6 +39,9 @@
         
         unAppliedExhibitions = [[NSMutableArray alloc] init];
         appliedExhibitions = [[NSMutableArray alloc]init];
+        
+        self.applyListOldSearchKey = nil;
+        self.unapplyListOldSearchKey = nil;
     }
     
     return self;
@@ -48,22 +51,6 @@
 {
     [super viewDidLoad];
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
-    [self setActiveTab:MainViewActiveTabExhibitions];
-    
-    [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
-    if ([Model sharedModel].HaveNetwork) {
-        [self refreshExhibitions];
-        [self refreshAppliedExhibitions];
-    }else{
-        /*
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"未连接网络" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];*/
-        
-        [[Model sharedModel] displayTip:@"未连接网络" modal:NO];
-        [self setActiveTab:MainViewActiveTabAppliedExhibitions];
-    }
-    
     
     if(self.refreshHeaderView == nil)
     {
@@ -83,20 +70,44 @@
         self.loadingMoreFooterView.delegate = self;
         self.loadingMoreFooterView.backgroundColor = [UIColor clearColor];
     }
+    
+    [self setActiveTab:MainViewActiveTabExhibitions];
+    
+    [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+    if ([[Model sharedModel] isConnectionAvailable]) {
+        [self refreshExhibitions];
+        [self refreshAppliedExhibitions];
+    }else{
+        //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
+        [self setActiveTab:MainViewActiveTabAppliedExhibitions];
+    }
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if ([self.appliedExhibitions count]) {
+        [self.appliedExhibitions removeAllObjects];
+    }
+    [self.appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+    [self.theTableView reloadData];
 }
 
 //load new Exhibitions data
 - (void) refreshExhibitions{
-    NSLog(@"text = %@",_searchInput.text);
-    if([Model sharedModel].systemConfig){
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                       [Model sharedModel].systemConfig.token, @"token",
-                                       [NSString stringWithFormat:@"%i", PAGE_LOAD_ITEM_SIZE], @"size",
-                                       @"-1", @"last",
-                                       _searchInput.text, @"name",
-                                       nil];
-        
-        [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find", ServerURL] params:params method:RequestMethodGET requestTag:RequestUnApplyExhibitionsList];
+    if (activeTab == MainViewActiveTabExhibitions) {
+        if([Model sharedModel].systemConfig){
+            NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                           [Model sharedModel].systemConfig.token, @"token",
+                                           [NSString stringWithFormat:@"%i", PAGE_LOAD_ITEM_SIZE], @"size",
+                                           @"-1", @"last",
+                                           _searchInput.text, @"name",
+                                           nil];
+            
+            [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find", ServerURL] params:params method:RequestMethodGET requestTag:RequestUnApplyExhibitionsList];
+        }
+    }else{
+        [self refreshAppliedExhibitions];
     }
 }
 
@@ -110,7 +121,7 @@
         last = e.createdAt;
     }
     
-    NSLog(@"Load more Exhibitions, size:%i last: %@", PAGE_LOAD_ITEM_SIZE, last);
+    //NSLog(@"Load more Exhibitions, size:%i last: %@", PAGE_LOAD_ITEM_SIZE, last);
     
     //Exhibition *e lastExhibition;//[unAppliedExhibitions getob[unAppliedExhibitions count] - 1 ];
     if([Model sharedModel].systemConfig){
@@ -149,7 +160,7 @@
     if (activeTab == MainViewActiveTabExhibitions) {
         [Model sharedModel].selectExhibition = [unAppliedExhibitions objectAtIndex:indexPath.row];
         ApplyViewController *viewController = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
-        viewController.applyDelegate = self;
+        viewController.mainViewDelegate = self;
         [self presentViewController:viewController animated:YES completion:nil];
     }else{
         
@@ -158,13 +169,13 @@
 
 - (void)setActiveTab:(MainViewActiveTab)_activeTab
 {
+    [self setRefreshViewShowWithNewWork];
     activeTab = _activeTab;
     if (activeTab == MainViewActiveTabAppliedExhibitions) {
         self.appliedBtn.selected = YES;
         self.unAppliedBtn.selected = NO;
         [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
         [self.theTableView setTableFooterView:nil];
-        
     }else{
         self.appliedBtn.selected = NO;
         self.unAppliedBtn.selected = YES;
@@ -215,12 +226,12 @@
     theButton.selectIndex = indexPath;
     
     Exhibition *e = nil;
-    
     NSMutableArray *dataSource = [self getDataSource];
     
     if([dataSource count] > indexPath.row){
         e = (Exhibition *)[dataSource objectAtIndex:indexPath.row];
     }
+    
     if(e != nil){
         if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
             theButton.hidden = NO;
@@ -231,7 +242,7 @@
             cell.ApplyStatus.hidden = NO;
             [cell setApplyStatusWithString:e.status];
         }
-        NSLog(@"count = %d",e.messageUnRead);
+        //NSLog(@"count = %d",e.messageUnRead);
         if (e.messageUnRead != 0) {
             cell.NumOfMessageUnRead.hidden = NO;
         }else{
@@ -244,7 +255,14 @@
         
         if(e.icon){
             [theImage setImage:e.icon];
-        } else {
+        }else if([[Model sharedModel].shareFileManager fileExistsAtPath:e.iconPath]){
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                e.icon = [UIImage imageWithContentsOfFile:e.iconPath];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [theImage setImage:e.icon];
+                });
+            });
+        }else{
             [self startIconDownload:e];
         }
     } else {
@@ -264,7 +282,7 @@
 {
     Exhibition *e;
     if(activeTab == MainViewActiveTabAppliedExhibitions){
-        e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
+        e = (Exhibition *)[appliedExhibitions objectAtIndex:indexPath.row];
         
     } else {
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
@@ -310,6 +328,8 @@
         [appliedExhibitions removeAllObjects];
         //init applied Exhibitions
         [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+        [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
+        [self.theTableView reloadData];
         
     } else if (request.tag == RequestUnApplyExhibitionsList || request.tag == RequestUnApplyExhibitionsLoadingMore){
         //refresh un apply exhibitions list
@@ -321,8 +341,8 @@
         
         for (NSDictionary *exhibitionData in exhibitorArray)
         {
+            //NSLog(@"exdata = %@",exhibitionData);
             Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
-            
             [unAppliedExhibitions addObject:e];
             [e release];
         }
@@ -341,7 +361,7 @@
         else if(request.tag == RequestUnApplyExhibitionsLoadingMore)
             [self.loadingMoreFooterView loadingMoreTableDataSourceDidFinishedLoading:self.theTableView];
 
-        [self.theTableView reloadData];
+        [self unApplyListShow];
     }
 }
 
@@ -358,12 +378,19 @@
 }
 
 - (void)dealloc {
+    [typeGroup release];
+    [typeVSExhibitions release];
+    [unAppliedExhibitions release];
     [_theTableView release];
+    [_imageDownloadsInProgress release];
     [_searchInput release];
     [_tabImage release];
     [_appliedBtn release];
     [_unAppliedBtn release];
-    self.appliedExhibitions = nil;
+    [appliedStateBtn release];
+    [self.appliedExhibitions release];
+    [self.applyListOldSearchKey release];
+    [self.unapplyListOldSearchKey release];
     [super dealloc];
 }
 - (void)viewDidUnload {
@@ -378,7 +405,7 @@
 #pragma mark - Drop_down to refresh
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
+    [self setRefreshViewShowWithNewWork];
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
     if ([self.searchInput canResignFirstResponder]){
         [self.searchInput resignFirstResponder];
@@ -395,13 +422,15 @@
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
-    
+    //self.searchInput.text = @"";
     NSLog(@"loading~~~");
     if ([self.searchInput canResignFirstResponder]){
         [self.searchInput resignFirstResponder];
     }
-    
-    [self refreshExhibitions];
+    if ([[Model sharedModel] isConnectionAvailable]) {
+        [self setSearchKey:nil withActiveTab:activeTab];
+        [self refreshExhibitions];
+    }
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
@@ -479,6 +508,8 @@
                 if (e.icon)
                 {
                     [self startIconDownload:e];
+                }else{
+                    [self startIconDownload:e];
                 }
             }
         }
@@ -494,18 +525,23 @@
 // -------------------------------------------------------------------------------
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if(activeTab == MainViewActiveTabExhibitions){
-        if (!self.reloading) {
-            [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    if ([[Model sharedModel] isConnectionAvailable]) {
+        if(activeTab == MainViewActiveTabExhibitions){
+            if (!self.reloading) {
+                [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+            }
+            if(!self.loadingMoreFooterView.isLoading){
+                [self.loadingMoreFooterView loadingMoreTableScrollViewDidEndDragging:scrollView];
+            }
+        }else{
+            if (!self.reloading) {
+                [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+            }
         }
-        if(!self.loadingMoreFooterView.isLoading){
-            [self.loadingMoreFooterView loadingMoreTableScrollViewDidEndDragging:scrollView];
+        if (!decelerate)
+        {
+            [self loadImagesForOnscreenRows];
         }
-    }
-    
-    if (!decelerate)
-	{
-        [self loadImagesForOnscreenRows];
     }
 }
 
@@ -528,6 +564,9 @@
 
 - (void)unAppliedViewShouldSearchExhibition
 {
+    if (activeTab != MainViewActiveTabExhibitions) {
+        activeTab = MainViewActiveTabExhibitions;
+    }
     if ([self.searchInput canResignFirstResponder]) {
         [self.searchInput resignFirstResponder];
     }
@@ -536,6 +575,9 @@
 
 - (void)appliedViewShouldSearchExhibition
 {
+    if (activeTab != MainViewActiveTabAppliedExhibitions) {
+        activeTab = MainViewActiveTabAppliedExhibitions;
+    }
     NSMutableArray *array = [[[NSMutableArray alloc] init] autorelease];
     [appliedExhibitions removeAllObjects];
     if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]){
@@ -551,7 +593,7 @@
     
     
     [appliedExhibitions addObjectsFromArray:[array sortedArrayUsingSelector:@selector(compare:)]];
-    [self.theTableView reloadData];
+    [self applyListShow];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -560,37 +602,101 @@
         [textField resignFirstResponder];
     }
     if (activeTab == MainViewActiveTabExhibitions) {
-        [self unAppliedViewShouldSearchExhibition];
-    }else
-        [self appliedViewShouldSearchExhibition];
+        if (![self.searchInput.text isEqualToString:self.unapplyListOldSearchKey]) {
+            [self setSearchKey:self.searchInput.text withActiveTab:MainViewActiveTabExhibitions];
+            [self unAppliedViewShouldSearchExhibition];
+        }
+    }else{
+        if (![self.searchInput.text isEqualToString:self.applyListOldSearchKey]) {
+            [self setSearchKey:self.searchInput.text withActiveTab:MainViewActiveTabAppliedExhibitions];
+            [self appliedViewShouldSearchExhibition];
+        }
+    }
     return YES;
 }
 
 - (IBAction)appliedTapped:(id)sender {
+    if (activeTab != MainViewActiveTabAppliedExhibitions) {
+        activeTab = MainViewActiveTabAppliedExhibitions;
+    }
     if ([self.searchInput canResignFirstResponder]) {
         [self.searchInput resignFirstResponder];
+    }if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]) {
+        if (![self.searchInput.text isEqualToString:self.applyListOldSearchKey]) {
+            [self setSearchKey:self.searchInput.text withActiveTab:MainViewActiveTabAppliedExhibitions];
+            [self appliedViewShouldSearchExhibition];
+            return;
+        }else{
+            [self applyListShow];
+        }
+    }else{
+        [self.appliedExhibitions removeAllObjects];
+        [self.appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+        [self applyListShow];
     }
-    [self applyListShow];
 }
 
 - (void)applyListShow
 {
-    if(activeTab == MainViewActiveTabAppliedExhibitions)
+    if(activeTab == MainViewActiveTabExhibitions)
         return;
     [self setActiveTab:MainViewActiveTabAppliedExhibitions];
     [_theTableView reloadData];
 }
 
+- (void)applySuccess
+{
+    activeTab = MainViewActiveTabAppliedExhibitions;
+    [self applyListShow];
+}
+
+- (void)setRefreshViewShowWithNewWork
+{
+    if (![[Model sharedModel] isConnectionAvailable]) {
+        self.theTableView.tableHeaderView.hidden = YES;
+        self.theTableView.tableFooterView.hidden = YES;
+    }else {
+        self.theTableView.tableHeaderView.hidden = NO;
+        self.theTableView.tableFooterView.hidden = NO;
+    }
+}
+
+- (void) setSearchKey:(NSString*)searchKey withActiveTab:(MainViewActiveTab)_activeTab
+{
+    if (_activeTab == MainViewActiveTabAppliedExhibitions) {
+        self.applyListOldSearchKey = searchKey;
+    }else if (_activeTab == MainViewActiveTabExhibitions){
+        self.unapplyListOldSearchKey = searchKey;
+    }
+}
+
 - (IBAction)unAppliedTapped:(id)sender {
+    if (activeTab != MainViewActiveTabExhibitions) {
+        activeTab = MainViewActiveTabExhibitions;
+    }
     if ([self.searchInput canResignFirstResponder]) {
         [self.searchInput resignFirstResponder];
+    }if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]) {
+        if (![self.searchInput.text isEqualToString:self.unapplyListOldSearchKey]) {
+            [self setSearchKey:self.searchInput.text withActiveTab:MainViewActiveTabExhibitions];
+            [self unAppliedViewShouldSearchExhibition];
+            return;
+        }else{
+            [self unApplyListShow];
+        }
+    }else{
+        if (![self.searchInput.text isEqualToString:self.unapplyListOldSearchKey]) {
+            [self setSearchKey:self.searchInput.text withActiveTab:MainViewActiveTabExhibitions];
+            [self refreshExhibitions];
+        }else{
+            [self unApplyListShow];
+        }
     }
-    [self unApplyListShow];
 }
 
 - (void)unApplyListShow
 {
-    if(activeTab == MainViewActiveTabExhibitions)
+    if(activeTab == MainViewActiveTabAppliedExhibitions)
         return;
     [self setActiveTab:MainViewActiveTabExhibitions];
     [_theTableView reloadData];

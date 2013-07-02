@@ -44,8 +44,11 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) IBOutlet UIButton         *unAppliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton         *appliedStateBtn;
 @property (retain, nonatomic) NSMutableArray            *appliedExhibitions;
-@property (retain, nonatomic) LoadingMoreTableFooterView *loadingMoreFooterView;
+@property (retain, nonatomic) NSString                  *applyListOldSearchKey;
+@property (retain, nonatomic) NSString                  *unapplyListOldSearchKey;
+
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
+- (void)applySuccess;
 
 @end

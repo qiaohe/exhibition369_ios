@@ -64,11 +64,6 @@
     
 }
 
-- (void)setMessageTextWithHeignt:(CGFloat)_height
-{
-    self.titleLabel.frame = CGRectMake(10, 30, 300, 25);
-}
-
 -(void)observeValueForKeyPath:(NSString *)keyPath
                      ofObject:(id)object
                        change:(NSDictionary *)change
@@ -78,16 +73,6 @@
     self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height + changeNum);
     self.backGroundImages.frame = CGRectMake(0, 0, 320, self.CellHeight);
     self.selectImage.frame = CGRectMake(5, 5, 310, self.CellHeight - 10);
-}
-
-- (void)addObserver
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChangeCellHeightWithNum:) name:_CHANGE_HEIGHT_ object:nil];
-}
-
-- (void)removeObserver
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:_CHANGE_HEIGHT_ object:nil];
 }
 
 - (void)ChangeCellHeightWithNum:(NSNumber*)num
@@ -103,11 +88,6 @@
         self.backGroundImages.frame = CGRectMake(0, 0, 320, 70 + number);
         self.selectImage.frame = CGRectMake(5, 5, 310, 60 + number);
     }
-}
-
-- (void)changeCellHeight
-{
-    NSLog(@"change");
 }
 
 - (UIColor *)getColor:(NSString *)stringToConvert

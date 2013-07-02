@@ -17,7 +17,7 @@
 
 @end
 
-@interface ExhibitionMessageViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate>
+@interface ExhibitionMessageViewController : BaseUIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableHeaderDelegate,LoadingMoreTableFooterDelegate>
 
 
 @property (nonatomic, assign) id <ExhibitionMessageDelegate> delegate;

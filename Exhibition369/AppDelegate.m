@@ -239,7 +239,6 @@
         [Model sharedModel].systemConfig = sc;
         [[Model sharedModel] updateSystemConfig];
         [sc release];
-        [Model sharedModel].HaveNetwork = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationAppConfigRecived object:nil userInfo:nil];
 
     }
@@ -250,7 +249,6 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"Registration push token failed.");
-    [Model sharedModel].HaveNetwork = NO;
     NSUserDefaults *userInfo = [NSUserDefaults standardUserDefaults];
     [userInfo setBool:NO forKey:@"registerTokenSucc"];
     [userInfo synchronize];

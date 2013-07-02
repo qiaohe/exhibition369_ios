@@ -22,6 +22,24 @@
 @synthesize icon = _icon;
 @synthesize logs;
 @synthesize messageUnRead;
+@synthesize iconPath;
+
+
+- (void)dealloc
+{
+    [self.exKey     release];
+    [self.name      release];
+    [self.date      release];
+    [self.address   release];
+    [self.organizer release];
+    [self.applied   release];
+    [self.status    release];
+    [self.createdAt release];
+    [self.icon      release];
+    [self.logs      release];
+    [self.iconPath  release];
+    [super          dealloc];
+}
 
 - (id)initWithPData:(NSObject *)data
 {
@@ -35,6 +53,8 @@
         _applied = [[(NSDictionary *)data objectForKey:@"applied"] retain];
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
+        self.iconPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        self.iconPath = [self.iconPath stringByAppendingFormat:@"/%@icon.png",self.exKey];
         self.logs = @"";
     }
     
@@ -44,21 +64,6 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"exken = %@\nname = %@\nstatus = %@\nlogs = %@",self.exKey,self.name,self.status,self.logs];
-}
-
-- (void)dealloc
-{
-    self.exKey = nil;
-    self.name = nil;
-    self.date = nil;
-    self.address = nil;
-    self.organizer = nil;
-    self.applied = nil;
-    self.status = nil;
-    self.createdAt = nil;
-    self.icon = nil;
-    self.logs = nil;
-    [super dealloc];
 }
 
 - (id)initWithJSONData:(NSDictionary *)data
@@ -72,8 +77,13 @@
         _organizer = [[(NSDictionary *)data objectForKey:@"organizer"] retain];
         _applied = [[(NSDictionary *)data objectForKey:@"applied"] retain];
         _status = [[(NSDictionary *)data objectForKey:@"status"] retain];
+        if ([_status isEqualToString:@""] || !_status) {
+            _status = [@"N" retain];
+        }
         //_status = @"N";
         _createdAt = [[(NSDictionary *)data objectForKey:@"createdAt"] retain];//[[NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"createdAt"] doubleValue]/1000] retain];
+        self.iconPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        self.iconPath = [self.iconPath stringByAppendingFormat:@"/%@icon.png",self.exKey];
         NSString *unReadNum = [[(NSDictionary*)data objectForKey:@"count"]retain];
         self.messageUnRead = [unReadNum integerValue];
     }

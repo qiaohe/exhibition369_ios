@@ -20,13 +20,28 @@ static Model *sharedModel;
 @synthesize mainView = _mainView;
 @synthesize selectExhibition = _selectExhibition;
 @synthesize HaveNetwork;
+@synthesize shareFileManager;
 
+
+
+-(void)dealloc {
+    [_documentDirectory     release];
+    [_appliedExhibitionList release];
+    if(_systemConfig)
+        [_systemConfig      release];
+    [_selectExhibition      release];
+    [_mainView              release];
+    [self.shareFileManager  release];
+    //AudioServicesDisposeSystemSoundID(messageSound);
+    [super                  dealloc];
+}
 
 + (Model *)sharedModel
 {
 	if (!sharedModel)
 	{
 		sharedModel = [[Model alloc] init];
+        
 	}
 	
 	return sharedModel;
@@ -38,7 +53,7 @@ static Model *sharedModel;
 	{
         _appliedExhibitionList = [[NSMutableArray alloc] init];
         _documentDirectory = [[NSHomeDirectory() stringByAppendingString:@"/Documents"] retain];
-        
+        self.shareFileManager = [NSFileManager defaultManager];
         
         //init message sound
         /*NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"message" ofType:@"wav"];
@@ -95,16 +110,24 @@ static Model *sharedModel;
     [appDelegate.transitionController transitionToViewController:view withOptions:options];
 }
 
-
--(void)dealloc {
-    [_documentDirectory release];
-    [_appliedExhibitionList release];
-    if(_systemConfig)
-        [_systemConfig release];
-    //AudioServicesDisposeSystemSoundID(messageSound);
-    [super dealloc];
+- (BOOL) isConnectionAvailable
+{
+    SCNetworkReachabilityFlags flags;
+    BOOL receivedFlags;
+    
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(CFAllocatorGetDefault(), [@"dipinkrishna.com" UTF8String]);
+    receivedFlags = SCNetworkReachabilityGetFlags(reachability, &flags);
+    CFRelease(reachability);
+    
+    if (!receivedFlags || (flags == 0) )
+    {
+        self.HaveNetwork = NO;
+        return self.HaveNetwork;
+    } else {
+        self.HaveNetwork = YES;
+        return self.HaveNetwork;
+    }
 }
-
 
 - (void)initSystemConfig {
     if(_systemConfig == nil){

@@ -30,8 +30,9 @@
 
 -(void)dealloc
 {
-    self.webView = nil;
-    self.myExhibition = nil;
+    [self.webView      release];
+    [self.myExhibition release];
+    [self.UnloadImage  release];
     [super dealloc];
 }
 
@@ -39,8 +40,11 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
-    if ([Model sharedModel].HaveNetwork) {
+    if ([[Model sharedModel] isConnectionAvailable]) {
         [self requestData];
+    }else{
+        //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
+        self.UnloadImage.hidden = NO;
     }
     // Do any additional setup after loading the view from its nib.
 }
@@ -48,9 +52,13 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    self.view.frame = CGRectMake(0, 40, 320, baseHeight);
     [super viewWillAppear:YES];
-    if ([Model sharedModel].HaveNetwork) {
+    if ([[Model sharedModel] isConnectionAvailable]) {
         [self requestData];
+    }else{
+        //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
+        self.UnloadImage.hidden = NO;
     }
     /*
     self.webView.layer.masksToBounds = YES;

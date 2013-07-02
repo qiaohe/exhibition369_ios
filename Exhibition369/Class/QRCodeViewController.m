@@ -24,6 +24,7 @@
 @synthesize exhibitionOrganizer;
 @synthesize addressLabel;
 @synthesize dateLabel;
+@synthesize qrcodeImagePath;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,28 +38,27 @@
 
 -(void)dealloc
 {
-    self.QRCodeImage         = nil;
-    self.RemindLabel         = nil;
-    self.exhibitionImage     = nil;
-    self.exhibitionTextView  = nil;
-    self.exhibitionTitle     = nil;
-    self.exhibitionDate      = nil;
-    self.exhibitionAddress   = nil;
-    self.exhibitionOrganizer = nil;
-    self.addressLabel        = nil;
-    self.dateLabel           = nil;
+    [self.QRCodeImage         release];
+    [self.RemindLabel         release];
+    [self.exhibitionImage     release];
+    [self.exhibitionTextView  release];
+    [self.exhibitionTitle     release];
+    [self.exhibitionDate      release];
+    [self.exhibitionAddress   release];
+    [self.exhibitionOrganizer release];
+    [self.addressLabel        release];
+    [self.dateLabel           release];
+    [self.qrcodeImagePath     release];
     [super dealloc];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    /*
-    self.view.layer.masksToBounds = YES;
-    self.view.layer.cornerRadius = 6.0;
-    self.view.layer.borderWidth = 1.0;
-    self.view.layer.borderColor = [[UIColor whiteColor] CGColor];
-    self.view.backgroundColor = [UIColor clearColor];*/
+    
+    NSString *QRCImagePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    self.qrcodeImagePath = [QRCImagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@QRCode",[Model sharedModel].selectExhibition.exKey]];
+    
     [self updateData];
     // Do any additional setup after loading the view from its nib.
 }
@@ -78,7 +78,6 @@
     
     [self.addressLabel setText:e.address];
     [self.dateLabel setText:e.date];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -100,11 +99,38 @@
     }else{
         self.QRCodeImage.hidden = NO;
         self.exhibitionTextView.hidden = YES;
-        NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/qrcode/%@.png",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-        request.delegate = self;
-        [request startAsynchronous];
+        if ([[Model sharedModel].shareFileManager fileExistsAtPath:self.qrcodeImagePath]) {
+            [self getQRCodeImageFromFile];
+        }else{
+            NSString *urlString = [[Model sharedModel].systemConfig.assetServer stringByAppendingFormat:@"/%@/qrcode/%@.png",[Model sharedModel].selectExhibition.exKey,[Model sharedModel].systemConfig.token];
+            ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+            request.delegate = self;
+            [request startAsynchronous];
+        }
     }
+}
+
+- (void)writeQRCodeImageToFileWithImageData:(NSData*)imageData
+{
+    NSFileManager *fm = [Model sharedModel].shareFileManager;
+    if (![fm fileExistsAtPath:self.qrcodeImagePath]){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [imageData writeToFile:self.qrcodeImagePath atomically:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+            });
+        });
+    }
+}
+
+- (void)getQRCodeImageFromFile
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *QRCImage = [UIImage imageWithContentsOfFile:self.qrcodeImagePath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.QRCodeImage setImage:QRCImage];
+        });
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -134,12 +160,12 @@
     [phoneCallWebView release];
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
+- (void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"failed");
 }
 
-- (void)requestFinished:(ASIHTTPRequest *)request
+- (void)done:(ASIHTTPRequest *)request
 {
     NSLog(@"finished");
     
@@ -148,12 +174,12 @@
     if (range.location == NSNotFound) {
         NSData *responseData = [request responseData];
         [self.QRCodeImage setImage:[UIImage imageWithData:responseData]];
+        [self writeQRCodeImageToFileWithImageData:responseData];
     }else {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
         [alertView release];
     }
-    
 }
 
 - (void)didReceiveMemoryWarning

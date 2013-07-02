@@ -37,14 +37,14 @@
 
 - (void)dealloc {
     [_tabBar release];
-    self.titleLabel       = nil;
-    self.titleView        = nil;
-    self.titleImageView   = nil;
-    self.backImageView    = nil;
-    self.exhibition       = nil;
-    self.viewControllers  = nil;
-    self.messageUnReadNum = nil;
-    self.ApplyButton      = nil;
+    [self.titleLabel       release];
+    [self.titleView        release];
+    [self.titleImageView   release];
+    [self.backImageView    release];
+    [self.exhibition       release];
+    [self.viewControllers  release];
+    [self.messageUnReadNum release];
+    [self.ApplyButton      release];
     [super dealloc];
 }
 
@@ -57,6 +57,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+
+    if (![[Model sharedModel] isConnectionAvailable]) {
+        
+    }
     if (![[Model sharedModel].selectExhibition.status isEqualToString:@"N"] && ![[Model sharedModel].selectExhibition.status isEqualToString:@"D"]) {
         self.ApplyButton.hidden = YES;
     }else {
@@ -67,6 +71,7 @@
 - (void)updateData
 {
     [self ShowMessageUnReadWithNum:[Model sharedModel].selectExhibition.messageUnRead];
+    [Model sharedModel].selectExhibition.messageUnRead = 0;
     
     CGRect subViewFrame = CGRectMake(0, 40, 320, baseHeight);
     ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];
@@ -105,7 +110,7 @@
     btn.selected = YES;
     [self.view addSubview:exhibitionInfoView.view];
     self.titleLabel.text = exhibitionInfoView.title;
-    [self setTitleViewToTop];
+    //[self setTitleViewToTop];
 }
 
 - (void)ShowMessageUnReadWithNum:(NSInteger)num
@@ -113,48 +118,22 @@
     
     if (num > 0) {
         self.messageUnReadNum.hidden = NO;
-        self.messageUnReadNum.titleLabel.text = [[NSNumber numberWithInteger:num]stringValue];
+        //self.messageUnReadNum.titleLabel.text = [[NSNumber numberWithInteger:num]stringValue];
     }else {
         self.messageUnReadNum.hidden = YES;
     }
 }
-
+/*
 - (void)setTitleViewToTop
 {
     NSInteger titleViewIndex = [self.view.subviews indexOfObject:self.titleView];
     NSInteger lastViewIndex = [self.view.subviews count];
     [self.view exchangeSubviewAtIndex:titleViewIndex withSubviewAtIndex:lastViewIndex];
 }
-
+*/
 - (void)SuperViewPresentViewController:(UIViewController*)viewController
 {
     [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (IBAction)ButtonIsPress:(UIButton*)sender
-{
-    sender.selected = YES;
-    NSInteger selectIndex = sender.tag - 200;
-    NSString *status = [Model sharedModel].selectExhibition.status;
-    if (selectIndex == 4) {
-        [self presentViewController:[self.viewControllers objectAtIndex:selectIndex] animated:YES completion:nil];
-    }else if(selectIndex == 1){
-        if ([status isEqualToString:@"N"]) {
-            [self MessageJumpToApplyView];
-        }else{
-            UIButton *button = (UIButton*)[self.view viewWithTag:self.prevBtnIndex];
-            button.selected = NO;
-            sender.selected = YES;
-            [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
-            self.prevBtnIndex = sender.tag;
-        }
-    }else{
-        UIButton *button = (UIButton*)[self.view viewWithTag:self.prevBtnIndex];
-        button.selected = NO;
-        sender.selected = YES;
-        [self tabBar:self.tabBar didSelectItem:[self.tabBar.items objectAtIndex:selectIndex]];
-        self.prevBtnIndex = sender.tag;
-    }
 }
 
 - (IBAction)PressPhoneButton:(id)sender
@@ -214,12 +193,7 @@
         [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
     }else{
         
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"您已报名，请等候通知" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
-        //[self sendRequestWith:URL params:dic method:method];
-        //[[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
-        //[[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+         [[Model sharedModel] displayTip:@"您已报名" modal:NO];
     }
     
 }
@@ -228,12 +202,12 @@
     [self tabBar:self.tabBar didSelectItem:[self.viewControllers objectAtIndex:4]];
 }
 
--(void)requestFailed:(ASIHTTPRequest *)request
+-(void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"failed");
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+-(void)done:(ASIHTTPRequest *)request
 {
     UIAlertView *alertView = (UIAlertView*)[self.view viewWithTag:301];
     [alertView setMessage:@"申请成功！请关注审批结果"];
@@ -242,7 +216,6 @@
 - (void)MessageJumpToApplyView
 {
     NSString *status = [Model sharedModel].selectExhibition.status;
-    NSLog(@"status = %@",status);
     if ([status isEqualToString:@"N"] || [status isEqualToString:@"D"]) {
         [self ApplyViewShow];
     }
@@ -255,7 +228,6 @@
 - (IBAction)JumpToApplyView:(id)sender
 {
     NSString *status = [Model sharedModel].selectExhibition.status;
-    NSLog(@"status = %@",status);
     if ([status isEqualToString:@"N"] || [status isEqualToString:@"D"]) {
         [self ApplyViewShow];
     }
@@ -275,7 +247,7 @@
 - (void)ApplyViewShow
 {
     ApplyViewController *view = [[ApplyViewController alloc]initWithNibName:@"ApplyViewController" bundle:nil];
-    view.view.frame = CGRectMake(0, 40, view.view.frame.size.width, view.view.frame.size.height);
+    view.view.frame = CGRectMake(0, 0, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
     view.view.tag = 106;
     view.delegate = self;
     [self presentViewController:view animated:YES completion:nil];
@@ -311,6 +283,8 @@
         if (view.tag == self.prevIndex) {
             [view removeFromSuperview];
         }
+    }if (index == 3) {
+        [self ShowMessageUnReadWithNum:0];
     }
     UIViewController *viewController = [self.viewControllers objectAtIndex:index];
     [self.view addSubview:viewController.view];

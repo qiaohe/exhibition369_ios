@@ -36,6 +36,7 @@ typedef enum{
 - (void)loadingMoreTableScrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)loadingMoreTableScrollViewDidEndDragging:(UIScrollView *)scrollView;
 - (void)loadingMoreTableDataSourceDidFinishedLoading:(UIScrollView *)scrollView;
+- (void)setState:(LoadingMoreState)aState;
 
 @end
 
