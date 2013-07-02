@@ -54,17 +54,13 @@
 {
     self.view.frame = CGRectMake(0, 40, 320, baseHeight);
     [super viewWillAppear:YES];
+    /*
     if ([[Model sharedModel] isConnectionAvailable]) {
         [self requestData];
     }else{
         //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
         self.UnloadImage.hidden = NO;
-    }
-    /*
-    self.webView.layer.masksToBounds = YES;
-    self.webView.layer.cornerRadius = 6.0;
-    self.webView.layer.borderWidth = 1.0;
-    self.webView.layer.borderColor = [[UIColor whiteColor] CGColor];*/
+    }*/
 }
 
 - (void)ExhibitionInfoShow:(BOOL)CanShow

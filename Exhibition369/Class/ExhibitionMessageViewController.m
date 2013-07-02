@@ -130,6 +130,7 @@
     
     messageArray = [[NSMutableArray alloc]init];
     heightsForRows = [[NSMutableArray alloc]init];
+    [self CheckMessageNum];
     //self.tableView.editing = NO;
         
     // Do any additional setup after loading the view from its nib.
@@ -137,7 +138,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self CheckMessageNum];
+    [super viewWillAppear:animated];
 }
 
 - (void)CheckMessageNum

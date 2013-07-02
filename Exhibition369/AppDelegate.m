@@ -49,10 +49,11 @@
         }
         //[[Model sharedModel] addNewMessage:pushNotificationPayload];
         [self application:application didReceiveRemoteNotification:pushNotificationPayload];
-    }else{
-        LaunchViewController *launchView = [[[LaunchViewController alloc] init] autorelease];
-        self.transitionController = [[[TransitionController alloc] initWithViewController:launchView] autorelease];
     }
+    
+    LaunchViewController *launchView = [[[LaunchViewController alloc] init] autorelease];
+    self.transitionController = [[[TransitionController alloc] initWithViewController:launchView] autorelease];
+    
     
     //self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.window.rootViewController = self.transitionController;
