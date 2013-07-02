@@ -138,7 +138,7 @@
 
 - (IBAction)PressPhoneButton:(id)sender
 {
-    NSString *phoneNum = @"10086";// 电话号码
+    NSString *phoneNum = _PHONE_NUM_;// 电话号码
     NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
     
     UIWebView *phoneCallWebView = nil;
@@ -158,7 +158,7 @@
     if (alertView.tag == 201) {
         switch (buttonIndex) {
             case 1:{
-                NSString *phoneNum = @"10086";// 电话号码
+                NSString *phoneNum = _PHONE_NUM_;// 电话号码
                 NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
                 
                 UIWebView *phoneCallWebView = nil;

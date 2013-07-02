@@ -14,6 +14,8 @@
 #import "LoadingMoreTableFooterView.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+#define _PHONE_NUM_   @"400-888-1710"
 #define baseHeight [UIScreen mainScreen].applicationFrame.size.height - 40 - 50
 
 typedef enum{

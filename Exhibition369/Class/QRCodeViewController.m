@@ -145,7 +145,7 @@
 
 - (IBAction)CallPhoneBtnPress:(id)sender
 {
-    NSString *phoneNum = @"10086";// 电话号码
+    NSString *phoneNum = _PHONE_NUM_;// 电话号码
     NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
     
     UIWebView *phoneCallWebView = nil;
