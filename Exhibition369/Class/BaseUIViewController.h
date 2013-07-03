@@ -48,8 +48,8 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
     BOOL loadingData;
 }
 @property (nonatomic, retain) ASIHTTPRequest*theRequest;
-@property (retain, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property (assign, nonatomic) BOOL                      reloading;
+@property (retain, nonatomic) EGORefreshTableHeaderView  *refreshHeaderView;
+@property (assign, nonatomic) BOOL                       reloading;
 @property (retain, nonatomic) LoadingMoreTableFooterView *loadingMoreFooterView;
 
 - (void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method;

@@ -181,13 +181,13 @@
     [newsView release];
 }
 
--(void)requestFailed:(ASIHTTPRequest *)request
+-(void)error:(ASIHTTPRequest *)request
 {
     [self ExhibitionNewsShow:NO];
     NSLog(@"failed");
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+-(void)done:(ASIHTTPRequest *)request
 {
     NSInteger RequestType = [[request.userInfo objectForKey:@"RequestType"]integerValue];
     if (RequestType == RequestNewsIcon) {

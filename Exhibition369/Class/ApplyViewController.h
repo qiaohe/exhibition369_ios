@@ -31,7 +31,6 @@ typedef enum{
 
 @property (nonatomic, assign) id <ApplyRequestDelegate>        delegate;
 @property (nonatomic, retain) MainViewController               *mainViewDelegate;
-@property (nonatomic, retain) IBOutlet NSArray                 *statusArray;
 @property (nonatomic, retain) IBOutlet UITextField             *nameTextField;
 @property (nonatomic, retain) IBOutlet UITextField             *phoneNumTexField;
 @property (nonatomic, retain) IBOutlet UITextField             *emailTextField;

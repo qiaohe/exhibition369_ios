@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AccessDeviceIden.h"
-#import "ApplyStateView.h"
-#import "ApplyResultView.h"
 #import "Model.h"
 
 @protocol RequestDelegate <NSObject>

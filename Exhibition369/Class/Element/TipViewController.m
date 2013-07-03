@@ -12,4 +12,10 @@
 
 @synthesize textLabel;
 
+- (void)dealloc
+{
+    [self.textLabel release];
+    [super          dealloc];
+}
+
 @end

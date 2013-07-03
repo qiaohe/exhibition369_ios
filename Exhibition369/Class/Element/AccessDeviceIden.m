@@ -28,9 +28,9 @@
 
 -(void)dealloc
 {
-    self.DeviceName    = nil;
-    self.SystemName    = nil;
-    self.SystemVersion = nil;
+    [self.DeviceName    release];
+    [self.SystemName    release];
+    [self.SystemVersion release];
     [super          dealloc];
 }
 

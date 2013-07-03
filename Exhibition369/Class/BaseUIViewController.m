@@ -209,6 +209,7 @@
 {
     loadingData = NO;
     [self hideLoadingIndicator];
+    [self error:request];
     //NSLog(@"Request Failed: %@", request.error);
 }
 
@@ -220,7 +221,6 @@
 - (void)error:(ASIHTTPRequest *)request
 {
     //handler by children
-    [self error:request];
 }
 
 

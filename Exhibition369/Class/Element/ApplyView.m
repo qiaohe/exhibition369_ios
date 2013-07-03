@@ -32,12 +32,14 @@
 
 -(void)dealloc
 {
-    self.userNameLabel          = nil;
-    self.userNameTextField      = nil;
-    self.phoneNumLabel          = nil;
-    self.phoneNumTextField      = nil;
-    self.emailAddressLabel      = nil;
-    self.emailAddressLTextField = nil;
+    [self.title                  release];
+    [self.delegate               release];
+    [self.userNameLabel          release];
+    [self.userNameTextField      release];
+    [self.phoneNumLabel          release];
+    [self.phoneNumTextField      release];
+    [self.emailAddressLabel      release];
+    [self.emailAddressLTextField release];
     [super dealloc];
 }
 

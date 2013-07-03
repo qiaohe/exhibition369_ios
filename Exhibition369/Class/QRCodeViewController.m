@@ -176,9 +176,7 @@
         [self.QRCodeImage setImage:[UIImage imageWithData:responseData]];
         [self writeQRCodeImageToFileWithImageData:responseData];
     }else {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        [[Model sharedModel] displayTip:@"请求失败" modal:NO];
     }
 }
 

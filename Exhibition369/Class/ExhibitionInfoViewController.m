@@ -77,9 +77,7 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     [self ExhibitionInfoShow:NO];
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
-    [alertView show];
-    [alertView release];
+    [[Model sharedModel] displayTip:@"请求失败" modal:NO];
 }
 
 -(void)requestFinished:(ASIHTTPRequest *)request

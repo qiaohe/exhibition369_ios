@@ -24,6 +24,16 @@
     return [self initWithFrame:frame arrowImageName:@"blueArrow.png" textColor:TEXT_COLOR];
 }
 
+-(void)dealloc
+{
+    [_lastUpdatedLabel release];
+    [_statusLabel      release];
+    [_arrowImage       release];
+    [_activityView     release];
+    [_delegate         release];
+    [super dealloc];
+}
+
 - (id)initWithFrame:(CGRect)frame arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor  {
     if((self = [super initWithFrame:frame])){
 /*- (id)initWithFrame:(CGRect)frame textColor:(UIColor *)textColor  {

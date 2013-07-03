@@ -32,7 +32,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     
     
     NSMutableArray *unAppliedExhibitions;
-    NSMutableArray *appliedExhibitions;
+    //NSMutableArray *appliedExhibitions;
     
 }
 @property (retain, nonatomic) IBOutlet UITableView      *theTableView;

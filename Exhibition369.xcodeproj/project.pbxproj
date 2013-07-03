@@ -57,8 +57,6 @@
 		04C377ED1771009F00674F32 /* TipViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04C377EA1771009F00674F32 /* TipViewController.xib */; };
 		04C377F0177100C400674F32 /* ExhibitionTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C377EF177100C400674F32 /* ExhibitionTableCell.m */; };
 		04C377F9177106D400674F32 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C377F5177106D400674F32 /* IconDownloader.m */; };
-		CE0BA7BD17728BDC0043F4DD /* ApplyResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */; };
-		CE0BA7BE17728BDC0043F4DD /* ApplyStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */; };
 		CE0BA7BF17728BDC0043F4DD /* ApplyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7BC17728BDC0043F4DD /* ApplyView.m */; };
 		CE0BA7C217728C120043F4DD /* AccessDeviceIden.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */; };
 		CE0BA7C6177297C10043F4DD /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */; };
@@ -252,10 +250,6 @@
 		04C377EF177100C400674F32 /* ExhibitionTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExhibitionTableCell.m; sourceTree = "<group>"; };
 		04C377F4177106D400674F32 /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
 		04C377F5177106D400674F32 /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
-		CE0BA7B717728BDC0043F4DD /* ApplyResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyResultView.h; sourceTree = "<group>"; };
-		CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyResultView.m; sourceTree = "<group>"; };
-		CE0BA7B917728BDC0043F4DD /* ApplyStateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyStateView.h; sourceTree = "<group>"; };
-		CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyStateView.m; sourceTree = "<group>"; };
 		CE0BA7BB17728BDC0043F4DD /* ApplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyView.h; sourceTree = "<group>"; };
 		CE0BA7BC17728BDC0043F4DD /* ApplyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyView.m; sourceTree = "<group>"; };
 		CE0BA7C017728C110043F4DD /* AccessDeviceIden.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessDeviceIden.h; sourceTree = "<group>"; };
@@ -655,10 +649,6 @@
 				CE17A662177D37730042FDCD /* MDataModel.m */,
 				CE0BA7BB17728BDC0043F4DD /* ApplyView.h */,
 				CE0BA7BC17728BDC0043F4DD /* ApplyView.m */,
-				CE0BA7B917728BDC0043F4DD /* ApplyStateView.h */,
-				CE0BA7BA17728BDC0043F4DD /* ApplyStateView.m */,
-				CE0BA7B717728BDC0043F4DD /* ApplyResultView.h */,
-				CE0BA7B817728BDC0043F4DD /* ApplyResultView.m */,
 				CE0BA7C017728C110043F4DD /* AccessDeviceIden.h */,
 				CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */,
 			);
@@ -1038,8 +1028,6 @@
 				CE2240471771C8B6009F0218 /* ExhibitionsNews.m in Sources */,
 				CE2240481771C8B6009F0218 /* Message.m in Sources */,
 				CE22404C1771CEAA009F0218 /* ApplyViewController.m in Sources */,
-				CE0BA7BD17728BDC0043F4DD /* ApplyResultView.m in Sources */,
-				CE0BA7BE17728BDC0043F4DD /* ApplyStateView.m in Sources */,
 				CE0BA7BF17728BDC0043F4DD /* ApplyView.m in Sources */,
 				CE0BA7C217728C120043F4DD /* AccessDeviceIden.m in Sources */,
 				CE0BA7C6177297C10043F4DD /* QRCodeViewController.m in Sources */,

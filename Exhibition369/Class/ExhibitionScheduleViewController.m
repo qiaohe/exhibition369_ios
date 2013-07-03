@@ -73,9 +73,7 @@
 - (void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"failed");
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"请求失败" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
-    [alertView show];
-    [alertView release];
+    [[Model sharedModel] displayTip:@"请求失败" modal:NO];
 }
 
 -(void)done:(ASIHTTPRequest *)request
@@ -86,9 +84,7 @@
         NSData *responseData = [request responseData];
         [self.webView loadData:responseData MIMEType:nil textEncodingName:@"NSUTF8StringEncoding" baseURL:nil];
     }else {
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此页面不存在" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil];
-        [alertView show];
-        [alertView release];
+        [[Model sharedModel] displayTip:@"此页面不存在" modal:NO];
     }
 }
 

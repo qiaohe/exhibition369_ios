@@ -34,6 +34,7 @@
 }
 
 - (void)dealloc {
+    [tipViewController release];
     [_containerView release];
     [_viewController release];
     [super dealloc];

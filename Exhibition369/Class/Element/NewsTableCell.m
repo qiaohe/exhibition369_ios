@@ -26,9 +26,10 @@
 
 -(void)dealloc
 {
-    self.titleLabel = nil;
-    self.detailLabel = nil;
-    self.theImage = nil;
+    [self.titleLabel release];
+    [self.detailLabel release];
+    [self.theImage release];
+    [self.selectImage release];
     [super dealloc];
 }
 

@@ -28,6 +28,15 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self.selectImage release];
+    [self.titleLabel  release];
+    [self.contentLabel release];
+    [self.backGroundImages release];
+    [super dealloc];
+}
+
 - (void)initData
 {
     [self addObserver:self
