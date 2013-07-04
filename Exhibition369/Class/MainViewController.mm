@@ -708,11 +708,14 @@
     [self loadMoreExhibitions];
 }
 
-#pragma mark - qrcodescan
-- (IBAction)QRCodeScan:(id)sender
+- (IBAction)qrcodeScan:(id)sender
 {
-    
+    ZXingWidgetController *widController = [[ZXingWidgetController alloc] initWithDelegate:self showCancel:YES OneDMode:NO];
+    NSMutableSet *readers = [[NSMutableSet alloc] init];
+    QRCodeReader *qrcodeReader = [[QRCodeReader alloc] init];
+    [readers addObject:qrcodeReader];
+    widController.readers = readers;
+    [self presentViewController:widController animated:YES completion:^{}];
 }
-
 
 @end

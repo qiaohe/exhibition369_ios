@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseUIViewController.h"
+#import <ZXingWidgetController.h>
+#import <AVFoundation/AVFoundation.h>
 
 
 @class ApplyViewController;
@@ -49,7 +51,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
-- (IBAction)QRCodeScan:(id)sender;
+- (IBAction)qrcodeScan:(id)sender;
 - (void)applySuccess;
 
 @end

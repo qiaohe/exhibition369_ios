@@ -49,7 +49,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">beijing.png</string>
+							<string key="NSResourceName">homebeijing.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="46145426">
@@ -57,7 +57,7 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{5, 43}, {310, 38}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="330055634"/>
+						<reference key="NSNextKeyView" ref="21558107"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -256,7 +256,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIButton" id="330055634">
+					<object class="IBUIButton" id="21558107">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{276, 0}, {44, 44}}</string>
@@ -273,11 +273,11 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="843021062"/>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="691056843">
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="685245729">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">anxiasao.png</string>
 						</object>
-						<reference key="IBUISelectedBackgroundImage" ref="691056843"/>
+						<reference key="IBUISelectedBackgroundImage" ref="685245729"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">sao.png</string>
@@ -424,15 +424,6 @@
 					</object>
 					<int key="connectionID">48</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">QRCodeScan:</string>
-						<reference key="source" ref="330055634"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">50</int>
-				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -456,7 +447,7 @@
 							<reference ref="185275495"/>
 							<reference ref="694695430"/>
 							<reference ref="753961493"/>
-							<reference ref="330055634"/>
+							<reference ref="21558107"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -523,7 +514,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">49</int>
-						<reference key="object" ref="330055634"/>
+						<reference key="object" ref="21558107"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -552,7 +543,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">50</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -562,8 +553,8 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="2.png">{319, 70}</string>
 			<string key="anxiasao.png">{83, 83}</string>
-			<string key="beijing.png">{640, 920}</string>
 			<string key="dingbulan.png">{640, 85}</string>
+			<string key="homebeijing.png">{640, 920}</string>
 			<string key="sao.png">{83, 83}</string>
 			<string key="search-focus.png">{100, 52}</string>
 			<string key="soushuokuang.png">{593, 78}</string>
