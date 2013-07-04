@@ -72,6 +72,12 @@
 {
     [self ShowMessageUnReadWithNum:[Model sharedModel].selectExhibition.messageUnRead];
     [Model sharedModel].selectExhibition.messageUnRead = 0;
+    for (Exhibition * e in [Model sharedModel].appliedExhibitionList){
+        if (e.exKey == [Model sharedModel].selectExhibition.exKey) {
+            e.messageUnRead = 0;
+            [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+        }
+    }
     
     CGRect subViewFrame = CGRectMake(0, 40, 320, baseHeight);
     ExhibitionInfoViewController *exhibitionInfoView = [[[ExhibitionInfoViewController alloc]initWithNibName:@"ExhibitionInfoViewController" bundle:nil]autorelease];

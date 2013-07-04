@@ -708,6 +708,11 @@
     [self loadMoreExhibitions];
 }
 
+#pragma mark - qrcodescan
+- (IBAction)QRCodeScan:(id)sender
+{
+    
+}
 
 
 @end

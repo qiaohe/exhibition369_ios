@@ -49,6 +49,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;
+- (IBAction)QRCodeScan:(id)sender;
 - (void)applySuccess;
 
 @end
