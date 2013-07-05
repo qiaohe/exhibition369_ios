@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseUIViewController.h"
-#import <ZXingWidgetController.h>
-#import <AVFoundation/AVFoundation.h>
+#import "ZBarSDK.h"
 
+#define _BASE_STRING_ @"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+#define _BASE_ASCII_  @"0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f"
 
 @class ApplyViewController;
 @protocol LoadingMoreTableFooterDelegate;
@@ -26,7 +27,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     MainViewActiveTabAppliedExhibitions    = 1 << 1
 };
 
-@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate, LoadingMoreTableFooterDelegate> {
+@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate, LoadingMoreTableFooterDelegate,ZBarReaderDelegate> {
     MainViewActiveTab activeTab;
     
     NSMutableArray *typeGroup;
@@ -48,6 +49,7 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) NSMutableArray            *appliedExhibitions;
 @property (retain, nonatomic) NSString                  *applyListOldSearchKey;
 @property (retain, nonatomic) NSString                  *unapplyListOldSearchKey;
+@property (retain, nonatomic) IBOutlet UIImageView      *imageview;
 
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;

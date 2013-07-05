@@ -29,6 +29,7 @@
 @synthesize appliedStateBtn;
 @synthesize applyListOldSearchKey;
 @synthesize unapplyListOldSearchKey;
+@synthesize imageview;
 
 -(id)init
 {
@@ -362,6 +363,20 @@
             [self.loadingMoreFooterView loadingMoreTableDataSourceDidFinishedLoading:self.theTableView];
 
         [self unApplyListShow];
+    }else if(request.tag == 101){
+        NSDictionary *result = [responseString JSONValue];
+        NSArray *exhibitorArray = [result objectForKey:@"list"];
+        Exhibition *e = [[Exhibition alloc]initWithJSONData:(NSDictionary*)[exhibitorArray objectAtIndex:0]];
+        self.searchInput.text = e.name;
+        if (activeTab == MainViewActiveTabAppliedExhibitions) {
+            self.applyListOldSearchKey = e.name;
+        }else{
+            self.unapplyListOldSearchKey = e.name;
+        }
+        NSMutableArray *dataSource = [self getDataSource];
+        [dataSource removeAllObjects];
+        [dataSource addObject:e];
+        [self.theTableView reloadData];
     }
 }
 
@@ -708,14 +723,112 @@
     [self loadMoreExhibitions];
 }
 
+#pragma mark - zbar
+
 - (IBAction)qrcodeScan:(id)sender
 {
-    ZXingWidgetController *widController = [[ZXingWidgetController alloc] initWithDelegate:self showCancel:YES OneDMode:NO];
-    NSMutableSet *readers = [[NSMutableSet alloc] init];
-    QRCodeReader *qrcodeReader = [[QRCodeReader alloc] init];
-    [readers addObject:qrcodeReader];
-    widController.readers = readers;
-    [self presentViewController:widController animated:YES completion:^{}];
+    ZBarReaderViewController *reader = [ZBarReaderViewController new];
+    reader.readerDelegate = self;
+    reader.supportedOrientationsMask = ZBarOrientationMaskAll;
+    
+    ZBarImageScanner *scanner = reader.scanner;
+    
+    [scanner setSymbology: ZBAR_I25
+                   config: ZBAR_CFG_ENABLE
+                       to: 0];
+    
+    [self presentViewController:reader animated:YES completion:^{
+        
+    }];
+    [reader release];
+}
+
+- (void) imagePickerController: (UIImagePickerController*) reader
+ didFinishPickingMediaWithInfo: (NSDictionary*) info{
+    id<NSFastEnumeration> results =
+    [info objectForKey: ZBarReaderControllerResults];
+    ZBarSymbol *symbol = nil;
+    for(symbol in results)
+        break;
+    imageview.image =
+    [info objectForKey: UIImagePickerControllerOriginalImage];
+    
+    [reader dismissModalViewControllerAnimated: YES];
+    
+    NSLog(@"data = %@",symbol.data);
+    
+    NSRange range = [symbol.data rangeOfString:@"MEK://"];
+    if (range.location != NSNotFound) {
+        NSMutableString* qrcodeData = [NSMutableString stringWithString:symbol.data];
+        [qrcodeData deleteCharactersInRange:range];
+        [self analysisQRCodeData:[qrcodeData uppercaseString]];
+    }
+}
+
+- (void)analysisQRCodeData:(NSString*)QRCodedata
+{
+    NSRange range;
+    range.location = 3;
+    range.length   = 1;
+    NSString *lengthStr = [QRCodedata substringWithRange:range];
+    NSLog(@"length = %d",[self checkStringLength:lengthStr]);
+    NSInteger exkenLength = [self checkStringLength:lengthStr];
+    range.location = 4;
+    range.length = exkenLength*2;
+    NSString *exkeyStr = [QRCodedata substringWithRange:range];
+    NSString *exkeyString = [self transformStringFromASCII:exkeyStr stringLength:exkenLength];
+    
+    NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/exhibitions/find"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].systemConfig.token,@"token",
+                                                                                    exkeyString,                           @"exKey",
+                                                                                    @"-1",                                 @"size",
+                                                                                    @"-1",                                 @"last",
+                                                                                    nil];
+    [self sendRequestWith:urlString params:params method:RequestMethodGET requestTag:101];
+}
+
+- (NSString*)transformStringFromASCII:(NSString *)str stringLength:(NSInteger)length
+{
+    NSMutableString *exKeyString = [[NSMutableString alloc]init];
+    NSArray *ASCIIArray = [_BASE_ASCII_ componentsSeparatedByString:@","];
+    NSRange range;
+    for (int i = 0; i<length; i++) {
+        NSMutableString *exKeyChar= [[NSMutableString alloc]init];
+
+        for (int j = 0; j<2; j++) {
+
+            range.location = i*2 + j;
+            range.length = 1;
+            unichar c = [str characterAtIndex:(i*2 + j)];
+            int v = (c - 'A'); //<< 4;
+            [exKeyChar appendString:[ASCIIArray objectAtIndex:v]];
+        }
+        
+        //const char *c = [exKeyChar cStringUsingEncoding:NSASCIIStringEncoding];
+        //NSLog(@"str = %lu",strtoul([exKeyChar UTF8String], 0, 16));
+        int value = strtoul([exKeyChar UTF8String], 0, 16);
+        //NSData *data = [exKeyChar dataUsingEncoding:NSUTF8StringEncoding];
+        //Byte *byte = (Byte*)[data bytes];
+        //NSString *asd = [[NSString alloc]initWithUTF8String:c];
+        //NSLog(@"asd = %@", asd);
+        NSString *string = [NSString stringWithFormat:@"%c", value];
+        [exKeyString appendString:string];
+    }
+    NSLog(@"string = %@",exKeyString);
+    return exKeyString;
+}
+
+- (NSInteger)checkStringLength:(NSString*)str
+{
+    NSArray* array = [_BASE_STRING_ componentsSeparatedByString:@","];
+    int i;
+    for (i = 0; i<[array count]; i++) {
+        NSString *objectStr = [array objectAtIndex:i];
+        if ([str isEqualToString:objectStr]) {
+            break;
+        }
+    }
+    return i;
 }
 
 @end

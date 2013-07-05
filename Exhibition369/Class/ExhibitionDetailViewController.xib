@@ -76,7 +76,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{44, 44}</string>
 								<reference key="NSSuperview" ref="660013570"/>
-								<reference key="NSNextKeyView" ref="285088531"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -196,27 +196,6 @@
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">电话.png</string>
 								</object>
-								<reference key="IBUIFontDescription" ref="441937113"/>
-								<reference key="IBUIFont" ref="858484304"/>
-							</object>
-							<object class="IBUIButton" id="285088531">
-								<reference key="NSNextResponder" ref="660013570"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{44, 0}, {44, 44}}</string>
-								<reference key="NSSuperview" ref="660013570"/>
-								<reference key="NSNextKeyView" ref="569869380"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">QRC</string>
-								<reference key="IBUIHighlightedTitleColor" ref="251775335"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="854225497"/>
 								<reference key="IBUIFontDescription" ref="441937113"/>
 								<reference key="IBUIFont" ref="858484304"/>
 							</object>
@@ -380,7 +359,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{256, 410}, {64, 50}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="910261375"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -702,7 +680,6 @@
 							<reference ref="569869380"/>
 							<reference ref="589695985"/>
 							<reference ref="191912303"/>
-							<reference ref="285088531"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -766,11 +743,6 @@
 						<reference key="object" ref="191912303"/>
 						<reference key="parent" ref="660013570"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">85</int>
-						<reference key="object" ref="285088531"/>
-						<reference key="parent" ref="660013570"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -809,7 +781,6 @@
 				<real value="3" key="78.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="80.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="80.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="85.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -828,7 +799,7 @@
 			<string key="anxiarichegn.png">{124, 91}</string>
 			<string key="anxiaxiaoxi.png">{123, 91}</string>
 			<string key="anxiaxinwen.png">{123, 91}</string>
-			<string key="beijing.png">{16, 16}</string>
+			<string key="beijing.png">{640, 920}</string>
 			<string key="di .png">{640, 97}</string>
 			<string key="dingbulan.png">{640, 85}</string>
 			<string key="erweima.png">{123, 91}</string>
