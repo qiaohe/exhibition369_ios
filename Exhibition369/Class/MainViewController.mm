@@ -30,6 +30,8 @@
 @synthesize applyListOldSearchKey;
 @synthesize unapplyListOldSearchKey;
 @synthesize imageview;
+@synthesize userDefault;
+@synthesize userDefaultURL;
 
 -(id)init
 {
@@ -43,6 +45,9 @@
         
         self.applyListOldSearchKey = nil;
         self.unapplyListOldSearchKey = nil;
+        
+        self.userDefault = [NSUserDefaults standardUserDefaults];
+        self.userDefaultURL = [self.userDefault objectForKey:@"OpenWithURL"];
     }
     
     return self;
@@ -72,17 +77,47 @@
         self.loadingMoreFooterView.backgroundColor = [UIColor clearColor];
     }
     
-    [self setActiveTab:MainViewActiveTabExhibitions];
     
+    [self setActiveTab:MainViewActiveTabExhibitions];
+        
     [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
     if ([[Model sharedModel] isConnectionAvailable]) {
-        [self refreshExhibitions];
-        [self refreshAppliedExhibitions];
+        
+        if ([Model sharedModel].openURL) {
+            NSRange range = [[Model sharedModel].openURL rangeOfString:@"MEK://"];
+            if (range.location != NSNotFound) {
+                NSMutableString* qrcodeData = [NSMutableString stringWithString:[Model sharedModel].openURL];
+                [qrcodeData deleteCharactersInRange:range];
+                [self analysisQRCodeData:[qrcodeData uppercaseString]];
+            }
+        }
+         else{
+            [self refreshExhibitions];
+            [self refreshAppliedExhibitions];
+        }
     }else{
         //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
         [self setActiveTab:MainViewActiveTabAppliedExhibitions];
     }
     
+    [[Model sharedModel] addObserver:self forKeyPath:@"openURL" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"openURL"]) {
+        NSLog(@"%@",[self.userDefault objectForKey:keyPath]);
+        NSString *QRCodeURL = [Model sharedModel].openURL;
+        if (QRCodeURL) {
+            NSRange range = [QRCodeURL rangeOfString:@"MEK://"];
+            if (range.location != NSNotFound) {
+                NSMutableString* qrcodeData = [NSMutableString stringWithString:QRCodeURL];
+                [qrcodeData deleteCharactersInRange:range];
+                [self analysisQRCodeData:[qrcodeData uppercaseString]];
+            }
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -52,7 +52,6 @@
 
 - (void)launchApp:(NSNotification *)notification
 {
-    
     [Model sharedModel].mainView = [[[MainViewController alloc] init] autorelease];
     [[Model sharedModel] pushView:[[Model sharedModel] getMainViewController] option:ViewTrasitionEffectNone];
 }

@@ -50,6 +50,8 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) NSString                  *applyListOldSearchKey;
 @property (retain, nonatomic) NSString                  *unapplyListOldSearchKey;
 @property (retain, nonatomic) IBOutlet UIImageView      *imageview;
+@property (retain, nonatomic) NSUserDefaults            *userDefault;
+@property (retain, nonatomic) NSString                  *userDefaultURL;
 
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;

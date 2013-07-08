@@ -43,12 +43,21 @@
     
     
     NSDictionary *pushNotificationPayload = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    
     if(pushNotificationPayload) {
         for (id key in pushNotificationPayload) {
             NSLog(@"key: %@, value: %@ \n", key, [pushNotificationPayload objectForKey:key]);
         }
+        
         //[[Model sharedModel] addNewMessage:pushNotificationPayload];
         [self application:application didReceiveRemoteNotification:pushNotificationPayload];
+    }else{
+        pushNotificationPayload = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if (pushNotificationPayload) {
+            //[self application:application didReceiveRemoteNotification:pushNotificationPayload];
+            NSLog(@"open with url");
+            //[[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",url] forKey:@"OpenWithURL"];
+        }
     }
     
     LaunchViewController *launchView = [[[LaunchViewController alloc] init] autorelease];
@@ -58,6 +67,30 @@
     //self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.window.rootViewController = self.transitionController;
     [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    NSDictionary *launchingAppWithURLKey = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+    if (launchingAppWithURLKey) {
+        NSLog(@"open with url");
+    }
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    NSLog(@"handle open url");
+    NSLog(@"url = %@",url);
+    [Model sharedModel].openURL = [NSString stringWithFormat:@"%@",url];
+    /*
+    NSRange range = [[NSString stringWithFormat:@"%@",url] rangeOfString:@"MEK://"];
+    if (range.location != NSNotFound) {
+        NSMutableString* qrcodeData = [NSMutableString stringWithString:[NSString stringWithFormat:@"%@",url]];
+        [qrcodeData deleteCharactersInRange:range];
+        [self analysisQRCodeData:[qrcodeData uppercaseString]];
+    }*/
     return YES;
 }
 
@@ -231,9 +264,9 @@
     
     NSDictionary *result = [Utils parseJson:responseString];
 	
-	if (result == nil){
-		NSLog(@"Get system Config with error: %@", responseString);
-	}
+    if (result == nil){
+        NSLog(@"Get system Config with error: %@", responseString);
+    }
     else{
         NSLog(@"Get system Config  result:%@", responseString);
         SystemConfig *sc = [[SystemConfig alloc] initWithJSONData:result];
@@ -243,8 +276,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationAppConfigRecived object:nil userInfo:nil];
 
     }
-    
-
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request

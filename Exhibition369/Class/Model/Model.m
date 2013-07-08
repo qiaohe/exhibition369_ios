@@ -21,6 +21,7 @@ static Model *sharedModel;
 @synthesize selectExhibition = _selectExhibition;
 @synthesize HaveNetwork;
 @synthesize shareFileManager;
+@synthesize openURL;
 
 
 

@@ -37,6 +37,7 @@
 @property (nonatomic, retain) Exhibition *selectExhibition;
 @property (nonatomic, assign) BOOL       HaveNetwork;
 @property (nonatomic, retain) NSFileManager *shareFileManager;
+@property (nonatomic, retain) NSString      *openURL;
 
 - (void)createFolder:(NSArray *)pathComponents;
 - (NSString *)createPath:(NSArray *)pathComponents;
