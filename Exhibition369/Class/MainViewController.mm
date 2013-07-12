@@ -79,7 +79,7 @@
     
     
     [self setActiveTab:MainViewActiveTabExhibitions];
-        
+    
     [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
     if ([[Model sharedModel] isConnectionAvailable]) {
         
@@ -91,7 +91,7 @@
                 [self analysisQRCodeData:[qrcodeData uppercaseString]];
             }
         }
-         else{
+        else{
             [self refreshExhibitions];
             [self refreshAppliedExhibitions];
         }
@@ -114,7 +114,10 @@
             if (range.location != NSNotFound) {
                 NSMutableString* qrcodeData = [NSMutableString stringWithString:QRCodeURL];
                 [qrcodeData deleteCharactersInRange:range];
-                [self analysisQRCodeData:[qrcodeData uppercaseString]];
+                if ([[Model sharedModel] isConnectionAvailable]) {
+                    [self analysisQRCodeData:[qrcodeData uppercaseString]];
+                }else
+                    [[Model sharedModel] displayTip:@"未连接网络" modal:NO];
             }
         }
     }
@@ -232,7 +235,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-        return 1;
+    return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -248,7 +251,7 @@
 	if (cell == nil)
 	{
 		cell = [[[ExhibitionTableCell alloc] initWithStyle:UITableViewCellStyleDefault
-									   reuseIdentifier:Title_ID] autorelease];
+                                           reuseIdentifier:Title_ID] autorelease];
         
         theButton = (DataButton *)[cell.contentView viewWithTag:5];
         [theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -330,7 +333,7 @@
     [Model sharedModel].selectExhibition = e;
     
     ExhibitionDetailViewController *edvc = [[[ExhibitionDetailViewController alloc] init] autorelease];
-
+    
     [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
     
 }
@@ -396,7 +399,7 @@
             [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
         else if(request.tag == RequestUnApplyExhibitionsLoadingMore)
             [self.loadingMoreFooterView loadingMoreTableDataSourceDidFinishedLoading:self.theTableView];
-
+        
         [self unApplyListShow];
     }else if(request.tag == 101){
         NSDictionary *result = [responseString JSONValue];
@@ -407,6 +410,7 @@
             self.applyListOldSearchKey = e.name;
         }else{
             self.unapplyListOldSearchKey = e.name;
+            self.loadingMoreFooterView.haveMoreData = NO;
         }
         NSMutableArray *dataSource = [self getDataSource];
         [dataSource removeAllObjects];
@@ -490,7 +494,7 @@
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
 {
-    return [NSDate date]; 
+    return [NSDate date];
 }
 
 #pragma mark - Table cell image support
@@ -796,7 +800,10 @@
     if (range.location != NSNotFound) {
         NSMutableString* qrcodeData = [NSMutableString stringWithString:symbol.data];
         [qrcodeData deleteCharactersInRange:range];
-        [self analysisQRCodeData:[qrcodeData uppercaseString]];
+        if ([[Model sharedModel] isConnectionAvailable]) {
+            [self analysisQRCodeData:[qrcodeData uppercaseString]];
+        }else
+            [[Model sharedModel] displayTip:@"未连接网络" modal:NO];
     }
 }
 
@@ -815,10 +822,10 @@
     
     NSString *urlString = [ServerURL stringByAppendingFormat:@"/rest/exhibitions/find"];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[Model sharedModel].systemConfig.token,@"token",
-                                                                                    exkeyString,                           @"exKey",
-                                                                                    @"-1",                                 @"size",
-                                                                                    @"-1",                                 @"last",
-                                                                                    nil];
+                                   exkeyString,                           @"exKey",
+                                   @"-1",                                 @"size",
+                                   @"-1",                                 @"last",
+                                   nil];
     [self sendRequestWith:urlString params:params method:RequestMethodGET requestTag:101];
 }
 
@@ -829,9 +836,9 @@
     NSRange range;
     for (int i = 0; i<length; i++) {
         NSMutableString *exKeyChar= [[NSMutableString alloc]init];
-
+        
         for (int j = 0; j<2; j++) {
-
+            
             range.location = i*2 + j;
             range.length = 1;
             unichar c = [str characterAtIndex:(i*2 + j)];

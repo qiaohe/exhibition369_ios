@@ -45,6 +45,7 @@ typedef enum{
 @property (nonatomic, retain) UILabel                          *phoneNumError;
 @property (nonatomic, retain) UILabel                          *emailError;
 @property (nonatomic, retain) UILabel                          *noChooseType;
+@property (nonatomic, assign) BOOL                             applySuccess;
 
 - (IBAction)PressCancleButton:(id)sender;
 - (IBAction)PressOkButton:(id)sender;

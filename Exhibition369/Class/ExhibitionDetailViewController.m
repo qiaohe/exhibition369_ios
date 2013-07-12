@@ -215,8 +215,8 @@
 
 -(void)done:(ASIHTTPRequest *)request
 {
-    UIAlertView *alertView = (UIAlertView*)[self.view viewWithTag:301];
-    [alertView setMessage:@"申请成功！请关注审批结果"];
+    //UIAlertView *alertView = (UIAlertView*)[self.view viewWithTag:301];
+    //[alertView setMessage:@"申请成功！请关注审批结果"];
 }
 
 - (void)MessageJumpToApplyView

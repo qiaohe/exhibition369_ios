@@ -76,7 +76,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{44, 44}</string>
 								<reference key="NSSuperview" ref="660013570"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -804,7 +803,7 @@
 			<string key="dingbulan.png">{640, 85}</string>
 			<string key="erweima.png">{123, 91}</string>
 			<string key="huizhanjieshao.png">{123, 91}</string>
-			<string key="new message.png">{16, 16}</string>
+			<string key="new message.png">{53, 50}</string>
 			<string key="richeng.png">{124, 91}</string>
 			<string key="xiaoxi.png">{123, 91}</string>
 			<string key="xinwen.png">{123, 91}</string>

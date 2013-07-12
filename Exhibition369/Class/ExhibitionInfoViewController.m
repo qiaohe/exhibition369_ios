@@ -52,7 +52,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.view.frame = CGRectMake(0, 40, 320, baseHeight);
+    //self.view.frame = CGRectMake(0, 40, 320, baseHeight);
     [super viewWillAppear:YES];
     /*
     if ([[Model sharedModel] isConnectionAvailable]) {

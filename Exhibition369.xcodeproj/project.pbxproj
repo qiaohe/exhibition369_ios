@@ -73,6 +73,7 @@
 		CE0BA7C217728C120043F4DD /* AccessDeviceIden.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C117728C110043F4DD /* AccessDeviceIden.m */; };
 		CE0BA7C6177297C10043F4DD /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */; };
 		CE0BA7C7177297C10043F4DD /* QRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE0BA7C5177297C00043F4DD /* QRCodeViewController.xib */; };
+		CE14336C178A96860010EE4B /* new message.png in Resources */ = {isa = PBXBuildFile; fileRef = CE14336B178A96840010EE4B /* new message.png */; };
 		CE15795217852A8600CB9900 /* dianhua.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15791A17852A8600CB9900 /* dianhua.png */; };
 		CE15795317852A8600CB9900 /* no_message.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15791B17852A8600CB9900 /* no_message.png */; };
 		CE15795417852A8600CB9900 /* shenqingbaoming.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15791C17852A8600CB9900 /* shenqingbaoming.png */; };
@@ -286,6 +287,7 @@
 		CE0BA7C3177297BF0043F4DD /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
 		CE0BA7C4177297BF0043F4DD /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
 		CE0BA7C5177297C00043F4DD /* QRCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QRCodeViewController.xib; sourceTree = "<group>"; };
+		CE14336B178A96840010EE4B /* new message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "new message.png"; path = "Exhibition369/Resource/BackImage/new message.png"; sourceTree = SOURCE_ROOT; };
 		CE15791A17852A8600CB9900 /* dianhua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dianhua.png; sourceTree = "<group>"; };
 		CE15791B17852A8600CB9900 /* no_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no_message.png; sourceTree = "<group>"; };
 		CE15791C17852A8600CB9900 /* shenqingbaoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shenqingbaoming.png; sourceTree = "<group>"; };
@@ -764,6 +766,7 @@
 		CE15792C17852A8600CB9900 /* ExhibitionInfoImage */ = {
 			isa = PBXGroup;
 			children = (
+				CE14336B178A96840010EE4B /* new message.png */,
 				CE15792D17852A8600CB9900 /* anxiaerweima.png */,
 				CE15792E17852A8600CB9900 /* anxiajieshao.png */,
 				CE15792F17852A8600CB9900 /* anxiarichegn.png */,
@@ -1122,6 +1125,7 @@
 				CE800B6A17856F7700D92C01 /* zbar-help.html in Resources */,
 				CE800B6B17856F7700D92C01 /* zbar-helpicons.png in Resources */,
 				CE800B6C17856F7700D92C01 /* zbar-samples.png in Resources */,
+				CE14336C178A96860010EE4B /* new message.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1269,8 +1273,8 @@
 		040C15BA176E9D4500F859DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Exhibition369/Exhibition369-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1284,8 +1288,8 @@
 					"\"$(SRCROOT)/Exhibition369/Library/ZBarSDK\"",
 				);
 				PRODUCT_NAME = "369展会资讯";
-				PROVISIONING_PROFILE = "79EDF629-8A62-4953-AA8F-5CEA09A5E2B0";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79EDF629-8A62-4953-AA8F-5CEA09A5E2B0";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1294,8 +1298,8 @@
 		040C15BB176E9D4500F859DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: QIAO HE (Y88572P6Z4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: QIAO HE (Y88572P6Z4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Exhibition369/Exhibition369-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1309,8 +1313,8 @@
 					"\"$(SRCROOT)/Exhibition369/Library/ZBarSDK\"",
 				);
 				PRODUCT_NAME = "369展会资讯";
-				PROVISIONING_PROFILE = "79EDF629-8A62-4953-AA8F-5CEA09A5E2B0";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79EDF629-8A62-4953-AA8F-5CEA09A5E2B0";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

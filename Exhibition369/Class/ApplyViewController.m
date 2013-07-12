@@ -33,6 +33,7 @@
 @synthesize phoneNumError;
 @synthesize emailError;
 @synthesize noChooseType;
+@synthesize applySuccess;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -185,8 +186,12 @@
 - (IBAction)PressCancleButton:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        if (self.delegate) {
-            [self.delegate ApplyViewApplySuccess];
+        if (self.applySuccess) {
+            if (self.delegate) {
+                [self.delegate ApplyViewApplySuccess];
+            }else if (self.mainViewDelegate){
+                [self.mainViewDelegate applySuccess];
+            }
         }
     }];
 }
@@ -310,6 +315,7 @@
     NSRange range = [requestResult rangeOfString:@"404 Not Found"];
     if (range.location == NSNotFound) {
         NSInteger responseResult = request.responseStatusCode;
+        self.applySuccess = YES;
         switch (responseResult) {
             case 200:{
                 [Model sharedModel].selectExhibition.applied = EXHIBITION_APPLIED_Y;
@@ -327,9 +333,11 @@
                 }
                 break;
             }case 400:{
+                self.applySuccess = NO;
                 [[Model sharedModel] displayTip:@"参数错误" modal:NO];
                 break;
             }case 500:{
+                self.applySuccess = NO;
                 [[Model sharedModel] displayTip:@"服务器内部错误" modal:NO];
                 break;
             }
@@ -337,6 +345,7 @@
                 break;
         }
     }else {
+        self.applySuccess = NO;
         [[Model sharedModel] displayTip:@"报名失败" modal:NO];
     }
     [self.activity stopAnimating];
@@ -350,6 +359,7 @@
 - (void)error:(ASIHTTPRequest *)request
 {
     NSLog(@"Failed");
+    self.applySuccess = NO;
     [[Model sharedModel] displayTip:@"报名失败" modal:NO];
     [self.activity stopAnimating];
 }
