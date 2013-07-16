@@ -17,6 +17,7 @@
 
 #define _PHONE_NUM_   @"400-888-1710"
 #define baseHeight [UIScreen mainScreen].applicationFrame.size.height - 40 - 50
+#define appFrame [UIScreen mainScreen].applicationFrame
 
 typedef enum{
     RequestGlobalInformation = 0,                   //获取全局信息

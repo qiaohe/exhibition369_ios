@@ -23,6 +23,7 @@
 @synthesize logs;
 @synthesize messageUnRead;
 @synthesize iconPath;
+@synthesize shouldSaveIcon;
 
 
 - (void)dealloc

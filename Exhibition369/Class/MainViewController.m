@@ -26,12 +26,15 @@
 @implementation MainViewController
 
 @synthesize appliedExhibitions;
+@synthesize scanArray;
 @synthesize appliedStateBtn;
 @synthesize applyListOldSearchKey;
 @synthesize unapplyListOldSearchKey;
-@synthesize imageview;
 @synthesize userDefault;
 @synthesize userDefaultURL;
+@synthesize reader;
+@synthesize exhibitionNonentity;
+@synthesize editCell;
 
 -(id)init
 {
@@ -42,6 +45,7 @@
         
         unAppliedExhibitions = [[NSMutableArray alloc] init];
         appliedExhibitions = [[NSMutableArray alloc]init];
+        scanArray = [[NSMutableArray alloc]init];
         
         self.applyListOldSearchKey = nil;
         self.unapplyListOldSearchKey = nil;
@@ -56,7 +60,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.unapplyListOldSearchKey = @"";
+    
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
+    self.exhibitionNonentity = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.theTableView.frame.size.width, self.theTableView.frame.size.height)];
+    [self.exhibitionNonentity setImage:[UIImage imageNamed:@"no_message.png"]];
+    self.exhibitionNonentity.backgroundColor = [UIColor clearColor];
+    self.exhibitionNonentity.hidden = YES;
+    [self.theTableView addSubview:self.exhibitionNonentity];
     
     if(self.refreshHeaderView == nil)
     {
@@ -71,16 +83,17 @@
     
     if(self.loadingMoreFooterView == nil)
     {
-        self.loadingMoreFooterView = [[LoadingMoreTableFooterView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 60)];
+        self.loadingMoreFooterView = [[LoadingMoreTableFooterView alloc] initWithFrame:CGRectMake(0.0f, 480.0f, self.view.frame.size.width, 60)];
         
         self.loadingMoreFooterView.delegate = self;
         self.loadingMoreFooterView.backgroundColor = [UIColor clearColor];
+        [self.theTableView addSubview:self.loadingMoreFooterView];
     }
     
     
     [self setActiveTab:MainViewActiveTabExhibitions];
+    [self getAppliedList];
     
-    [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
     if ([[Model sharedModel] isConnectionAvailable]) {
         
         if ([Model sharedModel].openURL) {
@@ -88,26 +101,41 @@
             if (range.location != NSNotFound) {
                 NSMutableString* qrcodeData = [NSMutableString stringWithString:[Model sharedModel].openURL];
                 [qrcodeData deleteCharactersInRange:range];
-                [self analysisQRCodeData:[qrcodeData uppercaseString]];
+                self.loadingMoreFooterView.haveMoreData = NO;
+                [self analysisQRCodeData:[qrcodeData uppercaseString] WithObject:nil];
             }
         }
         else{
             [self refreshExhibitions];
             [self refreshAppliedExhibitions];
         }
-    }else{
-        //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
-        [self setActiveTab:MainViewActiveTabAppliedExhibitions];
     }
-    
+    else{
+        //[[Model sharedModel] displayTip:@"未连接网络" modal:NO];
+    }
+    [self setActiveTab:MainViewActiveTabAppliedExhibitions];
+
     [[Model sharedModel] addObserver:self forKeyPath:@"openURL" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
+}
+
+- (void)getAppliedList
+{
+    [self.scanArray removeAllObjects];
+    [self.appliedExhibitions removeAllObjects];
+    for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
+        if ([e.status isEqualToString:EXHIBITION_APPLIED_N]) {
+            [self.scanArray addObject:e];
+        }else{
+            [self.appliedExhibitions addObject:e];
+        }
+    }
+    [self.appliedExhibitions sortedArrayUsingSelector:@selector(compare:)];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"openURL"]) {
-        NSLog(@"%@",[self.userDefault objectForKey:keyPath]);
         NSString *QRCodeURL = [Model sharedModel].openURL;
         if (QRCodeURL) {
             NSRange range = [QRCodeURL rangeOfString:@"MEK://"];
@@ -115,7 +143,8 @@
                 NSMutableString* qrcodeData = [NSMutableString stringWithString:QRCodeURL];
                 [qrcodeData deleteCharactersInRange:range];
                 if ([[Model sharedModel] isConnectionAvailable]) {
-                    [self analysisQRCodeData:[qrcodeData uppercaseString]];
+                    self.loadingMoreFooterView.haveMoreData = NO;
+                    [self analysisQRCodeData:[qrcodeData uppercaseString] WithObject:nil];
                 }else
                     [[Model sharedModel] displayTip:@"未连接网络" modal:NO];
             }
@@ -125,10 +154,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ([self.appliedExhibitions count]) {
-        [self.appliedExhibitions removeAllObjects];
-    }
-    [self.appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+    [self getAppliedList];
     [self.theTableView reloadData];
 }
 
@@ -213,14 +239,15 @@
     if (activeTab == MainViewActiveTabAppliedExhibitions) {
         self.appliedBtn.selected = YES;
         self.unAppliedBtn.selected = NO;
-        [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
-        [self.theTableView setTableFooterView:nil];
+        [self.tabImage setImage:[UIImage imageNamed:@"1.png"]];
+        //[self.theTableView setTableFooterView:nil];
+        self.loadingMoreFooterView.hidden = YES;
     }else{
         self.appliedBtn.selected = NO;
         self.unAppliedBtn.selected = YES;
-        [self.tabImage setImage:[UIImage imageNamed:@"1.png"]];
+        [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
         if(self.loadingMoreFooterView.haveMoreData){
-            [self.theTableView setTableFooterView:self.loadingMoreFooterView];
+            //[self.theTableView setTableFooterView:self.loadingMoreFooterView];
         }
     }
 }
@@ -228,7 +255,7 @@
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(activeTab == MainViewActiveTabAppliedExhibitions){
-        return [appliedExhibitions count];
+        return [appliedExhibitions count] + [self.scanArray count];
     } else {
         return [unAppliedExhibitions count];
     }
@@ -267,20 +294,47 @@
     Exhibition *e = nil;
     NSMutableArray *dataSource = [self getDataSource];
     
-    if([dataSource count] > indexPath.row){
-        e = (Exhibition *)[dataSource objectAtIndex:indexPath.row];
+    if (activeTab == MainViewActiveTabAppliedExhibitions) {
+        if ([self.scanArray count]) {
+            if (indexPath.row < [self.scanArray count]) {
+                e = [self.scanArray objectAtIndex:indexPath.row];
+            }else{
+                e = [self.appliedExhibitions objectAtIndex:(indexPath.row - [self.scanArray count])];
+            }
+        }else{
+            e = [self.appliedExhibitions objectAtIndex:indexPath.row];
+        }
+    }else{
+        if([dataSource count] > indexPath.row){
+            e = (Exhibition *)[dataSource objectAtIndex:indexPath.row];
+        }
     }
     
+    
     if(e != nil){
-        if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
-            theButton.hidden = NO;
-            cell.ApplyStatus.hidden = YES;
-            [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
+        if (activeTab == MainViewActiveTabAppliedExhibitions) {
+            if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
+                theButton.hidden = YES;
+                cell.ApplyStatus.hidden = NO;
+                [cell setApplyStatusWithString:e.applied];
+                cell.ApplyStatus.selectIndex = indexPath;
+                [cell.ApplyStatus addTarget:self action:@selector(editCell:) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                theButton.hidden = YES;
+                cell.ApplyStatus.hidden = NO;
+                [cell setApplyStatusWithString:e.status];
+            }
         }else{
-            theButton.hidden = YES;
-            cell.ApplyStatus.hidden = NO;
-            [cell setApplyStatusWithString:e.status];
+            if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
+                theButton.hidden = NO;
+                cell.ApplyStatus.hidden = YES;
+            }else {
+                theButton.hidden = YES;
+                cell.ApplyStatus.hidden = NO;
+                [cell setApplyStatusWithString:e.status];
+            }
         }
+        
         //NSLog(@"count = %d",e.messageUnRead);
         if (e.messageUnRead != 0) {
             cell.NumOfMessageUnRead.hidden = NO;
@@ -304,11 +358,38 @@
         }else{
             [self startIconDownload:e];
         }
-    } else {
-        [theImage setImage:nil];
+    }else {
+        [theImage setImage:[UIImage imageNamed:@"暂无图片.png"]];
     }
     
 	return cell;
+}
+
+- (void)editCell:(DataButton*)sender
+{
+    self.editCell = sender.selectIndex;
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:@"删除展会?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.delegate = self;
+    alertView.tag = 203;
+    [alertView show];
+    [alertView release];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 203) {
+        if (buttonIndex == 1) {
+            Exhibition *elem = [self.scanArray objectAtIndex:self.editCell.row];
+            [self.scanArray removeObject:elem];
+            [self.theTableView deleteRowsAtIndexPaths:@[self.editCell] withRowAnimation:UITableViewRowAnimationFade];
+            for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
+                if ([elem.exKey isEqualToString:e.exKey]) {
+                    [[Model sharedModel].appliedExhibitionList removeObject:e];
+                    [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
+                }
+            }
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -321,8 +402,15 @@
 {
     Exhibition *e;
     if(activeTab == MainViewActiveTabAppliedExhibitions){
-        e = (Exhibition *)[appliedExhibitions objectAtIndex:indexPath.row];
-        
+        if ([self.scanArray count]) {
+            if (indexPath.row < [self.scanArray count]) {
+                e = [self.scanArray objectAtIndex:indexPath.row];
+            }else{
+                e = [self.appliedExhibitions objectAtIndex:(indexPath.row - [self.scanArray count])];
+            }
+        }else{
+            e = [self.appliedExhibitions objectAtIndex:indexPath.row];
+        }
     } else {
         e = (Exhibition *)[unAppliedExhibitions objectAtIndex:indexPath.row];
     }
@@ -336,6 +424,16 @@
     
     [[Model sharedModel] pushView:edvc option:ViewTrasitionEffectMoveLeft];
     
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
 }
 
 - (BOOL)AppliedExhibitions:(NSArray*)exhibitions ContentsObject:(NSObject*)object
@@ -354,19 +452,21 @@
 - (void)done:(ASIHTTPRequest *)request
 {
     NSString *responseString = [request responseString];
-    
+    NSString *requestTpe = [request.userInfo objectForKey:@"tag"];
     if (request.tag == RequestApplyExhibitionList) {
         NSArray *result = [responseString JSONValue];
+        [self getAppliedList];
         [[Model sharedModel].appliedExhibitionList removeAllObjects];
         for (NSDictionary *dic in result) {
             Exhibition *e = [[Exhibition alloc] initWithJSONData:dic];
             e.applied = EXHIBITION_APPLIED_Y;
             [[Model sharedModel].appliedExhibitionList addObject:e];
         }
+        [[Model sharedModel].appliedExhibitionList addObjectsFromArray:self.scanArray];
         [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
         [appliedExhibitions removeAllObjects];
         //init applied Exhibitions
-        [appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+        [self getAppliedList];
         [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.theTableView];
         [self.theTableView reloadData];
         
@@ -389,9 +489,11 @@
         if ([exhibitorArray count] < PAGE_LOAD_ITEM_SIZE) {
             //no more data
             self.loadingMoreFooterView.haveMoreData = NO;
-            [self.theTableView setTableFooterView:nil];
+            //[self.theTableView setTableFooterView:nil];
+            self.loadingMoreFooterView.hidden = YES;
         } else {
-            [self.theTableView setTableFooterView:self.loadingMoreFooterView];
+            //[self.theTableView setTableFooterView:self.loadingMoreFooterView];
+            self.loadingMoreFooterView.hidden = NO;
             self.loadingMoreFooterView.haveMoreData = YES;
         }
         
@@ -401,22 +503,47 @@
             [self.loadingMoreFooterView loadingMoreTableDataSourceDidFinishedLoading:self.theTableView];
         
         [self unApplyListShow];
-    }else if(request.tag == 101){
+    }else if([requestTpe isEqualToString:@"101"]){
+        //UIImagePickerController *_reader = [request.userInfo objectForKey:@"object"];
+        [self.reader dismissViewControllerAnimated:YES completion:nil];
         NSDictionary *result = [responseString JSONValue];
         NSArray *exhibitorArray = [result objectForKey:@"list"];
         Exhibition *e = [[Exhibition alloc]initWithJSONData:(NSDictionary*)[exhibitorArray objectAtIndex:0]];
+        e.shouldSaveIcon = YES;
         self.searchInput.text = e.name;
-        if (activeTab == MainViewActiveTabAppliedExhibitions) {
-            self.applyListOldSearchKey = e.name;
+        [self setActiveTab:MainViewActiveTabAppliedExhibitions];
+        [self setSearchKey:self.searchInput.text withActiveTab:activeTab];
+
+        NSMutableArray *appliedDataSource = [Model sharedModel].appliedExhibitionList;
+        if ([self exhibitionArray:appliedDataSource containsExhibition:e]) {
+            [self addExhibition:e];
         }else{
-            self.unapplyListOldSearchKey = e.name;
-            self.loadingMoreFooterView.haveMoreData = NO;
+            [[Model sharedModel].appliedExhibitionList addObject:e];
+            [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
+            [self addExhibition:e];
         }
-        NSMutableArray *dataSource = [self getDataSource];
-        [dataSource removeAllObjects];
-        [dataSource addObject:e];
         [self.theTableView reloadData];
     }
+}
+
+- (void)addExhibition:(Exhibition*)e
+{
+    [self.scanArray removeAllObjects];
+    [self.appliedExhibitions removeAllObjects];
+    if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
+        [self.scanArray addObject:e];
+    }else{
+        [self.appliedExhibitions addObject:e];
+    }
+}
+
+- (BOOL)exhibitionArray:(NSArray*)array containsExhibition:(Exhibition*)e
+{
+    for (Exhibition *elem in array) {
+        if ([elem.exKey isEqualToString:e.exKey]) {
+            return YES;
+        }
+    }return NO;
 }
 
 - (void)error:(ASIHTTPRequest *)request
@@ -443,8 +570,15 @@
     [_unAppliedBtn release];
     [appliedStateBtn release];
     [self.appliedExhibitions release];
+    [self.scanArray          release];
     [self.applyListOldSearchKey release];
     [self.unapplyListOldSearchKey release];
+    if(self.reader)
+        [self.reader              release];
+    [self.exhibitionNonentity     release];
+    if (self.reader)
+        [self.reader              release];
+    [self.editCell                release];
     [super dealloc];
 }
 - (void)viewDidUnload {
@@ -632,26 +766,29 @@
     if (activeTab != MainViewActiveTabAppliedExhibitions) {
         activeTab = MainViewActiveTabAppliedExhibitions;
     }
-    NSMutableArray *array = [[[NSMutableArray alloc] init] autorelease];
     [appliedExhibitions removeAllObjects];
     if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]){
         for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
             NSRange rang = [e.name rangeOfString:self.searchInput.text];
             if (rang.location != NSNotFound) {
-                [array addObject:e];
+                if ([e.applied isEqualToString:EXHIBITION_APPLIED_N]) {
+                    [self.scanArray addObject:e];
+                }else{
+                    [self.appliedExhibitions addObject:e];
+                }
             }
         }
+        
     } else {
-        array = [Model sharedModel].appliedExhibitionList;
+        [self getAppliedList];
     }
     
-    
-    [appliedExhibitions addObjectsFromArray:[array sortedArrayUsingSelector:@selector(compare:)]];
     [self applyListShow];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    NSLog(@"searchinput = %@",self.searchInput.text);
     if ([textField canResignFirstResponder]) {
         [textField resignFirstResponder];
     }
@@ -673,6 +810,9 @@
     if (activeTab != MainViewActiveTabAppliedExhibitions) {
         activeTab = MainViewActiveTabAppliedExhibitions;
     }
+    
+    NSLog(@"input = %@,oldkey = %@",self.searchInput.text,self.applyListOldSearchKey);
+    
     if ([self.searchInput canResignFirstResponder]) {
         [self.searchInput resignFirstResponder];
     }if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]) {
@@ -684,8 +824,7 @@
             [self applyListShow];
         }
     }else{
-        [self.appliedExhibitions removeAllObjects];
-        [self.appliedExhibitions addObjectsFromArray:[[Model sharedModel].appliedExhibitionList sortedArrayUsingSelector:@selector(compare:)]];
+        [self getAppliedList];
         [self applyListShow];
     }
 }
@@ -695,6 +834,10 @@
     if(activeTab == MainViewActiveTabExhibitions)
         return;
     [self setActiveTab:MainViewActiveTabAppliedExhibitions];
+    if (![self.appliedExhibitions count] && ![self.scanArray count]) {
+        self.exhibitionNonentity.hidden = NO;
+    }else
+        self.exhibitionNonentity.hidden = YES;
     [_theTableView reloadData];
 }
 
@@ -708,10 +851,14 @@
 {
     if (![[Model sharedModel] isConnectionAvailable]) {
         self.theTableView.tableHeaderView.hidden = YES;
-        self.theTableView.tableFooterView.hidden = YES;
+        //self.theTableView.tableFooterView.hidden = YES;
+        self.loadingMoreFooterView.hidden = YES;
     }else {
         self.theTableView.tableHeaderView.hidden = NO;
-        self.theTableView.tableFooterView.hidden = NO;
+        //self.theTableView.tableFooterView.hidden = NO;
+        if (self.loadingMoreFooterView.haveMoreData) {
+            self.loadingMoreFooterView.hidden = NO;
+        }
     }
 }
 
@@ -753,6 +900,16 @@
     if(activeTab == MainViewActiveTabAppliedExhibitions)
         return;
     [self setActiveTab:MainViewActiveTabExhibitions];
+    CGFloat viewHeight = 70 * [unAppliedExhibitions count] + 5;
+    if (viewHeight < self.theTableView.frame.size.height + 5) {
+        viewHeight = self.theTableView.frame.size.height + 5;
+    }
+    self.loadingMoreFooterView.frame = CGRectMake(0, viewHeight, self.loadingMoreFooterView.frame.size.width, self.loadingMoreFooterView.frame.size.height);
+    //[self.theTableView addSubview:self.loadingMoreFooterView];
+    if (![unAppliedExhibitions count]) {
+        self.exhibitionNonentity.hidden = NO;
+    }else
+        self.exhibitionNonentity.hidden = YES;
     [_theTableView reloadData];
 }
 
@@ -766,33 +923,151 @@
 
 - (IBAction)qrcodeScan:(id)sender
 {
-    ZBarReaderViewController *reader = [ZBarReaderViewController new];
-    reader.readerDelegate = self;
-    reader.supportedOrientationsMask = ZBarOrientationMaskAll;
-    
-    ZBarImageScanner *scanner = reader.scanner;
-    
-    [scanner setSymbology: ZBAR_I25
-                   config: ZBAR_CFG_ENABLE
-                       to: 0];
-    
-    [self presentViewController:reader animated:YES completion:^{
+    if (!reader) {
+        self.reader = [ZBarReaderViewController new];
+        reader.readerDelegate = self;
+        reader.supportedOrientationsMask = ZBarOrientationMaskAll;
+        reader.showsZBarControls = NO;
+        reader.wantsFullScreenLayout = NO;
         
+        
+        
+        reader.readerView.scanCrop = [self getPortraitModeScanCropRect:CGRectMake(40, 120, 240, appFrame.size.height - 240) forOverlayView:reader.view];
+        
+        ZBarImageScanner *scanner = reader.scanner;
+    
+        [scanner setSymbology: ZBAR_I25
+                       config: ZBAR_CFG_ENABLE
+                           to: 0];
+        
+        
+        UIImageView *scanImage = [[UIImageView alloc]init];
+        scanImage.frame = CGRectMake(0, 0, 320, appFrame.size.height);
+        scanImage.tag = 201;
+        //scanImage.hidden = YES;
+        [reader.view addSubview:scanImage];
+        
+        UIImageView *imageView = [[UIImageView alloc]init];
+        imageView.frame = CGRectMake(0, 0, 320, appFrame.size.height);
+        [imageView setImage:[UIImage imageNamed:@"QRCodeBackImage.png"]];
+        [reader.view addSubview:imageView];
+    
+        UIImageView *titleView = [[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)]autorelease];
+        [titleView setImage:[UIImage imageNamed:@"ScanTitleImage.png"]];
+        //titleView.autoresizingMask
+        [reader.view addSubview:titleView];
+        
+        UIButton *cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancleBtn.frame = CGRectMake(0, 0, 44, 44);
+        [cancleBtn setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+        [cancleBtn setBackgroundImage:[UIImage imageNamed:@"按下 返回.png"] forState:UIControlStateSelected];
+        [cancleBtn setBackgroundImage:[UIImage imageNamed:@"按下 返回.png"] forState:UIControlStateHighlighted];
+        [cancleBtn addTarget:self action:@selector(pressCancle:) forControlEvents:UIControlEventTouchUpInside];
+        [self.reader.view addSubview:cancleBtn];
+        
+        UILabel *label = [[[UILabel alloc]initWithFrame:CGRectMake(40, 120 + (appFrame.size.height - 240) + 10, 240, 40)]autorelease];
+        label.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        [label setText:@"请将摄像头对准您的二维码"];
+        [self.reader.view addSubview:label];
+    }
+    UIImageView *scanImage = (UIImageView*)[self.reader.view viewWithTag:201];
+    scanImage.hidden = YES;
+    [self presentViewController:self.reader animated:YES completion:^{
+        [self scanAnomationWithState:YES];
     }];
-    [reader release];
+    
 }
 
-- (void) imagePickerController: (UIImagePickerController*) reader
+- (void)scanAnomationWithState:(BOOL)begin
+{
+    UIImageView *imageView = (UIImageView*)[self.reader.view viewWithTag:202];
+    if (!imageView) {
+        imageView = [[[UIImageView alloc]init]autorelease];
+        imageView.frame = CGRectMake(40, 120, 240, 10);
+        imageView.tag = 202;
+        [imageView setImage:[UIImage imageNamed:@"scanLine.png"]];
+        [self.reader.view addSubview:imageView];
+    }
+    if (begin) {
+        imageView.frame = CGRectMake(40, 120, 240, 10);
+        [UIView beginAnimations:@"scan" context:nil];
+        [UIView setAnimationDuration:2.0f];
+        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+        [UIView setAnimationRepeatCount:HUGE_VALF];
+        imageView.frame = CGRectMake(40, 345, 240, 10);
+        [UIView commitAnimations];
+    }
+}
+
+- (void)beginToAnimation
+{
+    UIImageView *imageView = (UIImageView*)[self.reader.view viewWithTag:202];
+    imageView.frame = CGRectMake(40, 125, 240, 10);
+    [UIView beginAnimations:@"scan" context:nil];
+    [UIView setAnimationDuration:3.0f];
+    imageView.frame = CGRectMake(40, 360, 240, 10);
+    [UIView commitAnimations];
+}
+
+- (CGRect)getPortraitModeScanCropRect:(CGRect)overlayCropRect
+                       forOverlayView:(UIView*)readerView
+{
+    CGRect scanCropRect = CGRectMake(0, 0, 1, 1); /*default full screen*/
+    
+    float x = overlayCropRect.origin.x;
+    float y = overlayCropRect.origin.y;
+    float width = overlayCropRect.size.width;
+    float height = overlayCropRect.size.height;
+    
+    
+    float A = y / readerView.bounds.size.height;
+    float B = 1 - (x + width) / readerView.bounds.size.width;
+    float C = (y + height) / readerView.bounds.size.height;
+    float D = 1 - x / readerView.bounds.size.width;
+    
+    scanCropRect = CGRectMake( A, B, C, D );
+    
+    return scanCropRect;
+}
+
+- (void)pressCancle:(UIButton*)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) imagePickerController: (UIImagePickerController*) _reader
  didFinishPickingMediaWithInfo: (NSDictionary*) info{
+    
+    UIImage *image = [info objectForKey: UIImagePickerControllerOriginalImage];
+    UIImageView *scanImage = (UIImageView*)[self.reader.view viewWithTag:201];
+    [scanImage setImage:image];
+    scanImage.hidden = NO;
+    if (image.size.width != 320 || image.size.height != 480)
+	{
+        CGSize itemSize = CGSizeMake(320, 480);
+		UIGraphicsBeginImageContextWithOptions(itemSize, NO, 0.0f);
+		CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+		[image drawInRect:imageRect];
+		[scanImage setImage:UIGraphicsGetImageFromCurrentImageContext()];
+		UIGraphicsEndImageContext();
+    }
+    
+    UIImageView *imageView = (UIImageView*)[self.reader.view viewWithTag:202];
+    [self.reader.view.layer removeAllAnimations];
+    [imageView removeFromSuperview];
+    
     id<NSFastEnumeration> results =
     [info objectForKey: ZBarReaderControllerResults];
     ZBarSymbol *symbol = nil;
     for(symbol in results)
         break;
-    imageview.image =
-    [info objectForKey: UIImagePickerControllerOriginalImage];
     
-    [reader dismissModalViewControllerAnimated: YES];
+    AudioServicesPlaySystemSound(1002);
+    
+    //[_reader dismissViewControllerAnimated:YES completion:nil];
     
     NSLog(@"data = %@",symbol.data);
     
@@ -801,19 +1076,22 @@
         NSMutableString* qrcodeData = [NSMutableString stringWithString:symbol.data];
         [qrcodeData deleteCharactersInRange:range];
         if ([[Model sharedModel] isConnectionAvailable]) {
-            [self analysisQRCodeData:[qrcodeData uppercaseString]];
+            [self analysisQRCodeData:[qrcodeData uppercaseString] WithObject:_reader];
         }else
             [[Model sharedModel] displayTip:@"未连接网络" modal:NO];
+    }else {
+        [[Model sharedModel] displayTip:@"非官方二维码" modal:NO];
     }
 }
 
-- (void)analysisQRCodeData:(NSString*)QRCodedata
+- (void)analysisQRCodeData:(NSString*)QRCodedata WithObject:(NSObject*)object
 {
+    UIImagePickerController *_reader = (UIImagePickerController*)object;
     NSRange range;
     range.location = 3;
     range.length   = 1;
     NSString *lengthStr = [QRCodedata substringWithRange:range];
-    NSLog(@"length = %d",[self checkStringLength:lengthStr]);
+
     NSInteger exkenLength = [self checkStringLength:lengthStr];
     range.location = 4;
     range.length = exkenLength*2;
@@ -826,7 +1104,8 @@
                                    @"-1",                                 @"size",
                                    @"-1",                                 @"last",
                                    nil];
-    [self sendRequestWith:urlString params:params method:RequestMethodGET requestTag:101];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"101",@"tag",_reader,@"object", nil];
+    [self sendRequestWith:urlString params:params method:RequestMethodGET userInfo:userInfo];
 }
 
 - (NSString*)transformStringFromASCII:(NSString *)str stringLength:(NSInteger)length
@@ -856,7 +1135,6 @@
         NSString *string = [NSString stringWithFormat:@"%c", value];
         [exKeyString appendString:string];
     }
-    NSLog(@"string = %@",exKeyString);
     return exKeyString;
 }
 

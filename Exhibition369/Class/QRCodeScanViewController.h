@@ -6,8 +6,8 @@
 //  Copyright (c) 2013年 MobilyDaily. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "ZBarSDK.h"
 
-@interface QRCodeScanViewController : UIViewController
+@interface QRCodeScanViewController : ZBarReaderViewController
 
 @end

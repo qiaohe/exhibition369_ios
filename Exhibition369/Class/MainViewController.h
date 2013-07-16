@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 #import "BaseUIViewController.h"
-#import "ZBarSDK.h"
+#import "QRCodeScanViewController.h"
+
 
 #define _BASE_STRING_ @"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
 #define _BASE_ASCII_  @"0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f"
@@ -27,17 +30,16 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
     MainViewActiveTabAppliedExhibitions    = 1 << 1
 };
 
-@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate, LoadingMoreTableFooterDelegate,ZBarReaderDelegate> {
+@interface MainViewController : BaseUIViewController<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UITextFieldDelegate,EGORefreshTableHeaderDelegate, LoadingMoreTableFooterDelegate,ZBarReaderDelegate,UIAlertViewDelegate> {
     MainViewActiveTab activeTab;
     
     NSMutableArray *typeGroup;
     NSMutableDictionary *typeVSExhibitions;
     
     
-    NSMutableArray *unAppliedExhibitions;
-    //NSMutableArray *appliedExhibitions;
-    
+    NSMutableArray *unAppliedExhibitions;    
 }
+
 @property (retain, nonatomic) IBOutlet UITableView      *theTableView;
 @property (nonatomic, strong) NSMutableDictionary       *imageDownloadsInProgress;
 @property (retain, nonatomic) IBOutlet UITextField      *searchInput;
@@ -47,11 +49,14 @@ typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {
 @property (retain, nonatomic) IBOutlet UIButton         *unAppliedBtn;
 @property (retain, nonatomic) IBOutlet UIButton         *appliedStateBtn;
 @property (retain, nonatomic) NSMutableArray            *appliedExhibitions;
+@property (retain, nonatomic) NSMutableArray            *scanArray;
 @property (retain, nonatomic) NSString                  *applyListOldSearchKey;
 @property (retain, nonatomic) NSString                  *unapplyListOldSearchKey;
-@property (retain, nonatomic) IBOutlet UIImageView      *imageview;
 @property (retain, nonatomic) NSUserDefaults            *userDefault;
 @property (retain, nonatomic) NSString                  *userDefaultURL;
+@property (retain, nonatomic) ZBarReaderViewController  *reader;
+@property (retain, nonatomic) IBOutlet UIImageView      *exhibitionNonentity;
+@property (retain, nonatomic) NSIndexPath               *editCell;
 
 - (IBAction)appliedTapped:(id)sender;
 - (IBAction)unAppliedTapped:(id)sender;

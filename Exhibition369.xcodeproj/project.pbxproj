@@ -106,8 +106,8 @@
 		CE15796F17852A8600CB9900 /* richeng.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793817852A8600CB9900 /* richeng.png */; };
 		CE15797017852A8600CB9900 /* xiaoxi.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793917852A8600CB9900 /* xiaoxi.png */; };
 		CE15797117852A8600CB9900 /* xinwen.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793A17852A8600CB9900 /* xinwen.png */; };
-		CE15797217852A8600CB9900 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793C17852A8600CB9900 /* 1.png */; };
-		CE15797317852A8600CB9900 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793D17852A8600CB9900 /* 2.png */; };
+		CE15797217852A8600CB9900 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793C17852A8600CB9900 /* 2.png */; };
+		CE15797317852A8600CB9900 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793D17852A8600CB9900 /* 1.png */; };
 		CE15797417852A8600CB9900 /* anxiaxinxikuang.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793E17852A8600CB9900 /* anxiaxinxikuang.png */; };
 		CE15797517852A8600CB9900 /* baoming.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15793F17852A8600CB9900 /* baoming.png */; };
 		CE15797617852A8600CB9900 /* homebeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = CE15794017852A8600CB9900 /* homebeijing.png */; };
@@ -145,7 +145,9 @@
 		CE2240481771C8B6009F0218 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2240441771C8B6009F0218 /* Message.m */; };
 		CE22404C1771CEAA009F0218 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE22404A1771CEA5009F0218 /* ApplyViewController.m */; };
 		CE22404D1771CEAA009F0218 /* ApplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE22404B1771CEA7009F0218 /* ApplyViewController.xib */; };
-		CE388689177921440005801E /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE388688177921440005801E /* MainViewController.mm */; };
+		CE388689177921440005801E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE388688177921440005801E /* MainViewController.m */; };
+		CE3F8FDD179392EC005EFA08 /* scanLine.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3F8FDC179392EC005EFA08 /* scanLine.png */; };
+		CE3F8FDF1793ECD0005EFA08 /* shenhe.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3F8FDE1793ECD0005EFA08 /* shenhe.png */; };
 		CE5004881772C53500B3DC5F /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5004701772C53500B3DC5F /* NSObject+SBJson.m */; };
 		CE5004891772C53500B3DC5F /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5004731772C53500B3DC5F /* SBJsonParser.m */; };
 		CE50048A1772C53500B3DC5F /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5004751772C53500B3DC5F /* SBJsonStreamParser.m */; };
@@ -159,6 +161,7 @@
 		CE5004921772C53500B3DC5F /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5004851772C53500B3DC5F /* SBJsonUTF8Stream.m */; };
 		CE5004931772C53500B3DC5F /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5004871772C53500B3DC5F /* SBJsonWriter.m */; };
 		CE5C33FC1772E3DF00DF3A14 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5C33FB1772E3DE00DF3A14 /* QuartzCore.framework */; };
+		CE5CCB4417953881008F2FC5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = CE5CCB4317953881008F2FC5 /* delete.png */; };
 		CE6485E8177B179B001316DB /* Exhibition369-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE6485E7177B179B001316DB /* Exhibition369-Info.plist */; };
 		CE800B6817856F7700D92C01 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE800B6217856F7700D92C01 /* libzbar.a */; };
 		CE800B6917856F7700D92C01 /* zbar-back.png in Resources */ = {isa = PBXBuildFile; fileRef = CE800B6417856F7700D92C01 /* zbar-back.png */; };
@@ -180,6 +183,10 @@
 		CEA7BE321777D4B1004B8781 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE291777D4B1004B8781 /* grayArrow@2x.png */; };
 		CEA7BE331777D4B1004B8781 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE2A1777D4B1004B8781 /* whiteArrow.png */; };
 		CEA7BE341777D4B1004B8781 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA7BE2B1777D4B1004B8781 /* whiteArrow@2x.png */; };
+		CEB8D477178FD2490094AC90 /* QRCodeBackImage.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB8D476178FD2490094AC90 /* QRCodeBackImage.png */; };
+		CEB8D47A178FE0840094AC90 /* QRCodeBackImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB8D478178FE0840094AC90 /* QRCodeBackImage@2x.png */; };
+		CEB8D47B178FE0840094AC90 /* ScanTitleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB8D479178FE0840094AC90 /* ScanTitleImage.png */; };
+		CEB8D47D178FFE5C0094AC90 /* 暂无图片.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB8D47C178FFE5C0094AC90 /* 暂无图片.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -320,8 +327,8 @@
 		CE15793817852A8600CB9900 /* richeng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = richeng.png; sourceTree = "<group>"; };
 		CE15793917852A8600CB9900 /* xiaoxi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiaoxi.png; sourceTree = "<group>"; };
 		CE15793A17852A8600CB9900 /* xinwen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xinwen.png; sourceTree = "<group>"; };
-		CE15793C17852A8600CB9900 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
-		CE15793D17852A8600CB9900 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		CE15793C17852A8600CB9900 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		CE15793D17852A8600CB9900 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		CE15793E17852A8600CB9900 /* anxiaxinxikuang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anxiaxinxikuang.png; sourceTree = "<group>"; };
 		CE15793F17852A8600CB9900 /* baoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = baoming.png; sourceTree = "<group>"; };
 		CE15794017852A8600CB9900 /* homebeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homebeijing.png; sourceTree = "<group>"; };
@@ -372,7 +379,9 @@
 		CE22404A1771CEA5009F0218 /* ApplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyViewController.m; sourceTree = "<group>"; };
 		CE22404B1771CEA7009F0218 /* ApplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ApplyViewController.xib; sourceTree = "<group>"; };
 		CE388687177921440005801E /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		CE388688177921440005801E /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainViewController.mm; sourceTree = "<group>"; };
+		CE388688177921440005801E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; wrapsLines = 1; };
+		CE3F8FDC179392EC005EFA08 /* scanLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scanLine.png; sourceTree = "<group>"; };
+		CE3F8FDE1793ECD0005EFA08 /* shenhe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shenhe.png; sourceTree = "<group>"; };
 		CE50046F1772C53500B3DC5F /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
 		CE5004701772C53500B3DC5F /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
 		CE5004711772C53500B3DC5F /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
@@ -399,6 +408,7 @@
 		CE5004861772C53500B3DC5F /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		CE5004871772C53500B3DC5F /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		CE5C33FB1772E3DE00DF3A14 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE5CCB4317953881008F2FC5 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		CE6485E6177B173C001316DB /* Exhibition369-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Exhibition369-Prefix.pch"; sourceTree = "<group>"; };
 		CE6485E7177B179B001316DB /* Exhibition369-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Exhibition369-Info.plist"; sourceTree = "<group>"; };
 		CE800B4E17856F7700D92C01 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
@@ -444,6 +454,10 @@
 		CEA7BE291777D4B1004B8781 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		CEA7BE2A1777D4B1004B8781 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		CEA7BE2B1777D4B1004B8781 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
+		CEB8D476178FD2490094AC90 /* QRCodeBackImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodeBackImage.png; sourceTree = "<group>"; };
+		CEB8D478178FE0840094AC90 /* QRCodeBackImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeBackImage@2x.png"; sourceTree = "<group>"; };
+		CEB8D479178FE0840094AC90 /* ScanTitleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScanTitleImage.png; sourceTree = "<group>"; };
+		CEB8D47C178FFE5C0094AC90 /* 暂无图片.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暂无图片.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,6 +465,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C377B11770B18F00674F32 /* AudioToolbox.framework in Frameworks */,
 				CE05080617852E5A0018E4BE /* AVFoundation.framework in Frameworks */,
 				CE05080417852E490018E4BE /* CoreVideo.framework in Frameworks */,
 				CE05080217852E370018E4BE /* CoreMedia.framework in Frameworks */,
@@ -459,13 +474,12 @@
 				CE0507FE17852E110018E4BE /* AddressBookUI.framework in Frameworks */,
 				CE0507FA17852E060018E4BE /* AssetsLibrary.framework in Frameworks */,
 				CE5C33FC1772E3DF00DF3A14 /* QuartzCore.framework in Frameworks */,
-				04C377B11770B18F00674F32 /* AudioToolbox.framework in Frameworks */,
 				0422B004176EE28700299473 /* MobileCoreServices.framework in Frameworks */,
-				0422B002176EE26A00299473 /* libz.dylib in Frameworks */,
 				0422B000176EE23F00299473 /* SystemConfiguration.framework in Frameworks */,
 				0422AFFE176EE22A00299473 /* CFNetwork.framework in Frameworks */,
-				040C159B176E9D4500F859DB /* UIKit.framework in Frameworks */,
 				040C159D176E9D4500F859DB /* Foundation.framework in Frameworks */,
+				040C159B176E9D4500F859DB /* UIKit.framework in Frameworks */,
+				0422B002176EE26A00299473 /* libz.dylib in Frameworks */,
 				040C159F176E9D4500F859DB /* CoreGraphics.framework in Frameworks */,
 				040C15A1176E9D4500F859DB /* CoreData.framework in Frameworks */,
 				CE800B6817856F7700D92C01 /* libzbar.a in Frameworks */,
@@ -554,7 +568,7 @@
 				04C3778D1770A76600674F32 /* TransitionController.h */,
 				04C3778E1770A76600674F32 /* TransitionController.m */,
 				CE388687177921440005801E /* MainViewController.h */,
-				CE388688177921440005801E /* MainViewController.mm */,
+				CE388688177921440005801E /* MainViewController.m */,
 				040C15C4176E9F5000F859DB /* MainViewController.xib */,
 				0422B009176EE88500299473 /* ExhibitionDetailViewController.h */,
 				0422B00A176EE88500299473 /* ExhibitionDetailViewController.m */,
@@ -788,8 +802,11 @@
 		CE15793B17852A8600CB9900 /* HomeViewImage */ = {
 			isa = PBXGroup;
 			children = (
-				CE15793C17852A8600CB9900 /* 1.png */,
-				CE15793D17852A8600CB9900 /* 2.png */,
+				CE5CCB4317953881008F2FC5 /* delete.png */,
+				CE3F8FDE1793ECD0005EFA08 /* shenhe.png */,
+				CEB8D47C178FFE5C0094AC90 /* 暂无图片.png */,
+				CE15793D17852A8600CB9900 /* 1.png */,
+				CE15793C17852A8600CB9900 /* 2.png */,
 				CE15793E17852A8600CB9900 /* anxiaxinxikuang.png */,
 				CE15793F17852A8600CB9900 /* baoming.png */,
 				CE15794017852A8600CB9900 /* homebeijing.png */,
@@ -810,6 +827,10 @@
 		CE15794B17852A8600CB9900 /* QRCodeImage */ = {
 			isa = PBXGroup;
 			children = (
+				CE3F8FDC179392EC005EFA08 /* scanLine.png */,
+				CEB8D478178FE0840094AC90 /* QRCodeBackImage@2x.png */,
+				CEB8D479178FE0840094AC90 /* ScanTitleImage.png */,
+				CEB8D476178FD2490094AC90 /* QRCodeBackImage.png */,
 				CE05081C178545EC0018E4BE /* anxiasao.png */,
 				CE05081D178545EC0018E4BE /* sao.png */,
 				CE05081E178545EC0018E4BE /* 已报名1.png */,
@@ -1096,8 +1117,8 @@
 				CE15796F17852A8600CB9900 /* richeng.png in Resources */,
 				CE15797017852A8600CB9900 /* xiaoxi.png in Resources */,
 				CE15797117852A8600CB9900 /* xinwen.png in Resources */,
-				CE15797217852A8600CB9900 /* 1.png in Resources */,
-				CE15797317852A8600CB9900 /* 2.png in Resources */,
+				CE15797217852A8600CB9900 /* 2.png in Resources */,
+				CE15797317852A8600CB9900 /* 1.png in Resources */,
 				CE15797417852A8600CB9900 /* anxiaxinxikuang.png in Resources */,
 				CE15797517852A8600CB9900 /* baoming.png in Resources */,
 				CE15797617852A8600CB9900 /* homebeijing.png in Resources */,
@@ -1126,6 +1147,13 @@
 				CE800B6B17856F7700D92C01 /* zbar-helpicons.png in Resources */,
 				CE800B6C17856F7700D92C01 /* zbar-samples.png in Resources */,
 				CE14336C178A96860010EE4B /* new message.png in Resources */,
+				CEB8D477178FD2490094AC90 /* QRCodeBackImage.png in Resources */,
+				CEB8D47A178FE0840094AC90 /* QRCodeBackImage@2x.png in Resources */,
+				CEB8D47B178FE0840094AC90 /* ScanTitleImage.png in Resources */,
+				CEB8D47D178FFE5C0094AC90 /* 暂无图片.png in Resources */,
+				CE3F8FDD179392EC005EFA08 /* scanLine.png in Resources */,
+				CE3F8FDF1793ECD0005EFA08 /* shenhe.png in Resources */,
+				CE5CCB4417953881008F2FC5 /* delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1194,7 +1222,7 @@
 				CE5004931772C53500B3DC5F /* SBJsonWriter.m in Sources */,
 				CE92F73E17742AE800C0D179 /* NewsDetailViewController.m in Sources */,
 				CEA7BE2C1777D4B1004B8781 /* EGORefreshTableHeaderView.m in Sources */,
-				CE388689177921440005801E /* MainViewController.mm in Sources */,
+				CE388689177921440005801E /* MainViewController.m in Sources */,
 				CE9D99F017799DF2008A99C6 /* MessagesTableCell.m in Sources */,
 				CE17A663177D37730042FDCD /* MDataModel.m in Sources */,
 				04C09A94177ED830009462EA /* LoadingMoreTableFooterView.m in Sources */,

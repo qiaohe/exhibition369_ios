@@ -103,8 +103,11 @@
 {
     // Set appIcon and clear temporary data/image
     UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
+    if (!image) {
+        image = [UIImage imageNamed:@"暂无图片.png"];
+    }
     if (self.exhibition.status) {
-        if (![self.exhibition.status isEqualToString:@"N"]) {
+        if (![self.exhibition.status isEqualToString:@"N"] || self.exhibition.shouldSaveIcon) {
             if (![[Model sharedModel].shareFileManager fileExistsAtPath:self.exhibition.iconPath]) {
                 [self.activeDownload writeToFile:self.exhibition.iconPath atomically:YES];
             }

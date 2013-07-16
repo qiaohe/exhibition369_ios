@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSString *logs;
 @property (nonatomic, assign) NSInteger messageUnRead;
 @property (nonatomic, retain) NSString *iconPath;
+@property (nonatomic, assign) BOOL     shouldSaveIcon;
 
 - (NSString *)getIconImageURL;
 

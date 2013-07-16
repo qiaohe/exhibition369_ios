@@ -65,6 +65,9 @@
         
         theButton = [[[DataButton alloc] initWithFrame:CGRectMake(270, 4, 40, 50)] autorelease];
         theButton.tag = 5;
+        [theButton setImage:[UIImage imageNamed:@"baoming.png"] forState:UIControlStateNormal];
+        [theButton setImage:[UIImage imageNamed:@"anxiabaoming.png"] forState:UIControlStateSelected];
+        [theButton setImage:[UIImage imageNamed:@"anxiabaoming.png"] forState:UIControlStateHighlighted];
         theButton.hidden = YES;
         [self.contentView addSubview:theButton];
         
@@ -84,28 +87,41 @@
 
 - (void)setApplyStatusWithString:(NSString*)Status{
     if ([Status isEqualToString:@"N"]) {
-        
+        if (!self.ApplyStatus) {
+            self.ApplyStatus = [[DataButton alloc]init];
+            [self addSubview:self.ApplyStatus];
+        }
+        self.ApplyStatus.enabled = YES;
+        self.ApplyStatus.frame = CGRectMake(270, 1, 40, 50);
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateDisabled];
     }else if ([Status isEqualToString:@"P"]) {
         if (!self.ApplyStatus) {
-            self.ApplyStatus = [[UIImageView alloc]init];
+            self.ApplyStatus = [[DataButton alloc]init];
+            [self addSubview:self.ApplyStatus];
         }
-        self.ApplyStatus.frame = CGRectMake(270, 26, 40, 18);
-        [self.ApplyStatus setImage:[UIImage imageNamed:@"shenhezhong.png"]];
-        [self addSubview:self.ApplyStatus];
+        self.ApplyStatus.enabled = NO;
+        self.ApplyStatus.frame = CGRectMake(270, 1, 40, 50);
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"shenhe.png"] forState:UIControlStateNormal];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"shenhe.png"] forState:UIControlStateDisabled];
     }else if ([Status isEqualToString:@"A"]) {
         if (!self.ApplyStatus) {
-            self.ApplyStatus = [[UIImageView alloc]init];
+            self.ApplyStatus = [[DataButton alloc]init];
+            [self addSubview:self.ApplyStatus];
         }
+        self.ApplyStatus.enabled = NO;
         self.ApplyStatus.frame = CGRectMake(263, 7, 50, 50);
-        [self.ApplyStatus setImage:[UIImage imageNamed:@"tonguo.png"]];
-        [self addSubview:self.ApplyStatus];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"tonguo.png"] forState:UIControlStateNormal];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"tonguo.png"] forState:UIControlStateDisabled];
     }else if ([Status isEqualToString:@"D"]) {
         if (!self.ApplyStatus) {
-            self.ApplyStatus = [[UIImageView alloc]init];
+            self.ApplyStatus = [[DataButton alloc]init];
+            [self addSubview:self.ApplyStatus];
         }
+        self.ApplyStatus.enabled = NO;
         self.ApplyStatus.frame = CGRectMake(265, 26, 40, 18);
-        [self.ApplyStatus setImage:[UIImage imageNamed:@"weitongguo.png"]];
-        [self addSubview:self.ApplyStatus];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"weitongguo.png"] forState:UIControlStateNormal];
+        [self.ApplyStatus setBackgroundImage:[UIImage imageNamed:@"weitongguo.png"] forState:UIControlStateDisabled];
     }else{
         
     }

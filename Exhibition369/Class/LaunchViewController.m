@@ -64,6 +64,7 @@
         [self launchApp:nil];
     } else {
         [[Model sharedModel] displayTip:@"设备注册失败，请检查网络连接或者稍后在试。" modal:YES];
+        //[self launchApp:nil];
     }
 }
 
