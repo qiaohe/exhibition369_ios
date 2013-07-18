@@ -96,6 +96,17 @@
     }
 }
 
+- (BOOL)AppliedExhibitions:(NSArray*)exhibitions ContentsObject:(NSObject*)object
+{
+    Exhibition *e = (Exhibition*)object;
+    for (Exhibition * elem in exhibitions) {
+        if ([e.exKey isEqualToString:elem.exKey]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 -(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestTag:(int)requestTag{
     
     if(method == RequestMethodGET){

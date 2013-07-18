@@ -154,8 +154,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getAppliedList];
-    [self.theTableView reloadData];
+    [super viewWillAppear:animated];
+    //[self getAppliedList];
+    //[self.theTableView reloadData];
 }
 
 //load new Exhibitions data
@@ -239,13 +240,13 @@
     if (activeTab == MainViewActiveTabAppliedExhibitions) {
         self.appliedBtn.selected = YES;
         self.unAppliedBtn.selected = NO;
-        [self.tabImage setImage:[UIImage imageNamed:@"1.png"]];
+        [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
         //[self.theTableView setTableFooterView:nil];
         self.loadingMoreFooterView.hidden = YES;
     }else{
         self.appliedBtn.selected = NO;
         self.unAppliedBtn.selected = YES;
-        [self.tabImage setImage:[UIImage imageNamed:@"2.png"]];
+        [self.tabImage setImage:[UIImage imageNamed:@"1.png"]];
         if(self.loadingMoreFooterView.haveMoreData){
             //[self.theTableView setTableFooterView:self.loadingMoreFooterView];
         }
@@ -380,14 +381,15 @@
     if (alertView.tag == 203) {
         if (buttonIndex == 1) {
             Exhibition *elem = [self.scanArray objectAtIndex:self.editCell.row];
-            [self.scanArray removeObject:elem];
-            [self.theTableView deleteRowsAtIndexPaths:@[self.editCell] withRowAnimation:UITableViewRowAnimationFade];
             for (Exhibition *e in [Model sharedModel].appliedExhibitionList) {
                 if ([elem.exKey isEqualToString:e.exKey]) {
                     [[Model sharedModel].appliedExhibitionList removeObject:e];
                     [[PlistProxy sharedPlistProxy]updateAppliedExhibitions];
                 }
             }
+            
+            [self.scanArray removeObjectAtIndex:self.editCell.row];
+            [self.theTableView reloadData];
         }
     }
 }
@@ -434,17 +436,6 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
-}
-
-- (BOOL)AppliedExhibitions:(NSArray*)exhibitions ContentsObject:(NSObject*)object
-{
-    Exhibition *e = (Exhibition*)object;
-    for (Exhibition * elem in exhibitions) {
-        if ([e.exKey isEqualToString:elem.exKey]) {
-            return YES;
-        }
-    }
-    return NO;
 }
 
 
@@ -522,6 +513,7 @@
             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
             [self addExhibition:e];
         }
+        NSLog(@"scanarray count = %d,appliedarray count = %d",[scanArray count],[self.appliedExhibitions count]);
         [self.theTableView reloadData];
     }
 }
@@ -578,7 +570,9 @@
     [self.exhibitionNonentity     release];
     if (self.reader)
         [self.reader              release];
-    [self.editCell                release];
+    if (self.editCell) {
+        [self.editCell                release];
+    }
     [super dealloc];
 }
 - (void)viewDidUnload {

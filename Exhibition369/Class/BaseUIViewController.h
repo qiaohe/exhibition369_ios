@@ -13,6 +13,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "LoadingMoreTableFooterView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Exhibition.h"
 
 
 #define _PHONE_NUM_   @"400-888-1710"

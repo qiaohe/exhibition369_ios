@@ -320,6 +320,7 @@
             case 200:{
                 [Model sharedModel].selectExhibition.applied = EXHIBITION_APPLIED_Y;
                 [Model sharedModel].selectExhibition.status = EXHIBITION_STATUS_P;
+                
                 [[Model sharedModel].appliedExhibitionList addObject:[Model sharedModel].selectExhibition];
                 [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
                 if (self.delegate) {
