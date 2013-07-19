@@ -266,6 +266,7 @@
 	
     if (result == nil){
         NSLog(@"Get system Config with error: %@", responseString);
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationAppConfigRecived object:nil userInfo:nil];
     }
     else{
         NSLog(@"Get system Config  result:%@", responseString);

@@ -15,6 +15,8 @@
 
 #define _BASE_STRING_ @"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
 #define _BASE_ASCII_  @"0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f"
+#define SCAN_BASE_HEADER_HEIGHT  (appFrame.size.height/460 - 1)*120
+#define SCAN_BASE_FOOTER_HEIGHT  (appFrame.size.height/460 - 1)*345
 
 @class ApplyViewController;
 @protocol LoadingMoreTableFooterDelegate;
@@ -23,6 +25,7 @@ typedef enum{
     RequestUnApplyExhibitionsList = 1,
     RequestApplyExhibitionList,
     RequestUnApplyExhibitionsLoadingMore,
+    RequestScanExhibition,
 }MainViewRequestType;
 
 typedef NS_OPTIONS(NSUInteger, MainViewActiveTab) {

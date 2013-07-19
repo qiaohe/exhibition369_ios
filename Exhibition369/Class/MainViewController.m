@@ -52,6 +52,12 @@
         
         self.userDefault = [NSUserDefaults standardUserDefaults];
         self.userDefaultURL = [self.userDefault objectForKey:@"OpenWithURL"];
+        
+        self.requestQueue = [[ASINetworkQueue alloc]init];
+        [self.requestQueue setDelegate:self];
+        [self.requestQueue setRequestDidFinishSelector:@selector(done:)];
+        [self.requestQueue setQueueDidFinishSelector:@selector(queueDidFinish)];
+        [self.requestQueue go];
     }
     
     return self;
@@ -64,7 +70,7 @@
     self.unapplyListOldSearchKey = @"";
     
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
-    self.exhibitionNonentity = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.theTableView.frame.size.width, self.theTableView.frame.size.height)];
+    self.exhibitionNonentity = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, appFrame.size.width, appFrame.size.height - self.theTableView.frame.origin.x)];
     [self.exhibitionNonentity setImage:[UIImage imageNamed:@"no_message.png"]];
     self.exhibitionNonentity.backgroundColor = [UIColor clearColor];
     self.exhibitionNonentity.hidden = YES;
@@ -177,6 +183,20 @@
     }
 }
 
+- (void)refreshScanExhibitions
+{
+    for (Exhibition *e in self.scanArray) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                       [Model sharedModel].systemConfig.token, @"token",
+                                       e.exKey,@"exKey",
+                                       @"-1", @"size",
+                                       @"-1", @"last",
+                                       nil];
+        
+        [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find", ServerURL] params:params method:RequestMethodGET requestTag:RequestScanExhibition];
+    }
+}
+
 //load more Exhibitions data
 - (void) loadMoreExhibitions{
     
@@ -207,6 +227,9 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                    [Model sharedModel].systemConfig.token, @"token",
                                    nil];
+    if (self.searchInput.text) {
+        self.searchInput.text = @"";
+    }
     
     [self sendRequestWith:[NSString stringWithFormat:@"%@/rest/exhibitions/find_applied", ServerURL] params:params method:RequestMethodGET requestTag:RequestApplyExhibitionList];
 }
@@ -474,6 +497,7 @@
             //NSLog(@"exdata = %@",exhibitionData);
             Exhibition *e = [[Exhibition alloc] initWithJSONData:exhibitionData];
             [unAppliedExhibitions addObject:e];
+            
             [e release];
         }
         
@@ -513,9 +537,15 @@
             [[PlistProxy sharedPlistProxy] updateAppliedExhibitions];
             [self addExhibition:e];
         }
-        NSLog(@"scanarray count = %d,appliedarray count = %d",[scanArray count],[self.appliedExhibitions count]);
         [self.theTableView reloadData];
+    }else if (request.tag == RequestScanExhibition){
+        NSLog(@"request scan");
     }
+}
+
+- (void)queueDidFinish
+{
+    
 }
 
 - (void)addExhibition:(Exhibition*)e
@@ -527,15 +557,6 @@
     }else{
         [self.appliedExhibitions addObject:e];
     }
-}
-
-- (BOOL)exhibitionArray:(NSArray*)array containsExhibition:(Exhibition*)e
-{
-    for (Exhibition *elem in array) {
-        if ([elem.exKey isEqualToString:e.exKey]) {
-            return YES;
-        }
-    }return NO;
 }
 
 - (void)error:(ASIHTTPRequest *)request
@@ -636,7 +657,7 @@
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:exhibition.exKey];
     if (iconDownloader == nil)
     {
-        iconDownloader = [[IconDownloader alloc] init];
+        iconDownloader = [[[IconDownloader alloc] init]autorelease];
         iconDownloader.exhibition = exhibition;
         [iconDownloader setCompletionHandler:^{
             
@@ -782,7 +803,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    NSLog(@"searchinput = %@",self.searchInput.text);
     if ([textField canResignFirstResponder]) {
         [textField resignFirstResponder];
     }
@@ -804,9 +824,7 @@
     if (activeTab != MainViewActiveTabAppliedExhibitions) {
         activeTab = MainViewActiveTabAppliedExhibitions;
     }
-    
-    NSLog(@"input = %@,oldkey = %@",self.searchInput.text,self.applyListOldSearchKey);
-    
+        
     if ([self.searchInput canResignFirstResponder]) {
         [self.searchInput resignFirstResponder];
     }if (self.searchInput.text && ![self.searchInput.text isEqualToString:@""]) {
@@ -980,18 +998,18 @@
     UIImageView *imageView = (UIImageView*)[self.reader.view viewWithTag:202];
     if (!imageView) {
         imageView = [[[UIImageView alloc]init]autorelease];
-        imageView.frame = CGRectMake(40, 120, 240, 10);
+        imageView.frame = CGRectMake(40, 120 + SCAN_BASE_HEADER_HEIGHT, 240, 10);
         imageView.tag = 202;
         [imageView setImage:[UIImage imageNamed:@"scanLine.png"]];
         [self.reader.view addSubview:imageView];
     }
     if (begin) {
-        imageView.frame = CGRectMake(40, 120, 240, 10);
+        imageView.frame = CGRectMake(40, 120 + SCAN_BASE_HEADER_HEIGHT, 240, 10);
         [UIView beginAnimations:@"scan" context:nil];
         [UIView setAnimationDuration:2.0f];
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
         [UIView setAnimationRepeatCount:HUGE_VALF];
-        imageView.frame = CGRectMake(40, 345, 240, 10);
+        imageView.frame = CGRectMake(40, 345 + SCAN_BASE_FOOTER_HEIGHT, 240, 10);
         [UIView commitAnimations];
     }
 }

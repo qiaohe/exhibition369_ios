@@ -16,6 +16,8 @@
 
 @implementation LaunchViewController
 
+@synthesize backImageView;
+
 - (id)init
 {
 	if ((self = [super init]))
@@ -46,6 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.backImageView.frame = CGRectMake(0, -20, appFrame.size.width, appFrame.size.height + 20);
     // Do any additional setup after loading the view from its nib.
     
 }
@@ -72,6 +75,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.backImageView release];
     [super dealloc];
 }
 

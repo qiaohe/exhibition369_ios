@@ -50,6 +50,7 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
     BOOL loadingData;
 }
 @property (nonatomic, retain) ASIHTTPRequest*theRequest;
+@property (nonatomic, retain) ASINetworkQueue *requestQueue;
 @property (retain, nonatomic) EGORefreshTableHeaderView  *refreshHeaderView;
 @property (assign, nonatomic) BOOL                       reloading;
 @property (retain, nonatomic) LoadingMoreTableFooterView *loadingMoreFooterView;
@@ -64,5 +65,6 @@ typedef NS_OPTIONS(NSUInteger, RequestMethod) {
 - (void)showLoadingIndicator;
 - (void)hideLoadingIndicator;
 - (UIColor *)getColor:(NSString *)stringToConvert;
+- (BOOL)exhibitionArray:(NSArray*)array containsExhibition:(Exhibition*)e;
 
 @end

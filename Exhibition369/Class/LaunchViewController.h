@@ -10,4 +10,6 @@
 
 @interface LaunchViewController : BaseUIViewController
 
+@property (nonatomic, retain) IBOutlet UIImageView *backImageView;
+
 @end

@@ -17,6 +17,7 @@
 @synthesize refreshHeaderView;
 @synthesize reloading;
 @synthesize loadingMoreFooterView;
+@synthesize requestQueue;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,6 +34,9 @@
     [self.theRequest            release];
     [self.refreshHeaderView     release];
     [self.loadingMoreFooterView release];
+    if (self.requestQueue) {
+        [self.requestQueue      release];
+    }
     [super dealloc];
 }
 
@@ -105,6 +109,15 @@
         }
     }
     return NO;
+}
+
+- (BOOL)exhibitionArray:(NSArray*)array containsExhibition:(Exhibition*)e
+{
+    for (Exhibition *elem in array) {
+        if ([elem.exKey isEqualToString:e.exKey]) {
+            return YES;
+        }
+    }return NO;
 }
 
 -(void)sendRequestWith:(NSString *)url params:(NSMutableDictionary *)params method:(RequestMethod)method requestTag:(int)requestTag{
